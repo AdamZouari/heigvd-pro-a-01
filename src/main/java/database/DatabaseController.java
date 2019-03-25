@@ -10,12 +10,11 @@ public class DatabaseController {
 
     public static void connexion() {
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             mConnection = DriverManager.getConnection(url);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
     public static ResultSet search() {
