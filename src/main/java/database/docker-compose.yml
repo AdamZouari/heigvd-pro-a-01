@@ -1,4 +1,4 @@
-version: '3.1'
+version: '2'
 
 services:
   db:
@@ -6,7 +6,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
-      - 3308:3308
+      - 3308:3306
     environment:
       MYSQL_DATABASE: pro2019
       MYSQL_ROOT_PASSWORD: root
