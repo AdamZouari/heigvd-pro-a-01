@@ -2,14 +2,18 @@ import database.DatabaseController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
+
 public class Home extends Application {
 
-   public static void main(String[] args) {
+   public static void main(String[] args) throws SQLException {
+
+      DatabaseController db = new  DatabaseController();
+      db.connexion();
+      DatabaseController.printResult(db.search());
+      DatabaseController.printResult(db.getUserById(1));
 
 
-      System.out.println("COUCOU");
-      DatabaseController.connexion();
-      DatabaseController.search();
    }
 
    @Override
