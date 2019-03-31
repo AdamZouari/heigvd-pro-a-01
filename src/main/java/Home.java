@@ -1,4 +1,5 @@
 import database.DatabaseController;
+import database.Entities.User;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -12,7 +13,8 @@ public class Home extends Application {
       db.connexion();
       DatabaseController.printResult(db.search());
       DatabaseController.printResult(db.getUserById(1));
-
+      db.addUser(2,"Adam","leDZ",null, User.LANGUE.FR);
+      DatabaseController.printResult(db.getUserById(2));
 
    }
 

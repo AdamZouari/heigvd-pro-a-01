@@ -1,5 +1,8 @@
 package database;
 
+import com.oracle.javafx.jmx.json.JSONDocument;
+import com.oracle.javafx.jmx.json.JSONWriter;
+import com.sun.tools.javac.code.Attribute;
 import database.Entities.User;
 
 import java.sql.*;
@@ -85,15 +88,89 @@ public class DatabaseController {
         }
     }
 
-    public static void addUser(){
+    public static ResultSet addUser(int id, String username, String password, JSONDocument rules, User.LANGUE langue){
+
+
+        PreparedStatement statement;
+        ResultSet result = null;
+
+        try {
+
+
+            String sql = " INSERT INTO User(`id`, `username`, `password`, `rules`, `langue`)" +
+                    " VALUES (" +  id + "," + username + "," + password + ","
+                    + rules + "," + langue.name() + ")";
+
+            String sql2 = " INSERT INTO User(`id`, `username`, `password`, `rules`, `langue`)" +
+                    " VALUES (?,?,?,?,?) ;";
+
+            statement = mConnection.prepareStatement(sql2);
+            statement.setInt(1,id); // TODO replace it by a random id
+            statement.setString(2,username);
+            statement.setString(3,password);
+            statement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
+            statement.setString(5, langue.name());
+
+            result = statement.executeQuery(sql2);
+
+
+        } catch (Exception e) {
+            System.out.println("erreur query add user" + e.getMessage());
+        }
+
+        return result;
 
     }
 
-    public static void updateUser(){
+    public static ResultSet updateUserById(int id,String username, String password, JSONDocument rules, User.LANGUE langue){
 
+
+        Statement statement;
+        ResultSet result = null;
+
+        try {
+
+            statement = mConnection.createStatement();
+
+            String sql = "UPDATE `User` SET `username`=" + username + ",`password`=" + password + ",`rules`=" + rules
+                    + ",`langue`=" + langue + " WHERE `id` = " + id + ";";
+
+
+            result = statement.executeQuery(sql);
+
+
+        } catch (Exception e) {
+            System.out.println("erreur query update user" + e.getMessage());
+        }
+
+        return result;
     }
 
-    public static void setPassword(){
+    public static ResultSet resetPassword(int id,String password){
+        Statement statement;
+        ResultSet result = null;
+
+        try {
+
+            statement = mConnection.createStatement();
+
+            String sql = "UPDATE `User` SET `password`=" + password + " WHERE `id` = " + id + ";";
+
+
+            result = statement.executeQuery(sql);
+
+
+        } catch (Exception e) {
+            System.out.println("erreur query reset password" + e.getMessage());
+        }
+        return result;
+    }
+
+    public static void specifyRules(int id,String rules){
+        //JSONWriter jsonReader = Json.createReader(...);
+        //JSONWriter object = jsonReader.readObject();
+
+        // TODO return it in JSON
 
     }
 }

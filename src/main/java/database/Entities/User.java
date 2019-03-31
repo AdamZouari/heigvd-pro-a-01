@@ -3,7 +3,7 @@ package database.Entities;
 
 public class User {
 
-    enum LANGUE {FR,EN}
+    public enum LANGUE {FR,EN}
 
     private String username;
     private int id;
