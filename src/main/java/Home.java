@@ -11,10 +11,21 @@ public class Home extends Application {
 
       DatabaseController db = new  DatabaseController();
       db.connexion();
-      DatabaseController.printResult(db.search());
-      DatabaseController.printResult(db.getUserById(1));
-      db.addUser(2,"Adam","leDZ",null, User.LANGUE.FR);
-      DatabaseController.printResult(db.getUserById(2));
+
+      System.out.println("------ Test getUserById() ------");
+      db.getUserById(0);
+
+      System.out.println(" ------ Test addUser() ----- ");
+      db.addUser(1,"Guillaume","boloss",null, User.LANGUE.FR);
+
+
+
+      System.out.println("------ Test updateUser() ------ ");
+      db.updateUser(1,"Walid","123456", null , User.LANGUE.EN);
+
+
+      System.out.println("------ Test updatePassword() ------");
+      db.updatePassword(1,"qwertz");
 
    }
 

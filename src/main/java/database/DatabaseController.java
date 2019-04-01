@@ -10,7 +10,7 @@ import java.sql.*;
 public class DatabaseController {
 
     private static Connection mConnection;
-    private static String url = "jdbc:mysql://127.0.0.1:3308/pro2019?user=user&password=password";
+    private static String url = "jdbc:mysql://35.181.66.143:3306/pro2019?user=pro2019&password=Hooch$fizz$onion$emits$3Cede$Bloat";
 
     //QueryRunner run = new QueryRunner(dataSource);
 
