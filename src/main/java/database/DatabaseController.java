@@ -1,8 +1,5 @@
 package database;
 
-import com.oracle.javafx.jmx.json.JSONDocument;
-import com.oracle.javafx.jmx.json.JSONWriter;
-import com.sun.tools.javac.code.Attribute;
 import database.Entities.User;
 
 import java.sql.*;
@@ -10,7 +7,7 @@ import java.sql.*;
 public class DatabaseController {
 
     private static Connection mConnection;
-    private static String url = "jdbc:mysql://35.181.66.143:3306/pro2019?user=pro2019&password=Hooch$fizz$onion$emits$3Cede$Bloat";
+    private static String url = "jdbc:mysql://pro2019.c0owyd1iitne.eu-west-3.rds.amazonaws.com:3306/pro2019?user=pro2019&password=Hooch$fizz$onion$emits$3Cede$Bloat";
 
     //QueryRunner run = new QueryRunner(dataSource);
 
@@ -24,56 +21,7 @@ public class DatabaseController {
         }
     }
 
-    public static ResultSet search() {
-            Statement statement;
-            //PreparedStatement preparedStatement = null;
-            ResultSet result = null;
-            try {
-
-
-                statement = mConnection.createStatement();
-
-                String sql = " SELECT *"
-                        +" FROM User ;";
-
-                result = statement.executeQuery(sql);
-
-                //ResultSetMetaData rsmd = result.getMetaData();
-
-                // printResult();
-
-            } catch (Exception e) {
-                System.out.println("erreur query1" + e.getMessage());
-                return null;
-            }
-            return result;
-
-    }
-
-
-    public ResultSet getUserById(int id){
-
-        Statement statement;
-        //PreparedStatement preparedStatement = null;
-        ResultSet result = null;
-        try {
-
-            statement = mConnection.createStatement();
-
-            String sql = " SELECT * FROM User WHERE id = " + id + ";";
-
-           result = statement.executeQuery(sql);
-
-
-        } catch (Exception e) {
-            System.out.println("erreur query1" + e.getMessage());
-        }
-
-        return result;
-    }
-
-
-    public static void printResult(ResultSet result) throws SQLException {
+    /*public static void printResult(ResultSet result) throws SQLException {
 
         ResultSetMetaData rsmd = result.getMetaData();
 
@@ -86,87 +34,131 @@ public class DatabaseController {
             }
             System.out.println("");
         }
-    }
+    }*/
 
-    public static ResultSet addUser(int id, String username, String password, JSONDocument rules, User.LANGUE langue){
+    public static ResultSet search() {
 
-
-        PreparedStatement statement;
+        Statement statement = null;
         ResultSet result = null;
+        String sql = " SELECT * FROM User ;";
 
         try {
-
-
-            String sql = " INSERT INTO User(`id`, `username`, `password`, `rules`, `langue`)" +
-                    " VALUES (" +  id + "," + username + "," + password + ","
-                    + rules + "," + langue.name() + ")";
-
-            String sql2 = " INSERT INTO User(`id`, `username`, `password`, `rules`, `langue`)" +
-                    " VALUES (?,?,?,?,?) ;";
-
-            statement = mConnection.prepareStatement(sql2);
-            statement.setInt(1,id); // TODO replace it by a random id
-            statement.setString(2,username);
-            statement.setString(3,password);
-            statement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
-            statement.setString(5, langue.name());
-
-            result = statement.executeQuery(sql2);
-
-
-        } catch (Exception e) {
-            System.out.println("erreur query add user" + e.getMessage());
-        }
-
-        return result;
-
-    }
-
-    public static ResultSet updateUserById(int id,String username, String password, JSONDocument rules, User.LANGUE langue){
-
-
-        Statement statement;
-        ResultSet result = null;
-
-        try {
-
-            statement = mConnection.createStatement();
-
-            String sql = "UPDATE `User` SET `username`=" + username + ",`password`=" + password + ",`rules`=" + rules
-                    + ",`langue`=" + langue + " WHERE `id` = " + id + ";";
-
 
             result = statement.executeQuery(sql);
 
-
         } catch (Exception e) {
-            System.out.println("erreur query update user" + e.getMessage());
+            System.out.println(e.getMessage());
         }
-
         return result;
     }
 
-    public static ResultSet resetPassword(int id,String password){
-        Statement statement;
+
+    public ResultSet getUserById(int id) throws SQLException {
+
+        PreparedStatement preparedStatement = null;
         ResultSet result = null;
+        String sql = " SELECT * FROM User WHERE id = ?";
 
         try {
 
-            statement = mConnection.createStatement();
+            preparedStatement = mConnection.prepareStatement(sql);
 
-            String sql = "UPDATE `User` SET `password`=" + password + " WHERE `id` = " + id + ";";
-
-
-            result = statement.executeQuery(sql);
+            preparedStatement.setInt(1, id);
+            result = preparedStatement.executeQuery();
 
 
         } catch (Exception e) {
-            System.out.println("erreur query reset password" + e.getMessage());
+            System.out.println(e.getMessage());
         }
+
+        System.out.println("user got ");
+
         return result;
     }
 
-    public static void specifyRules(int id,String rules){
+
+    // TODO : Check if exist
+    public static void addUser(int id, String username, String password, String rules, User.LANGUE langue) {
+
+
+        PreparedStatement preparedStatement = null;
+        String sql = " INSERT INTO User(id, username, password, rules, langue)" +
+                " VALUES (?,?,?,?,?) ;";
+
+        try {
+
+
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setInt(1, id); // TODO replace it by a random id
+            preparedStatement.setString(2, username);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
+            preparedStatement.setString(5, langue.name());
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("User" + username + " added !");
+
+    }
+
+    public static void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
+
+
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE User SET username = ? , password = ? , rules = ? , langue = ? " +
+                " WHERE id = ? ";
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, rules);
+            preparedStatement.setString(4, langue.name());
+            preparedStatement.setInt(5, id);
+
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("User " + username +" updated !");
+
+    }
+
+    public static void updatePassword(int id, String password) {
+
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE User SET password = ?  WHERE id = ? ";
+
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2, id);
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Password of updated !");
+
+    }
+
+    public static void specifyRules(int id, String rules) {
         //JSONWriter jsonReader = Json.createReader(...);
         //JSONWriter object = jsonReader.readObject();
 
