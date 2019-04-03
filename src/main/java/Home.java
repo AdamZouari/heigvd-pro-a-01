@@ -1,14 +1,16 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Home extends Application {
+
+public class Home  {
 
    public static void main(String[] args) {
-      System.out.println("COUCOU");
+
+      ServiceMeteo meteo = new ServiceMeteo();
+      meteo.connect();
+      System.out.println("Le temps a Lausanne :" + meteo.getWeather("Lausanne"));
+      meteo.disconnect();
    }
 
-   @Override
-   public void start(Stage primaryStage) {
 
-   }
 }
