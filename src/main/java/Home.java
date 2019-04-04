@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 public class Home extends Application {
 
    public static void main(String[] args) {
-      System.out.println("COUCOU");
       launch(Home.class);
    }
 

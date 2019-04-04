@@ -1,18 +1,36 @@
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 
 public class HomeController {
 
-   @FXML
-   private Button btnTest;
+   private boolean nightMode = false;
 
    @FXML
-   private void onClick() {
-      if(btnTest.getText().equals("Coucou"))
-         btnTest.setText("Test");
-      else
-         btnTest.setText("Coucou");
+   private void onThemeToggleClick() {
+      // TODO implement
    }
 
+   @FXML
+   private void onSettingsButtonClick() {
+      // TODO implement
+   }
 
+   @FXML
+   private void onTwitterButtonClick() {
+      // TODO implement
+   }
+
+   @FXML
+   private void onCFFButtonClick() {
+      // TODO implement
+   }
+
+   @FXML
+   private void onRTSButtonClick() {
+      // TODO implement
+   }
+
+   @FXML
+   private void onWeatherButtonClick() {
+      // TODO implement
+   }
 }

@@ -4,15 +4,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HomeController">
    <left>
       <AnchorPane prefHeight="200.0" prefWidth="110.0" BorderPane.alignment="CENTER">
          <children>
@@ -20,26 +21,38 @@
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="4" style="-fx-background-color: #cccccc;">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0">
+                        <ImageView fx:id="cffButton" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#onCFFButtonClick" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets left="4.0" right="4.0" top="4.0" />
                            </VBox.margin>
-                        </Rectangle>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff2121" height="100.0" layoutX="10.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="100.0">
+                           <image>
+                              <Image url="@images/cff-logo.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="twitterButton" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#onTwitterButtonClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/twitter-logo.png" />
+                           </image>
                            <VBox.margin>
                               <Insets left="4.0" right="4.0" />
                            </VBox.margin>
-                        </Rectangle>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#22ff1f" height="100.0" layoutX="10.0" layoutY="120.0" stroke="BLACK" strokeType="INSIDE" width="100.0">
+                        </ImageView>
+                        <ImageView fx:id="weatherButton" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="118.0" onMouseClicked="#onWeatherButtonClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/open_weather-logo.jpg" />
+                           </image>
                            <VBox.margin>
                               <Insets left="4.0" right="4.0" />
                            </VBox.margin>
-                        </Rectangle>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b61fff" height="100.0" layoutX="10.0" layoutY="230.0" stroke="BLACK" strokeType="INSIDE" width="100.0">
+                        </ImageView>
+                        <ImageView fx:id="rtsButton" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="222.0" onMouseClicked="#onRTSButtonClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/rtslogo.png" />
+                           </image>
                            <VBox.margin>
                               <Insets left="4.0" right="4.0" />
                            </VBox.margin>
-                        </Rectangle>
+                        </ImageView>
                      </children>
                   </VBox>
                </content>
@@ -52,12 +65,12 @@
          <children>
             <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #888888;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="676.0" layoutY="4.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" text="R" textAlignment="CENTER">
+                  <Button fx:id="settingsButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="676.0" layoutY="4.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClick" prefHeight="20.0" prefWidth="20.0" text="R" textAlignment="CENTER">
                      <font>
                         <Font size="9.0" />
                      </font>
                   </Button>
-                  <ToggleSwitch layoutX="608.0" layoutY="6.0" />
+                  <ToggleSwitch fx:id="mode" layoutX="608.0" layoutY="6.0" onMouseClicked="#onThemeToggleClick" />
                   <Label layoutX="558.0" layoutY="8.0" text="Night Mode">
                      <font>
                         <Font name="System Bold" size="10.0" />
