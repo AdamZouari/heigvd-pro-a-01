@@ -6,16 +6,16 @@ import javafx.stage.Stage;
 
 public class Home extends Application {
 
-   public static void main(String[] args) {
-      launch(Home.class);
-   }
+    public static void main(String[] args) {
+        launch(Home.class);
+    }
 
-   @Override
-   public void start(Stage stage) throws Exception {
-      Parent root = FXMLLoader.load(this.getClass().getResource("/HomeView.fxml"));
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(this.getClass().getResource("/HomeView.fxml"));
 
-      stage.setScene(new Scene(root));
-      stage.setTitle("Home");
-      stage.show();
-   }
+        stage.setScene(new Scene(root));
+        stage.setTitle("Home");
+        stage.show();
+    }
 }
