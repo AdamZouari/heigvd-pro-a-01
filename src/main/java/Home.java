@@ -13,4 +13,12 @@ public class Home  {
    }
 
 
+    ServiceCFF cff = new ServiceCFF();
+    cff.connect();
+    System.out.println("Voici toutes les connections possibles entre Lausanne et Geneve:");
+    System.out.println(cff.getTrainsForPath("Lausanne","Geneve"));
+    cff.disconnect();
+
+
+
 }
