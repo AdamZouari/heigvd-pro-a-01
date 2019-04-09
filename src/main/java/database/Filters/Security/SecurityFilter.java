@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +24,7 @@ public class SecurityFilter {
 
     // Source : https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
 
-    private static final Pattern VALID_PASSWORD_POLICY = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",Pattern.CASE_INSENSITIVE);
+    private static final Pattern VALID_PASSWORD_POLICY = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$",Pattern.CASE_INSENSITIVE);
 
 
     private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -60,7 +61,7 @@ public class SecurityFilter {
     public void checkHash(){
 
     }
-
+    // TODO compare hash with the password stored in DATABASE (server side)
     public boolean checkIfPasswordsHashesMatch(String pw) throws NoSuchAlgorithmException {
         return hashPassword(passwordTest).equals(hashPassword(pw));
     }
@@ -82,8 +83,7 @@ public class SecurityFilter {
     public static boolean isAgoodPassword(String password){
 
         Matcher matcher = VALID_PASSWORD_POLICY.matcher(password);
-        return (password.length() > 7
-                && matcher.find());
+        return matcher.find();
     }
 
     // id of 256 bits (32 characters)
@@ -91,7 +91,14 @@ public class SecurityFilter {
     public static void main(String[] args){
 
         String randomTest = generateRandomString(32);
+        Scanner scanner = new Scanner(System.in);
 
+        String pass = "heeeeo123$E";
+        String pass2 = scanner.nextLine();
         System.out.println(randomTest);
+        System.out.println("My password is:" + pass2);
+        System.out.println("Is this password sufficient ? -> " + isAgoodPassword(pass2));
+
+
     }
 }
