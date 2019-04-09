@@ -1,19 +1,24 @@
+package service;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import jdk.nashorn.internal.parser.JSONParser;
+// Here we do not need an API key nor a OAuth token, the CFF API is public
+// the only limit he have is that the number of requests per day and per client (ip adress) is limited to 1000 requests
+public class ServiceCFF extends Service {
 
-public class ServiceMeteo extends Service{
 
-    private final String urlService = "http://api.openweathermap.org/data/2.5/";
-    private final String apiKey = "&APPID=d13a3ef0bca22b7575956470654280e4"; // Don't let it here
+    /** Nous voulons pouvoir récupérer les horaires pour un itinéraire donné.
+     Nous voulons également envoyer une notification sur Telegram en cas de perturbation sur le trajet.
+     **/
+
+    private final String urlService = "http://transport.opendata.ch/v1/connections";
     HttpURLConnection connection;
 
-    public ServiceMeteo() {
+    public ServiceCFF() {
 
     }
 
@@ -29,15 +34,25 @@ public class ServiceMeteo extends Service{
         }
     }
 
+    //Nous voulons pouvoir récupérer les horaires pour un itinéraire donné.
 
-    public String getWeather(String city) {
-        try {
+    // cf: https://transport.opendata.ch/docs.html#connections
+
+    public String getTrainsForPath(String fromCity,String toCity){
+        // here we limit the accepted city values to city names otherwise asks to "saisir" again the city names
+        try{
             // Create url to get the request
-            String urlRequest = urlService + "weather?q=" + city + apiKey;
+
+            /**We need the format "Lausanne" or "Geneve" for cities**/
+            String urlRequest = urlService + "?from=" + fromCity + "&to=" + toCity;
+            // to update : toCity.toLowerCase().charAt(0).toUppercase()
             URL url = new URL(urlRequest);
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+
+            fromCity = fromCity.toLowerCase();
+            toCity = toCity.toLowerCase();
 
             int statusCode = connection.getResponseCode();
             System.out.println(statusCode);
@@ -54,9 +69,10 @@ public class ServiceMeteo extends Service{
             System.err.println(ex.getMessage());
         }
         return null;
+
     }
 
-
+    @Override
     public void disconnect() {
         try {
             URL url = new URL(urlService);
@@ -66,6 +82,4 @@ public class ServiceMeteo extends Service{
             System.err.println(e.getMessage());
         }
     }
-
-
 }

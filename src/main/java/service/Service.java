@@ -1,3 +1,5 @@
+package service;
+
 public abstract class Service {
 
     private String url;
