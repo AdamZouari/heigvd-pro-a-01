@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="260.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddRuleController">
+    <children>
+        <AnchorPane>
+            <children>
+                <Label text="Action" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0" />
+                <ChoiceBox prefWidth="250" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane>
+            <children>
+                <Label text="Condition" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0" />
+                <ChoiceBox prefWidth="250" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane>
+            <children>
+                <CheckBox mnemonicParsing="false" text="Ajout d'un texte" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="95.0" fx:id="addText" onMouseClicked="#onAddTextButtonClick" />
+            </children>
+        </AnchorPane>
+        <AnchorPane>
+            <children>
+                <TextArea AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="135.0" prefHeight="100.0" prefWidth="315.0" fx:id="additionalText" editable="false" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
