@@ -1,3 +1,4 @@
+import Utils.TelegramNotification;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import service.ServiceCFF;
@@ -18,6 +19,10 @@ public class Home  {
       System.out.println("Voici toutes les connections possibles entre Lausanne et Geneve:");
       System.out.println(cff.getTrainsForPath("Lausanne","Geneve"));
       cff.disconnect();
+
+
+      TelegramNotification notification = new TelegramNotification();
+      notification.sendHelloWorld(TelegramNotification.PRO_CHAT_ID);
    }
 
 

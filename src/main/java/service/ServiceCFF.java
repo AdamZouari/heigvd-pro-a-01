@@ -72,6 +72,10 @@ public class ServiceCFF extends Service {
 
     }
 
+    public void NotifyToTelegram(){
+
+    }
+
     @Override
     public void disconnect() {
         try {
