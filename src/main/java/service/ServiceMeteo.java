@@ -1,4 +1,4 @@
-package service;
+package main.java.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.net.URL;
 
 import jdk.nashorn.internal.parser.JSONParser;
 
-public class ServiceMeteo extends Service{
+public class ServiceMeteo extends Service {
 
     private final String urlService = "http://api.openweathermap.org/data/2.5/";
     private final String apiKey = "&APPID=d13a3ef0bca22b7575956470654280e4"; // Don't let it here

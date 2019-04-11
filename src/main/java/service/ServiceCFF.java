@@ -1,10 +1,11 @@
-package service;
+package main.java.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 
 // Here we do not need an API key nor a OAuth token, the CFF API is public
 // the only limit he have is that the number of requests per day and per client (ip adress) is limited to 1000 requests
