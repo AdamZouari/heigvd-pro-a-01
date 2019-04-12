@@ -1,6 +1,15 @@
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 
-public class HomeController {
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class HomeController implements Initializable {
 
     private boolean nightMode = false;
 
@@ -42,5 +51,22 @@ public class HomeController {
     @FXML
     private void onWeatherButtonClick() {
         // TODO implement
+    }
+
+    @FXML
+    private AnchorPane contentPane;
+
+    private Parent loadFXML(String name) {
+        try {
+            return FXMLLoader.load(getClass().getResource(name));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @FXML
+    public void initialize(URL location, ResourceBundle resources) {
+        contentPane.getChildren().add(loadFXML("AddRuleView.fxml"));
     }
 }
