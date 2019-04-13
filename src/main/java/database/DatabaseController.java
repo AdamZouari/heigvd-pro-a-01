@@ -1,16 +1,26 @@
-package database;
+package main.java.database;
 
-import database.Entities.User;
+import main.java.database.Entities.User;
 
 import java.sql.*;
 
+// TODO Return objects
 public class DatabaseController {
 
+    private static DatabaseController controller;
     private static Connection mConnection;
-    private static String url = "jdbc:mysql://pro2019.c0owyd1iitne.eu-west-3.rds.amazonaws.com:3306/pro2019?user=pro2019&password=Hooch$fizz$onion$emits$3Cede$Bloat";
-
+    private static String url;
+    private static int id = 0;
     //QueryRunner run = new QueryRunner(dataSource);
 
+
+    private DatabaseController(){
+
+        // mysql -u pro2019 -p -h pro2019.c0owyd1iitne.eu-west-3.rds.amazonaws.com to access to the db
+        DatabaseController.url = "jdbc:mysql://pro2019.c0owyd1iitne.eu-west-3.rds.amazonaws.com:3306/pro2019?user=pro2019&password=Hooch$fizz$onion$emits$3Cede$Bloat";
+        DatabaseController.connexion();
+
+    }
 
     public static void connexion() {
         try {
@@ -21,6 +31,13 @@ public class DatabaseController {
         }
     }
 
+    public static DatabaseController getController(){
+
+        if(controller == null)
+            controller = new DatabaseController();
+        return controller;
+
+    }
     /*public static void printResult(ResultSet result) throws SQLException {
 
         ResultSetMetaData rsmd = result.getMetaData();
@@ -36,7 +53,7 @@ public class DatabaseController {
         }
     }*/
 
-    public static ResultSet search() {
+    public ResultSet search() {
 
         Statement statement = null;
         ResultSet result = null;
@@ -78,7 +95,7 @@ public class DatabaseController {
 
 
     // TODO : Check if exist
-    public static void addUser(int id, String username, String password, String rules, User.LANGUE langue) {
+    public void addUser(String username, String password, String rules, User.LANGUE langue) {
 
 
         PreparedStatement preparedStatement = null;
@@ -89,7 +106,7 @@ public class DatabaseController {
 
 
             preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setInt(1, id); // TODO replace it by a random id
+            preparedStatement.setInt(1, id++); // TODO replace it by a random id
             preparedStatement.setString(2, username);
             preparedStatement.setString(3, password);
             preparedStatement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
@@ -106,7 +123,7 @@ public class DatabaseController {
 
     }
 
-    public static void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
+    public void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
 
 
         PreparedStatement preparedStatement = null;
@@ -134,7 +151,7 @@ public class DatabaseController {
 
     }
 
-    public static void updatePassword(int id, String password) {
+    public void updatePassword(int id, String password) {
 
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET password = ?  WHERE id = ? ";
@@ -158,7 +175,7 @@ public class DatabaseController {
 
     }
 
-    public static void specifyRules(int id, String rules) {
+    public void specifyRules(int id, String rules) {
         //JSONWriter jsonReader = Json.createReader(...);
         //JSONWriter object = jsonReader.readObject();
 

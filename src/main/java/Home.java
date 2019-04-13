@@ -1,5 +1,7 @@
-import database.DatabaseController;
-import database.Entities.User;
+package main.java;
+
+import main.java.database.DatabaseController;
+import main.java.database.Entities.User;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -9,23 +11,21 @@ public class Home extends Application {
 
    public static void main(String[] args) throws SQLException {
 
-      DatabaseController db = new  DatabaseController();
-      db.connexion();
+      DatabaseController db = DatabaseController.getController();
+
+      System.out.println(" ------ Test addUser() ----- ");
+      db.addUser("Guillaume","guitch",null, User.LANGUE.FR);
+      db.addUser("Walid","zedsdead",null, User.LANGUE.EN);
 
       System.out.println("------ Test getUserById() ------");
       db.getUserById(0);
 
-      System.out.println(" ------ Test addUser() ----- ");
-      db.addUser(1,"Guillaume","boloss",null, User.LANGUE.FR);
-
-
-
       System.out.println("------ Test updateUser() ------ ");
-      db.updateUser(1,"Walid","123456", null , User.LANGUE.EN);
+      db.updateUser(1,"Valid","zedsdead", null , User.LANGUE.EN);
 
 
       System.out.println("------ Test updatePassword() ------");
-      db.updatePassword(1,"qwertz");
+      db.updatePassword(0,"guitch94");
 
    }
 

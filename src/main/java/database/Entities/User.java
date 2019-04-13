@@ -1,4 +1,4 @@
-package database.Entities;
+package main.java.database.Entities;
 
 
 public class User {
