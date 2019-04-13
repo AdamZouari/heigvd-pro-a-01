@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="260.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddRuleController">
+<AnchorPane prefHeight="260.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddRuleController">
     <children>
         <AnchorPane>
             <children>

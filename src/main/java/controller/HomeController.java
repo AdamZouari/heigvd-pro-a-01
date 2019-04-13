@@ -1,3 +1,5 @@
+package controller;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +13,8 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
 
     private boolean nightMode = false;
+
+    private String ressourcesPath = "../";
 
     @FXML
     private void onHomeButtonClick() {
@@ -66,6 +70,6 @@ public class HomeController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        contentPane.getChildren().add(loadFXML("AddRuleView.fxml"));
+        contentPane.getChildren().add(loadFXML(ressourcesPath + "AddRuleView.fxml"));
     }
 }
