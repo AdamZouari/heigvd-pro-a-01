@@ -14,6 +14,9 @@ public class HomeController implements Initializable {
 
     private boolean nightMode = false;
 
+    @FXML
+    private AnchorPane contentPane;
+
     private String ressourcesPath = "../";
 
     @FXML
@@ -33,7 +36,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private void onSettingsButtonClick() {
-        // TODO implement
+        contentPane.getChildren().add(loadFXML(ressourcesPath + "SettingsView.fxml"));
     }
 
     @FXML
@@ -55,9 +58,6 @@ public class HomeController implements Initializable {
     private void onWeatherButtonClick() {
         // TODO implement
     }
-
-    @FXML
-    private AnchorPane contentPane;
 
     private Parent loadFXML(String name) {
         try {
