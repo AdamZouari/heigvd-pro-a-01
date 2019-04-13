@@ -1,6 +1,6 @@
-package main.java.database;
+package database;
 
-import main.java.database.Entities.User;
+import database.Entities.User;
 
 import java.sql.*;
 
