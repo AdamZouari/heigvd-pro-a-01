@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.ToggleSwitch?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+    <left>
+        <AnchorPane prefHeight="200.0" prefWidth="110.0" BorderPane.alignment="CENTER">
+            <children>
+                <ScrollPane fitToHeight="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="4" style="-fx-background-color: #cccccc;">
+                            <children>
+                                <ImageView fx:id="homeButton" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#onHomeButtonClick" pickOnBounds="true" preserveRatio="true">
+                                    <VBox.margin>
+                                        <Insets left="4.0" right="4.0" top="4.0" />
+                                    </VBox.margin>
+                           <image>
+                              <Image url="@images/home-logo.png" />
+                           </image>
+                                </ImageView>
+                        <ImageView fx:id="rulesButton" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="430.0" onMouseClicked="#onRulesListButtonClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/rules-logo.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets left="4.0" right="4.0" />
+                           </VBox.margin>
+                        </ImageView>
+                                <ImageView fx:id="cffButton" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#onCFFButtonClick" pickOnBounds="true" preserveRatio="true">
+                                    <VBox.margin>
+                                        <Insets left="4.0" right="4.0" />
+                                    </VBox.margin>
+                                    <image>
+                                        <Image url="@images/cff-logo.jpg" />
+                                    </image>
+                                </ImageView>
+                                <ImageView fx:id="twitterButton" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#onTwitterButtonClick" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/twitter-logo.png" />
+                                    </image>
+                                    <VBox.margin>
+                                        <Insets left="4.0" right="4.0" />
+                                    </VBox.margin>
+                                </ImageView>
+                                <ImageView fx:id="weatherButton" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="118.0" onMouseClicked="#onWeatherButtonClick" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/open_weather-logo.jpg" />
+                                    </image>
+                                    <VBox.margin>
+                                        <Insets left="4.0" right="4.0" />
+                                    </VBox.margin>
+                                </ImageView>
+                                <ImageView fx:id="rtsButton" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="222.0" onMouseClicked="#onRTSButtonClick" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/rtslogo.png" />
+                                    </image>
+                                    <VBox.margin>
+                                        <Insets left="4.0" right="4.0" />
+                                    </VBox.margin>
+                                </ImageView>
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </left>
+    <top>
+        <AnchorPane prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #888888;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Button fx:id="settingsButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="676.0" layoutY="4.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClick" prefHeight="20.0" prefWidth="20.0" text="S" textAlignment="CENTER">
+                            <font>
+                                <Font size="9.0" />
+                            </font>
+                        </Button>
+                        <ToggleSwitch fx:id="mode" layoutX="608.0" layoutY="6.0" onMouseClicked="#onThemeToggleClick" />
+                        <Label layoutX="558.0" layoutY="8.0" text="Night Mode">
+                            <font>
+                                <Font name="System Bold" size="10.0" />
+                            </font></Label>
+                    </children></Pane>
+            </children>
+        </AnchorPane>
+    </top>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <ScrollPane hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                        <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" />
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>
