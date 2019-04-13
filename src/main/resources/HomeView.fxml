@@ -81,7 +81,7 @@
             <children>
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #888888;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <Button fx:id="settingsButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="676.0" layoutY="4.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClick" prefHeight="20.0" prefWidth="20.0" text="R" textAlignment="CENTER">
+                        <Button fx:id="settingsButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="676.0" layoutY="4.0" minHeight="10.0" minWidth="10.0" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClick" prefHeight="20.0" prefWidth="20.0" text="S" textAlignment="CENTER">
                             <font>
                                 <Font size="9.0" />
                             </font>

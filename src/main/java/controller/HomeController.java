@@ -20,8 +20,13 @@ public class HomeController implements Initializable {
     private String ressourcesPath = "../";
 
     @FXML
+    public void initialize(URL location, ResourceBundle resources) {
+        contentPane.getChildren().add(loadFXML(ressourcesPath + "HomeFeedView.fxml"));
+    }
+
+    @FXML
     private void onHomeButtonClick() {
-        // TODO
+        changeContent("HomeFeedView.fxml");
     }
 
     @FXML
@@ -36,27 +41,27 @@ public class HomeController implements Initializable {
 
     @FXML
     private void onSettingsButtonClick() {
-        contentPane.getChildren().add(loadFXML(ressourcesPath + "SettingsView.fxml"));
+        changeContent("SettingsView.fxml");
     }
 
     @FXML
     private void onTwitterButtonClick() {
-        // TODO implement
+        changeContent("AddRuleView.fxml");
     }
 
     @FXML
     private void onCFFButtonClick() {
-        // TODO implement
+        changeContent("AddRuleView.fxml");
     }
 
     @FXML
     private void onRTSButtonClick() {
-        // TODO implement
+        changeContent("AddRuleView.fxml");
     }
 
     @FXML
     private void onWeatherButtonClick() {
-        // TODO implement
+        changeContent("AddRuleView.fxml");
     }
 
     private Parent loadFXML(String name) {
@@ -68,8 +73,10 @@ public class HomeController implements Initializable {
         return null;
     }
 
-    @FXML
-    public void initialize(URL location, ResourceBundle resources) {
-        contentPane.getChildren().add(loadFXML(ressourcesPath + "AddRuleView.fxml"));
+    private void changeContent(String viewName) {
+
+        // TODO check if view is already loaded
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(loadFXML(ressourcesPath + viewName));
     }
 }
