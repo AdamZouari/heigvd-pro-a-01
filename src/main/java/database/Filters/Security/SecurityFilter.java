@@ -1,4 +1,4 @@
-package main.java.database.Filters.Security;
+package database.Filters.Security;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
