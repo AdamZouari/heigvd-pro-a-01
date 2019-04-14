@@ -15,7 +15,7 @@ public class Home extends Application {
         Parent root = FXMLLoader.load(this.getClass().getResource("/HomeView.fxml"));
 
         stage.setScene(new Scene(root));
-        stage.setTitle("Home");
+        stage.setTitle("AservA");
         stage.show();
     }
 }
