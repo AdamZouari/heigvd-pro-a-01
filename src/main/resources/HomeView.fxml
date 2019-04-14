@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -98,11 +99,15 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <ScrollPane hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <content>
-                        <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" />
-                    </content>
-                </ScrollPane>
+            <TitledPane fx:id="contentTitle" collapsible="false" text="Home" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                      <ScrollPane hbarPolicy="NEVER">
+                          <content>
+                              <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" />
+                          </content>
+                      </ScrollPane>
+               </content>
+            </TitledPane>
             </children>
         </AnchorPane>
     </center>

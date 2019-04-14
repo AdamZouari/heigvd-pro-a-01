@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AddRuleController implements Initializable {
+
    @FXML
    private CheckBox addText;
 
@@ -17,14 +18,14 @@ public class AddRuleController implements Initializable {
 
    @FXML
    private void onAddTextButtonClick(){
-      if(addText.isSelected())
+      if(addText.isSelected()) {
          additionalText.setEditable(true);
-      else
+      } else {
          additionalText.setEditable(false);
+      }
    }
 
    @FXML
    public void initialize(URL location, ResourceBundle resources) {
-
    }
 }
