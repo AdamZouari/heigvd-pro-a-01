@@ -1,6 +1,10 @@
 package service;
 
+import Utils.JsonParserCFF;
+import org.json.simple.parser.ParseException;
+
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -85,6 +89,18 @@ public class ServiceCFF extends Service {
 
     public void NotifyToTelegram(){
 
+    }
+
+    public void testIfFunctionnal() throws FileNotFoundException, ParseException {
+        ServiceCFF cff = new ServiceCFF();
+        cff.connect();
+        System.out.println("Voici toutes les connexions possibles entre Lausanne et Geneve:");
+        String connectionsLtoG = cff.getTrainsForPath("Lausanne","Geneve","2012-03-25","17:30");
+        System.out.println(connectionsLtoG);
+
+        JsonParserCFF.parseCFF(connectionsLtoG);
+
+        cff.disconnect();
     }
 
     @Override
