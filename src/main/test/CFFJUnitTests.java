@@ -1,11 +1,12 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import Utils.JsonParserCFF;
+import utils.JsonParserCFF;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import service.ServiceCFF;
 
+
 import java.io.FileNotFoundException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CFFJUnitTests {
 

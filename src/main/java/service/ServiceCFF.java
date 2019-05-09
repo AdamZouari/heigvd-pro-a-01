@@ -1,6 +1,6 @@
 package service;
 
-import Utils.JsonParserCFF;
+import utils.JsonParserCFF;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 
 
 // Here we do not need an API key nor a OAuth token, the CFF API is public

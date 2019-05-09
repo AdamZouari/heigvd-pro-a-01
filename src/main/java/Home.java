@@ -3,11 +3,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.json.simple.parser.ParseException;
-import service.ServiceMeteo;
-import service.ServiceCFF;
-import Utils.*;
-
 
 
 public class Home extends Application {
