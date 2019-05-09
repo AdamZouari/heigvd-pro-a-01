@@ -1,10 +1,11 @@
-package main.java.service;
+package service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 
 
 // Here we do not need an API key nor a OAuth token, the CFF API is public
@@ -39,13 +40,22 @@ public class ServiceCFF extends Service {
 
     // cf: https://transport.opendata.ch/docs.html#connections
 
-    public String getTrainsForPath(String fromCity,String toCity){
+    /**
+     * Function that allows to obtain connections between to cities
+     * It returns a number of connection and
+     * We get the time of departure and the "quai", and the time of arrival and the "quai"
+     * By default we chose limit those connections to 2
+     * ex: if someone wants to go from Lausanne to Geneva, the two first connections will be presented to him
+     * **/
+    //
+    public String getTrainsForPath(String fromCity, String toCity, String date, String time){
         // here we limit the accepted city values to city names otherwise asks to "saisir" again the city names
         try{
             // Create url to get the request
 
             /**We need the format "Lausanne" or "Geneve" for cities**/
-            String urlRequest = urlService + "?from=" + fromCity + "&to=" + toCity;
+            String urlRequest = urlService + "?from=" + fromCity + "&to=" + toCity + "&date=" + date
+                                + "&time=" + time + "&limit=2" + "&direct=1";
             // to update : toCity.toLowerCase().charAt(0).toUppercase()
             URL url = new URL(urlRequest);
 
