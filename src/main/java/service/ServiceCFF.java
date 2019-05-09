@@ -17,7 +17,8 @@ public class ServiceCFF extends Service {
 
 
     /** Nous voulons pouvoir récupérer les horaires pour un itinéraire donné.
-     Nous voulons également envoyer une notification sur Telegram en cas de perturbation sur le trajet.
+     * Nous voulons également envoyer une notification sur Telegram en cas de perturbation sur le trajet.
+     *
      **/
 
     private final String urlService = "http://transport.opendata.ch/v1/connections";
@@ -58,7 +59,7 @@ public class ServiceCFF extends Service {
 
             /**We need the format "Lausanne" or "Geneve" for cities**/
             String urlRequest = urlService + "?from=" + fromCity + "&to=" + toCity + "&date=" + date
-                                + "&time=" + time + "&limit=2" + "&direct=1";
+                                + "&time=" + time + "&limit=2" + "&direct=1&transportations[]=train";
             // to update : toCity.toLowerCase().charAt(0).toUppercase()
             URL url = new URL(urlRequest);
 

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CFFJUnitTests {
 
-    ServiceCFF cff = new ServiceCFF();
+
     @Test
     public void connnectionTOAPIisOK(){
 
@@ -19,14 +19,19 @@ public class CFFJUnitTests {
 
     @Test
     public void testCFFConnectionsBetweenTwoCities() throws FileNotFoundException, ParseException {
-        assertEquals(2,1+1);
-
+        ServiceCFF cff = new ServiceCFF();
         System.out.println("Voici toutes les connexions possibles entre Lausanne et Geneve:");
-        String connectionsLtoG = cff.getTrainsForPath("Lausanne","Geneve","2012-03-25","17:30");
+        String connectionsLtoG = cff.getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
         System.out.println(connectionsLtoG);
 
-        JsonParserCFF.parseCFF(connectionsLtoG);
+        System.out.println(JsonParserCFF.parseCFF(connectionsLtoG));
 
         cff.disconnect();
+    }
+
+
+    @Test
+    public void testCFFModificationOfTrain() throws FileNotFoundException, ParseException {
+
     }
 }
