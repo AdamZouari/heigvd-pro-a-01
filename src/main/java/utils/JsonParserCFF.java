@@ -1,6 +1,8 @@
 package utils;
 
 import java.io.FileNotFoundException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Iterator;
 
 import com.mysql.cj.log.NullLogger;
@@ -47,19 +49,24 @@ public class JsonParserCFF {
             JSONObject to = (JSONObject) nthConnection.get("to");
 
             // we have the departureTimestamp
-            result.append("Departure Time" + from.get("departureTimestamp"));
+            result.append("Departure Time :" + from.get("departure") + "\n");
             // get departure timestamps
-            result.append("Quai depart n° " + from.get("platform"));
+            result.append("Quai depart n° " + from.get("platform") + "\n");
 
-            result.append("Arrival Time" + to.get("arrivalTimestamp"));
-
-
-            result.append("Quai arrival n° " + to.get("platform"));
+            result.append("Arrival Time :" + to.get("arrival") + "\n");
 
 
-            result.append("Duration" + nthConnection.get("duration"));
+            result.append("Quai arrival n° :" + to.get("platform") + "\n");
+
+
+            result.append("Duration" + nthConnection.get("duration") + "\n");
             result.append("\n");
         }
         return result.toString();
+    }
+
+    public static String timestampToDate(Long ts){
+        Date date= new Timestamp(ts);
+        return date.toString();
     }
 }

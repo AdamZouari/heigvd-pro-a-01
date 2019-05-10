@@ -30,7 +30,7 @@ public class TelegramNotification extends TelegramLongPollingBot {
 
     private static String URL = "https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6jFEepAGRMITfhv2ok/getUpdates";
 
-    private static String PRO_CHAT_ID = "-397491039";
+    private static long PRO_CHAT_ID = (long)-397491039;
 
     HttpURLConnection connection;
 
@@ -78,26 +78,22 @@ public class TelegramNotification extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
-        String command = update.getMessage().getText();
-        //System.out.println(update.getMessage().getText());
-
+        String[] command = update.getMessage().getText().split(" ");
         SendMessage sendMessage = new SendMessage();
 
-        if(command.equals("connections")){
-            System.out.println("arg 1" + update.getMessage().getText());
-            System.out.println("arg 2" + update.getMessage().getText());
-            String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
-            try {
-                JsonParserCFF.parseCFF(cff);
-                sendMessage.setText(update.getMessage().getFrom().getFirstName());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if(command[0].equals("/connections")){
+            // departure city
+            String arg1 = command[1];
+            // arrival city
+            String arg2 = command[2];
+
+            sendMessage.setText(getCff(arg1,arg2));
         }
-
-
+        else {
+            sendMessage.setText("Wrong");
+        }
         // specify the chat ID where to send back the message
-        sendMessage.setChatId(update.getMessage().getChatId());
+        sendMessage.setChatId(PRO_CHAT_ID);
 
         // send the message back to the user calling for the ASAPP BOT
         try {
@@ -116,4 +112,20 @@ public class TelegramNotification extends TelegramLongPollingBot {
     public String getBotToken() {
         return API_TOKEN;
     }
+
+    public String getCff(String arg1,String arg2){
+
+        ServiceCFF cff = new ServiceCFF();
+        cff.connect();
+        String trains = cff.getTrainsForPath(arg1,arg2,"2019-05-09","17:30");
+        String result = "";
+        try {
+            result = JsonParserCFF.parseCFF(trains);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
