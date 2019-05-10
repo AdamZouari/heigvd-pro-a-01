@@ -66,5 +66,5 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 .idea
-PRO-A01.iml
+*.iml
 target
