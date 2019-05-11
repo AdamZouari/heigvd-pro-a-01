@@ -22,11 +22,7 @@ public class Home extends Application {
         stage.setTitle("ASAPP");
         stage.show();
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent event) {
-                Platform.exit();
-            }
-        });
+        stage.setOnCloseRequest(event -> Platform.exit());
     }
 
 }
