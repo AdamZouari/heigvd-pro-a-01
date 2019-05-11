@@ -65,6 +65,10 @@ public class Server {
                     LOG.info("Reading until client sends BYE or closes the connection...");
                     //TODO CHANGER COMPORTEMENT, RENVOIE SEULEMENT CE QUE LE CLIENT LUI ENVOI
                     while ((shouldRun) && (line = in.readLine()) != null) {
+                        LOG.info(clientSocket.getRemoteSocketAddress().toString().substring(1) + " > " + line);
+                        String[] items = line.split(" ");
+
+
                         if (line.equalsIgnoreCase("bye")) {
                             shouldRun = false;
                         }
