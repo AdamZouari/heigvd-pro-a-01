@@ -16,5 +16,7 @@
     <modules>
         <module>PRO-client</module>
         <module>PRO-server</module>
+        <module>PRO-common</module>
+
     </modules>
 </project>
