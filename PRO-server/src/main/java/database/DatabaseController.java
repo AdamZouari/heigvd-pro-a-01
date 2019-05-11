@@ -14,26 +14,33 @@ public class DatabaseController {
     //QueryRunner run = new QueryRunner(dataSource);
 
 
-    private DatabaseController(){
+    private DatabaseController() {
 
         // mysql -u pro2019 -p -h pro2019.c0owyd1iitne.eu-west-3.rds.amazonaws.com to access to the db
         DatabaseController.url = "jdbc:mysql://pro2019.c0owyd1iitne.eu-west-3.rds.amazonaws.com:3306/pro2019?user=pro2019&password=Hooch$fizz$onion$emits$3Cede$Bloat";
-        DatabaseController.connexion();
+        DatabaseController.connection();
 
     }
 
-    public static void connexion() {
+    public static void connection() {
         try {
             mConnection = DriverManager.getConnection(url);
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static DatabaseController getController(){
+    public static void disconnect() {
+        try {
+            mConnection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-        if(controller == null)
+    public static DatabaseController getController() {
+
+        if (controller == null)
             controller = new DatabaseController();
         return controller;
 
@@ -95,49 +102,43 @@ public class DatabaseController {
 
 
     // TODO : Check if exist
-    public void addUser(String username, String password, String rules, User.LANGUE langue) {
+    public void addUser(String username, String telegramUsername, String password, String rules, User.LANGUE langue) throws SQLException {
 
 
         PreparedStatement preparedStatement = null;
-        String sql = " INSERT INTO User(id, username, password, rules, langue)" +
-                " VALUES (?,?,?,?,?) ;";
-
-        try {
+        String sql = " INSERT INTO User(id, username, telegramUsername,password, rules, langue)" +
+                " VALUES (?,?,?,?,?,?) ;";
 
 
-            preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setInt(1, id++); // TODO replace it by a random id
-            preparedStatement.setString(2, username);
-            preparedStatement.setString(3, password);
-            preparedStatement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
-            preparedStatement.setString(5, langue.name());
+        preparedStatement = mConnection.prepareStatement(sql);
+        preparedStatement.setInt(1, id++); // TODO replace it by a random id
+        preparedStatement.setString(2, username);
+        preparedStatement.setString(3, telegramUsername);
+        preparedStatement.setString(4, password);
+        preparedStatement.setString(5, String.valueOf(rules));                 // TODO think of a method to pass a JSON
+        preparedStatement.setString(6, langue.name());
 
-            preparedStatement.executeUpdate();
+        preparedStatement.executeUpdate();
 
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("User" + username + " added !");
 
     }
 
-    public void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
+    public void updateUser(int id, String username, String telegramUsername, String password, String rules, User.LANGUE langue) {
 
 
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE User SET username = ? , password = ? , rules = ? , langue = ? " +
+        String sql = "UPDATE User SET username = ? , telegramUsername = ? , password = ? , rules = ? , langue = ? " +
                 " WHERE id = ? ";
 
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, rules);
-            preparedStatement.setString(4, langue.name());
-            preparedStatement.setInt(5, id);
+            preparedStatement.setString(2, telegramUsername);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, rules);
+            preparedStatement.setString(5, langue.name());
+            preparedStatement.setInt(6, id);
 
 
             preparedStatement.executeUpdate();
@@ -147,7 +148,7 @@ public class DatabaseController {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("User " + username +" updated !");
+        System.out.println("User " + username + " updated !");
 
     }
 
