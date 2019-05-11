@@ -21,6 +21,26 @@ public class SettingsController implements Initializable {
     private FlowPane passwordChangePane;
 
     @FXML
+    private TextField telegramTextField;
+
+    @FXML
+    private Button saveTelegramButton;
+
+    @FXML
+    private void onEditTelegramButtonClick() {
+        saveTelegramButton.setVisible(true);
+        telegramTextField.setEditable(true);
+    }
+
+    @FXML
+    private void onSaveTelegramButtonClick() {
+        // TODO check input
+        // change name in db etc...
+        telegramTextField.setEditable(false);
+        saveTelegramButton.setVisible(false);
+    }
+
+    @FXML
     private void onEditNameButtonClick() {
         saveNameButton.setVisible(true);
         nameTextField.setEditable(true);

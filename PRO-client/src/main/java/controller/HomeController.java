@@ -39,7 +39,7 @@ public class HomeController implements Initializable {
     @FXML
     private void onRulesListButtonClick() {
         setContentTitle("Active rules");
-        // TODO
+        changeContent("RulesView.fxml");
     }
 
     @FXML
@@ -56,13 +56,13 @@ public class HomeController implements Initializable {
     @FXML
     private void onTwitterButtonClick() {
         setContentTitle("Twitter");
-        changeContent("AddRuleView.fxml");
+        changeContent("TwitterServiceView.fxml");
     }
 
     @FXML
     private void onCFFButtonClick() {
         setContentTitle("CFF");
-        changeContent("AddRuleView.fxml");
+        changeContent("CFFServiceView.fxml");
     }
 
     @FXML
@@ -74,7 +74,7 @@ public class HomeController implements Initializable {
     @FXML
     private void onWeatherButtonClick() {
         setContentTitle("Weather");
-        changeContent("AddRuleView.fxml");
+        changeContent("WeatherServiceView.fxml");
     }
 
     private Parent loadFXML(String name) {

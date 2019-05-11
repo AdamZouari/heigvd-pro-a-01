@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.RegisterController" prefHeight="230.0" prefWidth="300.0">
+    <children>
+        <FlowPane layoutX="25.0" layoutY="15.0" orientation="VERTICAL" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <FlowPane hgap="10.0">
+                    <children>
+                        <Label text="Username">
+                            <FlowPane.margin>
+                                <Insets right="85.0" />
+                            </FlowPane.margin>
+                        </Label>
+                        <TextField fx:id="username" prefWidth="180">
+                            <FlowPane.margin>
+                                <Insets bottom="10.0" />
+                            </FlowPane.margin>
+                        </TextField>
+                    </children>
+                </FlowPane>
+                <FlowPane hgap="10.0">
+                    <children>
+                        <Label text="Password">
+                            <FlowPane.margin>
+                                <Insets right="90.0" />
+                            </FlowPane.margin>
+                        </Label>
+                        <PasswordField fx:id="password" prefWidth="180">
+                            <FlowPane.margin>
+                                <Insets bottom="10.0" />
+                            </FlowPane.margin>
+                        </PasswordField>
+                    </children>
+                </FlowPane>
+                <FlowPane hgap="10.0">
+                    <children>
+                        <Label text="Confirm your password">
+                            <FlowPane.margin>
+                                <Insets right="15.0" />
+                            </FlowPane.margin>
+                        </Label>
+                        <PasswordField fx:id="passwordConfirmed" prefWidth="180">
+                            <FlowPane.margin>
+                                <Insets bottom="10.0" />
+                            </FlowPane.margin>
+                        </PasswordField>
+                    </children>
+                </FlowPane>
+                <FlowPane hgap="10.0">
+                    <children>
+                        <Label text="Telegram username">
+                            <FlowPane.margin>
+                                <Insets right="35.0" />
+                            </FlowPane.margin>
+                        </Label>
+                        <TextField fx:id="telegramUsername" prefWidth="180">
+                            <FlowPane.margin>
+                                <Insets bottom="10.0" />
+                            </FlowPane.margin>
+                        </TextField>
+                    </children>
+                </FlowPane>
+                <Button mnemonicParsing="false" text="Register" onMouseClicked="#onRegisterClick">
+                    <FlowPane.margin>
+                        <Insets left="270.0" />
+                    </FlowPane.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets left="10.0" top="10.0" />
+            </padding>
+        </FlowPane>
+    </children>
+</AnchorPane>
