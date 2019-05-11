@@ -11,8 +11,8 @@ import java.util.ResourceBundle;
 
 
 public class Home extends Application {
-
     public static void main(String[] args) {
+
         launch(Home.class);
     }
 
@@ -21,7 +21,7 @@ public class Home extends Application {
         try {
 //            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
             FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
-            fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", new Locale("fr", "FR")));
+            fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", new Locale("en", "EN")));
 
             Parent root = fxmlLoader.load();
 

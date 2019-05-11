@@ -5,11 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -17,6 +20,9 @@ public class LoginController implements Initializable {
 
    @FXML
    private Label usernameLabel;
+
+   @FXML
+   private ChoiceBox languageChoice;
 
    @FXML
    private void onSignUpClick() {
@@ -37,8 +43,23 @@ public class LoginController implements Initializable {
 
    }
 
+   @FXML
+   private void changeLanguage() {
+      Locale locale;
+
+      if (languageChoice.getSelectionModel().getSelectedItem().equals("English"))
+         locale = new Locale("en", "EN");
+      else
+         locale = new Locale("fr", "FR");
+
+      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
+      fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", locale));
+
+   }
+
    @Override
    public void initialize(URL location, ResourceBundle resources) {
+      languageChoice.getSelectionModel().selectFirst();
       bundle = resources;
 //      usernameLabel.setText(bundle.getString("username"));
    }
