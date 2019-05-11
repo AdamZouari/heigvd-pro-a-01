@@ -3,7 +3,7 @@ package exceptions;
 import protocol.ExceptionCodes;
 
 /**
- * This class represent an Exception of the GGStore Application
+ * This class represent an Exception of the ASSAP Application
  */
 public class CustomException extends Exception {
 
