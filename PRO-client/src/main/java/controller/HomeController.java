@@ -23,11 +23,11 @@ public class HomeController implements Initializable {
     @FXML
     private TitledPane contentTitle;
 
-    private String ressourcesPath = "../";
+    private String resourcesPath = "/";
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        contentPane.getChildren().add(loadFXML(ressourcesPath + "HomeFeedView.fxml"));
+        contentPane.getChildren().add(loadFXML(resourcesPath + "HomeFeedView.fxml"));
     }
 
     @FXML
@@ -56,25 +56,25 @@ public class HomeController implements Initializable {
     @FXML
     private void onTwitterButtonClick() {
         setContentTitle("Twitter");
-        changeContent("TwitterServiceView.fxml");
+        changeContent("APIRuleView.fxml", "Twitter");
     }
 
     @FXML
     private void onCFFButtonClick() {
         setContentTitle("CFF");
-        changeContent("CFFServiceView.fxml");
+        changeContent("APIRuleView.fxml", "CFF");
     }
 
     @FXML
     private void onRTSButtonClick() {
         setContentTitle("RTS");
-        changeContent("AddRuleView.fxml");
+        changeContent("APIRuleView.fxml", "RTS");
     }
 
     @FXML
     private void onWeatherButtonClick() {
         setContentTitle("Weather");
-        changeContent("WeatherServiceView.fxml");
+        changeContent("APIRuleView.fxml", "Weather");
     }
 
     private Parent loadFXML(String name) {
@@ -86,14 +86,31 @@ public class HomeController implements Initializable {
         return null;
     }
 
+    private Parent loadFXML(String name, String serviceName) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
+            Parent content = fxmlLoader.load();
+            APIRuleController controller = fxmlLoader.getController();
+            controller.setServiceName(serviceName);
+
+            return content;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     private void setContentTitle(String title) {
         contentTitle.setText(title);
     }
 
     private void changeContent(String viewName) {
-
-        // TODO check if view is already loaded
         contentPane.getChildren().clear();
-        contentPane.getChildren().add(loadFXML(ressourcesPath + viewName));
+        contentPane.getChildren().add(loadFXML(resourcesPath + viewName));
+    }
+
+    private void changeContent(String viewName, String serviceName) {
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(loadFXML(resourcesPath + viewName, serviceName));
     }
 }

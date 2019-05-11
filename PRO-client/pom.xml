@@ -20,7 +20,12 @@
             <version>8.40.14</version>
         </dependency>
 
-
+        <!-- TODO: Remove ? => tout les pom.xml -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>PRO-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
 
         <dependency>
