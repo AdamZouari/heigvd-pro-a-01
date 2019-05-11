@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import service.Service;
+//import service.Service;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,7 +23,7 @@ public class AddRuleController implements Initializable {
    @FXML
    private TextArea additionalText;
 
-   private Service service;
+   //private Service service;
 
    @FXML
    private void onAddTextButtonClick(){
