@@ -91,18 +91,6 @@ public class ServiceCFF extends Service {
 
     }
 
-    public void testIfFunctionnal() throws FileNotFoundException, org.json.simple.parser.ParseException {
-        ServiceCFF cff = new ServiceCFF();
-        cff.connect();
-        System.out.println("Voici toutes les connexions possibles entre Lausanne et Geneve:");
-        String connectionsLtoG = cff.getTrainsForPath("Lausanne","Geneve","2012-03-25","17:30");
-        System.out.println(connectionsLtoG);
-
-        JsonParserCFF.parseCFF(connectionsLtoG);
-
-        cff.disconnect();
-    }
-
     @Override
     public void disconnect() {
         try {
