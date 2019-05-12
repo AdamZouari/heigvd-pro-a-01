@@ -49,6 +49,13 @@ public class ClientRequest {
 
     }
 
+    public void login(String username, String hashPassword) throws IOException, CustomException, ProtocolException {
+
+        sendToServer(Protocol.CMD_LOG + " " + username + ":" + hashPassword);
+        String reponse = reader.readLine();
+        checkIfSuccess(reponse);
+    }
+
     private static void checkIfFail(String response) throws CustomException, ProtocolException {
         check(response, null, false);
     }
@@ -89,12 +96,7 @@ public class ClientRequest {
         }
     }
 
-    public void login() {
 
-        // if connection ok then connect
-
-        // else refuse connection
-    }
 
     // the rules result for
     public void getRulesResult(String username) {
