@@ -12,18 +12,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<AnchorPane minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <children>
-        <FlowPane layoutX="25.0" layoutY="15.0" orientation="VERTICAL" prefHeight="250" prefWidth="350" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <FlowPane layoutX="25.0" layoutY="15.0" maxHeight="250.0" orientation="VERTICAL" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <FlowPane hgap="10.0" prefWidth="350">
                     <children>
-                        <Label fx:id="usernameLabel" prefWidth="100" text="%username">
+                        <Label fx:id="usernameLabel" minWidth="130.0" text="%username">
                             <FlowPane.margin>
-                                <Insets right="20.0" />
+                                <Insets />
                             </FlowPane.margin>
                         </Label>
-                        <TextField fx:id="username" prefWidth="200">
+                        <TextField fx:id="username">
                             <FlowPane.margin>
                                 <Insets bottom="10.0" />
                             </FlowPane.margin>
@@ -32,12 +32,12 @@
                 </FlowPane>
                 <FlowPane hgap="10.0" prefWidth="350">
                     <children>
-                        <Label prefWidth="100" text="%password">
+                        <Label minWidth="130.0" text="%password">
                             <FlowPane.margin>
-                                <Insets right="20.0" />
+                                <Insets />
                             </FlowPane.margin>
                         </Label>
-                        <PasswordField fx:id="password" prefWidth="200">
+                        <PasswordField fx:id="password">
                             <FlowPane.margin>
                                 <Insets bottom="10.0" />
                             </FlowPane.margin>
@@ -46,7 +46,7 @@
                 </FlowPane>
                 <Button mnemonicParsing="false" onMouseClicked="#onLoginButtonClick" text="%connexion">
                     <FlowPane.margin>
-                        <Insets left="255.0" />
+                        <Insets left="212.0" />
                     </FlowPane.margin>
                 </Button>
                 <FlowPane hgap="5.0" prefWidth="300">
@@ -57,8 +57,8 @@
                 </FlowPane>
                 <FlowPane hgap="5.0" prefWidth="300">
                     <children>
-                        <Label prefWidth="100" text="%language" />
-                        <ChoiceBox fx:id="languageChoice" prefWidth="100.0" onAction="#changeLanguage">
+                        <Label minWidth="80.0" text="%language" />
+                        <ChoiceBox fx:id="languageChoice" onAction="#changeLanguage">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="English" />
@@ -70,7 +70,7 @@
                 </FlowPane>
             </children>
             <padding>
-                <Insets left="10.0" top="10.0" />
+                <Insets left="30.0" top="20.0" />
             </padding>
         </FlowPane>
     </children>

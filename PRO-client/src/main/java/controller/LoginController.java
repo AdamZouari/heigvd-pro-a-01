@@ -27,11 +27,13 @@ public class LoginController implements Initializable {
    @FXML
    private void onSignUpClick() {
       try {
-         Parent root = FXMLLoader.load(this.getClass().getResource("/RegisterView.fxml"));
+         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/RegisterView.fxml"));
+         fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
+         Parent root = fxmlLoader.load();
          Stage stage = new Stage();
 
          stage.setScene(new Scene(root));
-         stage.setTitle("ASAPP - Register");
+         stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("registration"));
          stage.show();
       } catch (IOException e) {
          System.out.println("Failed to create new Window : " + e.getMessage());
