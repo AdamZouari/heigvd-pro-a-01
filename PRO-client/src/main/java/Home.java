@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import locale.I18N;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -26,9 +27,9 @@ public class Home extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
-            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
-            fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", new Locale("fr", "FR")));
+            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
+            //FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
+            fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
 
             Parent root = fxmlLoader.load();
 

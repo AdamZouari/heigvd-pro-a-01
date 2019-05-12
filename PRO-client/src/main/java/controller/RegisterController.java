@@ -37,7 +37,7 @@ public class RegisterController {
       String telegramUsername = this.telegramUsername.getText();
 
       if(!password.equals(passwordConfirmed))
-         throw new CustomException("Password did'nt match");
+         throw new CustomException("Password didn't match");
       else{
          cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
 
