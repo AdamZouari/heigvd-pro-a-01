@@ -25,8 +25,8 @@ public class Home extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        Parent root = FXMLLoader.load(this.getClass().getResource("/LoginView.fxml"));
-        Parent root = FXMLLoader.load(this.getClass().getResource("/HomeView.fxml"));
+        Parent root = FXMLLoader.load(this.getClass().getResource("/LoginView.fxml"));
+//        Parent root = FXMLLoader.load(this.getClass().getResource("/HomeView.fxml"));
 
         stage.setScene(new Scene(root));
         stage.setTitle("ASAPP");
