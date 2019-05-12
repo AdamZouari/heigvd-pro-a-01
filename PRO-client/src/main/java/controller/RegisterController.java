@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 
 import connection.ClientRequest;
 import exceptions.*;
+import utils.CheckForm;
 import utils.Crypto;
 
 import java.io.IOException;
@@ -36,12 +37,22 @@ public class RegisterController {
       String passwordConfirmed = this.passwordConfirmed.getText();
       String telegramUsername = this.telegramUsername.getText();
 
-      if(!password.equals(passwordConfirmed))
-         throw new CustomException("Password did'nt match");
-      else{
-         cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
-
+      if(!CheckForm.isAllNotEmpty(username, password, passwordConfirmed, telegramUsername)){
+         System.out.println("Fields");
+//         throw new CustomException("All fields are mandatory");
       }
 
+      // TODO : syntaxe du mot de passe
+      if(!password.equals(passwordConfirmed)) {
+         System.out.println("Pass");
+//         throw new CustomException("Password didn't match");
+      }
+
+      if(!CheckForm.isValid(telegramUsername, "([A-Za-z0-9]|_){5,32}")) {
+         System.out.println("Telegram");
+         throw new CustomException("Pseudo Telegram is not valid");
+      }
+
+      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
    }
 }

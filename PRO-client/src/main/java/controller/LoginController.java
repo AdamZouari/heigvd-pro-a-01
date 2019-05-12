@@ -4,11 +4,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import utils.CheckForm;
 
 import java.io.IOException;
 
 public class LoginController {
+   @FXML
+   private TextField username;
+
+   @FXML
+   private PasswordField password;
+
    @FXML
    private void onSignUpClick() {
       try {
@@ -25,6 +34,11 @@ public class LoginController {
 
    @FXML
    private void onLoginButtonClick() {
+      if(!CheckForm.isAllNotEmpty(username.getText(), password.getText())){
+         System.out.println("Fields");
+//         throw new CustomException("All fields are mandatory");
+      }
 
+      // TODO: se connecter
    }
 }
