@@ -1,9 +1,14 @@
+import database.DatabaseController;
+import database.Entities.User;
+import protocol.Protocol;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +27,7 @@ public class Server {
             ServerSocket serverSocket;
 
             try {
-                serverSocket = new ServerSocket(9999);
+                serverSocket = new ServerSocket(Protocol.DEFAULT_PORT);
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
                 return;
@@ -68,12 +73,19 @@ public class Server {
                         LOG.info(clientSocket.getRemoteSocketAddress().toString().substring(1) + " > " + line);
                         String[] items = line.split(" ");
 
+                        switch (items[0].toUpperCase()){
 
-                        if (line.equalsIgnoreCase("bye")) {
-                            shouldRun = false;
+                            case Protocol.CMD_WELCOME:
+                                sendToClient("WEEEEEELCOOOME");
+                                break;
+
+                            case Protocol.CMD_REG:
+                                String[] creds = items[1].split(":");
+                                register(creds[0],creds[1],creds[2]);
+                                break;
+
                         }
-                        out.println("> " + line.toUpperCase());
-                        out.flush();
+
                     }
 
                     LOG.info("Cleaning up resources...");
@@ -102,11 +114,35 @@ public class Server {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
+
+            private void sendToClient(String toSend) {
+                out.println(toSend);
+                out.flush();
+            }
+
+            private void register(String username, String telegramUsername ,String hashPassword){
+                DatabaseController db = DatabaseController.getController();
+                try {
+                    db.addUser(username,telegramUsername,hashPassword,null, User.LANGUE.EN);
+                } catch (SQLException e) {
+                    e.getMessage();
+                }
+            }
+
+            /**
+             * Send an error to clients
+             *
+             * @param i the error code number
+             */
+            private void sendError(int i) {
+                sendToClient(Protocol.RESPONSE_FAILURE + " " + i);
+            }
         }
     }
 
     public static void main(String[] args) {
         System.out.println("This is the server");
-        new Server().serveClients();
+        Server server = new Server();
+        server.serveClients();
     }
 }

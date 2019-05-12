@@ -8,11 +8,11 @@
 
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Button?>
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.RegisterController" prefHeight="230.0" prefWidth="300.0">
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.RegisterController" prefHeight="230.0" prefWidth="360.0">
     <children>
-        <FlowPane layoutX="25.0" layoutY="15.0" orientation="VERTICAL" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <FlowPane layoutX="25.0" layoutY="15.0" orientation="VERTICAL" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" prefWidth="360.0">
             <children>
-                <FlowPane hgap="10.0">
+                <FlowPane hgap="10.0" prefWidth="360.0">
                     <children>
                         <Label text="Username">
                             <FlowPane.margin>
@@ -26,7 +26,7 @@
                         </TextField>
                     </children>
                 </FlowPane>
-                <FlowPane hgap="10.0">
+                <FlowPane hgap="10.0" prefWidth="360.0">
                     <children>
                         <Label text="Password">
                             <FlowPane.margin>
@@ -40,7 +40,7 @@
                         </PasswordField>
                     </children>
                 </FlowPane>
-                <FlowPane hgap="10.0">
+                <FlowPane hgap="10.0" prefWidth="360.0">
                     <children>
                         <Label text="Confirm your password">
                             <FlowPane.margin>
@@ -54,7 +54,7 @@
                         </PasswordField>
                     </children>
                 </FlowPane>
-                <FlowPane hgap="10.0">
+                <FlowPane hgap="10.0" prefWidth="360.0">
                     <children>
                         <Label text="Telegram username">
                             <FlowPane.margin>
