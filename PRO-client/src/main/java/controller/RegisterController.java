@@ -31,11 +31,15 @@ public class RegisterController {
 
       ClientRequest cr = new ClientRequest();
 
+      // TODO Check the length of the password ? Min 8
+      //TODO check if not empty
+
       String username = this.username.getText();
       String password = this.password.getText();
       String passwordConfirmed = this.passwordConfirmed.getText();
       String telegramUsername = this.telegramUsername.getText();
 
+      // TODO change exception by message in interface (label?)
       if(!password.equals(passwordConfirmed))
          throw new CustomException("Password did'nt match");
       else{
