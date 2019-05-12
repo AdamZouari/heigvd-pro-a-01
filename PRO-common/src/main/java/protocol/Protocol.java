@@ -20,6 +20,9 @@ public class Protocol {
     public final static String CMD_CREATE_RULE = "CREATE_RULE";
     public final static String CMD_SEND_RULE = "SEND_RULE";
 
+    public final static String CMD_GET_CFF = "GET_CFF";
+
+
     public final static String RESPONSE_SUCCESS = "SUCCESS";
     public final static String RESPONSE_FAILURE = "FAILURE";
 

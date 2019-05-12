@@ -97,6 +97,11 @@ public class ClientRequest {
     }
 
 
+    public void getCFF(String fromCity, String toCity, String date, String time) throws IOException, CustomException, ProtocolException {
+        sendToServer(Protocol.CMD_GET_CFF + " " + fromCity+":"+toCity+":"+date+":"+time);
+        String response = reader.readLine();
+        checkIfSuccess(response);
+    }
 
     // the rules result for
     public void getRulesResult(String username) {

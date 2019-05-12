@@ -1,7 +1,10 @@
 import database.DatabaseController;
 import database.Entities.User;
+import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
+import service.ServiceCFF;
+import utils.JsonParserCFF;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -89,6 +92,9 @@ public class Server {
                                 login(items[1]);
                                 break;
 
+                            case Protocol.CMD_GET_CFF:
+                                cff(items[1]);
+                                break;
                         }
 
                     }
@@ -118,6 +124,8 @@ public class Server {
                     }
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
@@ -151,7 +159,31 @@ public class Server {
                 if(user.getHashPassword().equals(hashPassword)){
                     System.out.println("User " +username+ " logged");
                     sendToClient(Protocol.RESPONSE_SUCCESS);
+                }else {
+                    sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
+
                 }
+
+            }
+
+            private void cff(String item) throws ParseException {
+
+                ServiceCFF cff = new ServiceCFF();
+                cff.connect();
+                String[] params = item.split(":");
+
+                String connectionsFound = cff.getTrainsForPath(params[0],params[1],params[2],params[3]);
+
+                if(connectionsFound != null){
+
+                    String parsedMsg = JsonParserCFF.parseCFF(connectionsFound,params[0],params[1]);
+
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                }else {
+                    sendToClient(Protocol.RESPONSE_FAILURE);
+                }
+
+                cff.disconnect();
 
             }
 

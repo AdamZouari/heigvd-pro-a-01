@@ -6,12 +6,16 @@ import protocol.Protocol;
 import exceptions.*;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DatabaseController {
 
     private static DatabaseController controller;
     private static Connection mConnection;
     private static String url;
+
+    final static Logger LOG = Logger.getLogger(DatabaseController.class.getName());
 
 
     private DatabaseController() {
@@ -133,7 +137,7 @@ public class DatabaseController {
                 password = result.getString(4);
                 rules = result.getString(5);
                 langue = User.LANGUE.valueOf(result.getString(6));
-
+                LOG.log(Level.SEVERE," User created : ", new User(id, usernameId, telegramUsername, password, rules, langue).toString());
                 return new User(id, usernameId, telegramUsername, password, rules, langue);
 
             }

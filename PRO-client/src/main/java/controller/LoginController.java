@@ -48,6 +48,13 @@ public class LoginController {
       //TODO check if not empty
       try {
          cr.login(username.getText(), Crypto.sha512(password.getText(),SALT));
+
+         Parent root = FXMLLoader.load(this.getClass().getResource("/HomeView.fxml"));
+         Stage stage = new Stage();
+
+         stage.setScene(new Scene(root));
+         stage.setTitle("ASAPP - Register");
+         stage.show();
       } catch (IOException e) {
          e.getMessage();
       } catch (ProtocolException e) {
