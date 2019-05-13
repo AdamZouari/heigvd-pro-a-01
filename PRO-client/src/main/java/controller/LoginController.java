@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import protocol.ExceptionCodes;
 import utils.CheckForm;
 
 import javafx.scene.control.ChoiceBox;
@@ -59,7 +60,7 @@ public class LoginController implements Initializable {
       String pass = password.getText();
 
       if(!CheckForm.isAllNotEmpty(user, pass)){
-         error.setText("All fields are mandatory");
+         error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
          error.setVisible(true);
          return;
       }

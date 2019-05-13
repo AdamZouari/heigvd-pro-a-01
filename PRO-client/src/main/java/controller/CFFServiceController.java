@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import protocol.ExceptionCodes;
 import utils.CheckForm;
 import utils.Regexp;
 
@@ -49,37 +50,37 @@ public class CFFServiceController implements Initializable {
         String requestTime = this.requestTime.getText();
 
         if(!menu && !telegram) {
-            error.setText("The request has to appear in the menu or in a Telegram notification !");
+            error.setText(ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
             error.setVisible(true);
             return;
         }
 
         if(!CheckForm.isAllNotEmpty(from, to, departureTime, requestTime)) {
-            error.setText("All fields are mandatory !");
+            error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
             error.setVisible(true);
             return;
         }
 
         if(!CheckForm.isValid(from, Regexp.CITY)) {
-            error.setText("Departure city hasn't a valid name");
+            error.setText(ExceptionCodes.DEPARTURE_IS_NOT_A_CITY.getMessage());
             error.setVisible(true);
             return;
         }
 
         if(!CheckForm.isValid(to, Regexp.CITY)) {
-            error.setText("Arrival city hasn't a valid name");
+            error.setText(ExceptionCodes.ARRIVAL_IS_NOT_A_CITY.getMessage());
             error.setVisible(true);
             return;
         }
 
         if(!CheckForm.isValid(departureTime, Regexp.TIME)) {
-            error.setText("Departure Time isn't in HH:MM format");
+            error.setText(ExceptionCodes.DEPARTURE_IS_NOT_IN_TIME_FORMAT.getMessage());
             error.setVisible(true);
             return;
         }
 
         if(!CheckForm.isValid(requestTime, Regexp.TIME)) {
-            error.setText("Time of the request isn't in HH:MM format");
+            error.setText(ExceptionCodes.REQUEST_HOUR_IS_NOT_IN_TIME_FORMAT.getMessage());
             error.setVisible(true);
             return;
         }

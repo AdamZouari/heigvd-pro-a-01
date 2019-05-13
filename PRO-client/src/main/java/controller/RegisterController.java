@@ -6,6 +6,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import connection.ClientRequest;
 import exceptions.*;
+import protocol.ExceptionCodes;
 import utils.CheckForm;
 import utils.Crypto;
 import java.io.IOException;
@@ -40,25 +41,25 @@ public class RegisterController {
       String telegramUsername = this.telegramUsername.getText();
 
       if(!CheckForm.isAllNotEmpty(username, password, passwordConfirmed, telegramUsername)){
-         error.setText("All fields are mandatory !");
+         error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
          error.setVisible(true);
          return;
       }
 
       if(!password.equals(passwordConfirmed)) {
-         error.setText("Password didn't match !");
+         error.setText(ExceptionCodes.PASSWORDS_DID_NOT_MATCH.getMessage());
          error.setVisible(true);
          return;
       }
 
       if(!CheckForm.isValid(password, Regexp.PASSWORD)) {
-         error.setText("Password should have 8 characters, lowercase, uppercase, number and special chars !");
+         error.setText(ExceptionCodes.PASSWORD_INVALID.getMessage());
          error.setVisible(true);
          return;
       }
 
       if(!CheckForm.isValid(telegramUsername, Regexp.PSEUDO_TELEGRAM)) {
-         error.setText("Pseudo Telegram is not valid !");
+         error.setText(ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
          error.setVisible(true);
          return;
       }

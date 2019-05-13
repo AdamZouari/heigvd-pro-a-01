@@ -24,8 +24,8 @@ public class Home extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
-            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
+//            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
             fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
 
             Parent root = fxmlLoader.load();
