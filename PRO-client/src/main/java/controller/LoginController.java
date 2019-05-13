@@ -7,13 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utils.CheckForm;
 
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import locale.I18N;
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +35,9 @@ public class LoginController implements Initializable {
    private PasswordField password;
 
    @FXML
+   private Label error;
+
+   @FXML
    private void onSignUpClick() {
       try {
          FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/RegisterView.fxml"));
@@ -52,16 +55,21 @@ public class LoginController implements Initializable {
 
    @FXML
    private void onLoginButtonClick() {
-      if(!CheckForm.isAllNotEmpty(username.getText(), password.getText())){
-         System.out.println("Fields");
-//         throw new CustomException("All fields are mandatory");
+      String user = username.getText();
+      String pass = password.getText();
+
+      if(!CheckForm.isAllNotEmpty(user, pass)){
+         error.setText("All fields are mandatory");
+         error.setVisible(true);
+         return;
       }
 
+      error.setVisible(false);
       ClientRequest cr = new ClientRequest();
 
-      //TODO check if not empty
+      // TODO : Afficher erreur de connexion
       try {
-         cr.login(username.getText(), Crypto.sha512(password.getText(),SALT));
+         cr.login(user, Crypto.sha512(pass,SALT));
 
          FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
          fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
@@ -78,8 +86,6 @@ public class LoginController implements Initializable {
       } catch (CustomException e) {
          e.printStackTrace();
       }
-
-
    }
 
    @FXML
@@ -90,7 +96,6 @@ public class LoginController implements Initializable {
       } else {
          I18N.setLocale(I18N.FR);
       }
-
 
       FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
       fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));

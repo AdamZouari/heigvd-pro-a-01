@@ -64,6 +64,6 @@ public class RegisterController {
       }
 
       error.setVisible(false);
-//      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
+      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
    }
 }
