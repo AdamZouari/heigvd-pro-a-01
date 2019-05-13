@@ -191,12 +191,12 @@ public class DatabaseController {
                 " VALUES (?,?,?,?,?) ;";
 
         try {
-            if (!usernameExist(username)) {
+            if (usernameExist(username)) {
 
                 throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage());
             }
 
-            if(!usernameTelegramExist(telegramUsername)){
+            if(usernameTelegramExist(telegramUsername)){
                 throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.getMessage());
             }
 

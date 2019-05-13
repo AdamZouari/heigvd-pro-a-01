@@ -20,10 +20,10 @@ public class CFFJUnitTests {
         cff.connect();
 
         System.out.println("Voici toutes les connexions possibles entre Lausanne et Geneve:");
-        String connectionsLtoG = cff.getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
+        String connectionsLtoG = cff.getTrainsForPath("laUsanne","genEve","2019-05-09","17:30");
         System.out.println(connectionsLtoG);
 
-        System.out.println(JsonParserCFF.parseCFF(connectionsLtoG,"Lausanne","Geneve"));
+        System.out.println(JsonParserCFF.parseCFF(connectionsLtoG,"laUsanne","genEve"));
 
         cff.disconnect();
     }

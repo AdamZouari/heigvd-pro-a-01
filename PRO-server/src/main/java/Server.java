@@ -1,5 +1,7 @@
 import database.DatabaseController;
 import database.Entities.User;
+import org.json.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
@@ -140,9 +142,10 @@ public class Server {
                 try {
                     String[] creds = item.split(":");
                     String username =  creds[0], telegramUsername =  creds[1], hashPassword = creds[2];
-
+                    JSONObject json = new JSONObject();
+                    json.put("rules",new JSONArray());
                     DatabaseController db = DatabaseController.getController();
-                    db.addUser(username, telegramUsername, hashPassword, null, User.LANGUE.EN);
+                    db.addUser(username, telegramUsername, hashPassword, json.toJSONString(), User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
                 } catch (Exception e) {
