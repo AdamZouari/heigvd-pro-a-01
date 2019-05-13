@@ -1,18 +1,17 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import connection.ClientRequest;
 import exceptions.*;
 import utils.CheckForm;
-import utils.Crypto;
-
 import java.io.IOException;
+import utils.Crypto;
+import utils.Regexp;
 
 import static connection.ClientRequest.SALT;
-
 
 public class RegisterController {
    @FXML
@@ -28,6 +27,9 @@ public class RegisterController {
    private TextField telegramUsername;
 
    @FXML
+   private Label error;
+
+   @FXML
    public void onRegisterClick() throws CustomException, IOException, ProtocolException {
 
       ClientRequest cr = new ClientRequest();
@@ -38,21 +40,30 @@ public class RegisterController {
       String telegramUsername = this.telegramUsername.getText();
 
       if(!CheckForm.isAllNotEmpty(username, password, passwordConfirmed, telegramUsername)){
-         System.out.println("Fields");
-//         throw new CustomException("All fields are mandatory");
+         error.setText("All fields are mandatory !");
+         error.setVisible(true);
+         return;
       }
 
-      // TODO : syntaxe du mot de passe
       if(!password.equals(passwordConfirmed)) {
-         System.out.println("Pass");
-//         throw new CustomException("Password didn't match");
+         error.setText("Password didn't match !");
+         error.setVisible(true);
+         return;
       }
 
-      if(!CheckForm.isValid(telegramUsername, "([A-Za-z0-9]|_){5,32}")) {
-         System.out.println("Telegram");
-         throw new CustomException("Pseudo Telegram is not valid");
+      if(!CheckForm.isValid(password, Regexp.PASSWORD)) {
+         error.setText("Password should have 8 characters, lowercase, uppercase, number and special chars");
+         error.setVisible(true);
+         return;
       }
 
+      if(!CheckForm.isValid(telegramUsername, Regexp.PSEUDO_TELEGRAM)) {
+         System.out.println("Pseudo Telegram is not valid !");
+         error.setVisible(true);
+         return;
+      }
+
+      error.setVisible(false);
       cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
    }
 }

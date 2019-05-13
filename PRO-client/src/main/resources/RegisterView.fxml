@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
-
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Button?>
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.RegisterController" prefHeight="230.0" prefWidth="360.0">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<AnchorPane prefHeight="270.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
     <children>
-        <FlowPane layoutX="25.0" layoutY="15.0" orientation="VERTICAL" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" prefWidth="360.0">
+        <FlowPane layoutX="25.0" layoutY="15.0" orientation="VERTICAL" prefWidth="360.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <FlowPane hgap="10.0" prefWidth="360.0">
                     <children>
@@ -68,11 +68,12 @@
                         </TextField>
                     </children>
                 </FlowPane>
-                <Button mnemonicParsing="false" text="Register" onMouseClicked="#onRegisterClick">
+                <Button mnemonicParsing="false" onMouseClicked="#onRegisterClick" text="Register">
                     <FlowPane.margin>
                         <Insets left="270.0" />
                     </FlowPane.margin>
                 </Button>
+                <Label fx:id="error" maxWidth="330" text="error" textFill="RED" visible="false" wrapText="true" />
             </children>
             <padding>
                 <Insets left="10.0" top="10.0" />
