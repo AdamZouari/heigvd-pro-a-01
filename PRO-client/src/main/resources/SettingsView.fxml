@@ -16,14 +16,14 @@
          <children>
              <FlowPane>
                  <children>
-                     <Label text="User name : " />
+                     <Label minWidth="150.0" text="%username" />
                      <TextField fx:id="nameTextField" editable="false" />
-                     <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick" text="Edit">
+                     <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick" text="%edit">
                          <FlowPane.margin>
                              <Insets left="8.0" />
                          </FlowPane.margin>
                      </Button>
-                     <Button fx:id="saveNameButton" mnemonicParsing="false" onMouseClicked="#onSaveNameButtonClick" text="Save" visible="false">
+                     <Button fx:id="saveNameButton" mnemonicParsing="false" onMouseClicked="#onSaveNameButtonClick" text="%save" visible="false">
                          <FlowPane.margin>
                              <Insets left="8.0" />
                          </FlowPane.margin>
@@ -32,14 +32,14 @@
              </FlowPane>
              <FlowPane>
                  <children>
-                     <Label text="Telegram user name : " />
+                     <Label minWidth="150.0" text="%telegramUsername" />
                      <TextField fx:id="telegramTextField" editable="false" />
-                     <Button fx:id="editTelegramButton" mnemonicParsing="false" onMouseClicked="#onEditTelegramButtonClick" text="Edit">
+                     <Button fx:id="editTelegramButton" mnemonicParsing="false" onMouseClicked="#onEditTelegramButtonClick" text="%edit">
                          <FlowPane.margin>
                              <Insets left="8.0" />
                          </FlowPane.margin>
                      </Button>
-                     <Button fx:id="saveTelegramButton" mnemonicParsing="false" onMouseClicked="#onSaveTelegramButtonClick" text="Save" visible="false">
+                     <Button fx:id="saveTelegramButton" mnemonicParsing="false" onMouseClicked="#onSaveTelegramButtonClick" text="%save" visible="false">
                          <FlowPane.margin>
                              <Insets left="8.0" />
                          </FlowPane.margin>
@@ -48,7 +48,7 @@
              </FlowPane>
             <FlowPane>
                <children>
-                  <Label text="Language : " />
+                  <Label text="%language" />
                   <ChoiceBox fx:id="languageSelection" prefWidth="150.0">
                      <FlowPane.margin>
                         <Insets left="7.0" />
@@ -56,7 +56,7 @@
                   </ChoiceBox>
                </children>
             </FlowPane>
-            <Button fx:id="passwordChangeButton" mnemonicParsing="false" onMouseClicked="#onPasswordChangeNameClick" text="Change Password">
+            <Button fx:id="passwordChangeButton" mnemonicParsing="false" onMouseClicked="#onPasswordChangeNameClick" text="%changePassword">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
@@ -65,34 +65,34 @@
                <children>
                   <FlowPane>
                      <children>
-                        <Label text="Old password : " />
+                        <Label minWidth="160.0" text="%oldPassword" />
                         <PasswordField>
                            <FlowPane.margin>
-                              <Insets left="15.0" />
+                              <Insets />
                            </FlowPane.margin>
                         </PasswordField>
                      </children>
                   </FlowPane>
                   <FlowPane>
                      <children>
-                        <Label text="New password : " />
+                        <Label minWidth="160.0" text="%newPassword" />
                         <PasswordField>
                            <FlowPane.margin>
-                              <Insets left="9.0" />
+                              <Insets />
                            </FlowPane.margin>
                         </PasswordField>
                      </children>
                   </FlowPane>
                   <FlowPane minWidth="500.0">
                      <children>
-                        <Label text="Verify password : " />
+                        <Label minWidth="160.0" text="%confirmation" />
                         <PasswordField />
-                        <Button fx:id="savePasswordButton" mnemonicParsing="false" text="Save">
+                        <Button fx:id="savePasswordButton" mnemonicParsing="false" text="%save">
                            <FlowPane.margin>
                               <Insets left="8.0" />
                            </FlowPane.margin>
                         </Button>
-                        <Button fx:id="cancelPasswordButton" mnemonicParsing="false" onMouseClicked="#onCancelPasswordButtonClick" text="Cancel">
+                        <Button fx:id="cancelPasswordButton" mnemonicParsing="false" onMouseClicked="#onCancelPasswordButtonClick" text="%cancel">
                            <FlowPane.margin>
                               <Insets left="8.0" />
                            </FlowPane.margin>
@@ -102,6 +102,9 @@
                </children>
             </FlowPane>
          </children>
+         <padding>
+            <Insets left="30.0" top="20.0" />
+         </padding>
       </VBox>
    </children>
    <padding>

@@ -45,7 +45,7 @@ public class RegisterController {
 
       // TODO change exception by message in interface (label?)
       if(!password.equals(passwordConfirmed))
-         throw new CustomException("Password did'nt match");
+         throw new CustomException("Password didn't match");
       else{
          cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
 
