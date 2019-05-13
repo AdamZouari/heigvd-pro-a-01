@@ -52,7 +52,7 @@ public class RegisterController {
       }
 
       if(!CheckForm.isValid(password, Regexp.PASSWORD)) {
-         error.setText("Password should have 8 characters, lowercase, uppercase, number and special chars");
+         error.setText("Password should have 8 characters, lowercase, uppercase, number and special chars !");
          error.setVisible(true);
          return;
       }
@@ -65,5 +65,7 @@ public class RegisterController {
 
       error.setVisible(false);
       cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
+
+      // TODO : Afficher les erreurs du serveurs
    }
 }

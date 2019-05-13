@@ -67,7 +67,7 @@ public class LoginController implements Initializable {
       error.setVisible(false);
       ClientRequest cr = new ClientRequest();
 
-      // TODO : Afficher erreur de connexion
+      // TODO : Afficher erreur du serveur
       try {
          cr.login(user, Crypto.sha512(pass,SALT));
 
