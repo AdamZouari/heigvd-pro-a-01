@@ -23,7 +23,7 @@ public class CFFJUnitTests {
         String connectionsLtoG = cff.getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
         System.out.println(connectionsLtoG);
 
-        System.out.println(JsonParserCFF.parseCFF(connectionsLtoG));
+        System.out.println(JsonParserCFF.parseCFF(connectionsLtoG,"Lausanne","Geneve"));
 
         cff.disconnect();
     }
@@ -32,7 +32,7 @@ public class CFFJUnitTests {
     @Test
     public void testCFFModificationOfTrain() throws FileNotFoundException, ParseException {
         String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
-        System.out.println(JsonParserCFF.parseCFF(cff));
+        System.out.println(JsonParserCFF.parseCFForDelay(cff,"Lausanne","Geneve"));
 
     }
 }

@@ -1,11 +1,16 @@
 import database.DatabaseController;
 import database.Entities.User;
+import org.json.simple.parser.ParseException;
+import protocol.ExceptionCodes;
 import protocol.Protocol;
+import service.ServiceCFF;
+import utils.JsonParserCFF;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ProtocolException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -73,17 +78,23 @@ public class Server {
                         LOG.info(clientSocket.getRemoteSocketAddress().toString().substring(1) + " > " + line);
                         String[] items = line.split(" ");
 
-                        switch (items[0].toUpperCase()){
+                        switch (items[0].toUpperCase()) {
 
                             case Protocol.CMD_WELCOME:
                                 sendToClient("WEEEEEELCOOOME");
                                 break;
 
                             case Protocol.CMD_REG:
-                                String[] creds = items[1].split(":");
-                                register(creds[0],creds[1],creds[2]);
+                                register(items[1]);
                                 break;
 
+                            case Protocol.CMD_LOG:
+                                login(items[1]);
+                                break;
+
+                            case Protocol.CMD_GET_CFF:
+                                cff(items[1]);
+                                break;
                         }
 
                     }
@@ -112,6 +123,10 @@ public class Server {
                         }
                     }
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -120,13 +135,56 @@ public class Server {
                 out.flush();
             }
 
-            private void register(String username, String telegramUsername ,String hashPassword){
-                DatabaseController db = DatabaseController.getController();
+            private void register(String item) {
+
                 try {
-                    db.addUser(username,telegramUsername,hashPassword,null, User.LANGUE.EN);
-                } catch (SQLException e) {
-                    e.getMessage();
+                    String[] creds = item.split(":");
+                    String username =  creds[0], telegramUsername =  creds[1], hashPassword = creds[2];
+
+                    DatabaseController db = DatabaseController.getController();
+                    db.addUser(username, telegramUsername, hashPassword, null, User.LANGUE.EN);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    sendError(ExceptionCodes.REGISTRATION_FAILED.ordinal());
                 }
+            }
+            private void login(String item) throws SQLException {
+
+                String[] creds = item.split(":");
+                String username =  creds[0], hashPassword =  creds[1];
+
+                User user = DatabaseController.getController().getUserByUsername(username);
+                if(user.getHashPassword().equals(hashPassword)){
+                    System.out.println("User " +username+ " logged");
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                }else {
+                    sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
+
+                }
+
+            }
+
+            private void cff(String item) throws ParseException {
+
+                ServiceCFF cff = new ServiceCFF();
+                cff.connect();
+                String[] params = item.split(":");
+
+                String connectionsFound = cff.getTrainsForPath(params[0],params[1],params[2],params[3]);
+
+                if(connectionsFound != null){
+
+                    String parsedMsg = JsonParserCFF.parseCFF(connectionsFound,params[0],params[1]);
+
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                }else {
+                    sendToClient(Protocol.RESPONSE_FAILURE);
+                }
+
+                cff.disconnect();
+
             }
 
             /**
@@ -139,6 +197,8 @@ public class Server {
             }
         }
     }
+
+
 
     public static void main(String[] args) {
         System.out.println("This is the server");

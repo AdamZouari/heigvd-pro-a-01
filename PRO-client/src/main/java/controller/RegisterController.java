@@ -7,8 +7,8 @@ import javafx.scene.control.TextField;
 import connection.ClientRequest;
 import exceptions.*;
 import utils.CheckForm;
-import java.io.IOException;
 import utils.Crypto;
+import java.io.IOException;
 import utils.Regexp;
 
 import static connection.ClientRequest.SALT;
@@ -58,12 +58,12 @@ public class RegisterController {
       }
 
       if(!CheckForm.isValid(telegramUsername, Regexp.PSEUDO_TELEGRAM)) {
-         System.out.println("Pseudo Telegram is not valid !");
+         error.setText("Pseudo Telegram is not valid !");
          error.setVisible(true);
          return;
       }
 
       error.setVisible(false);
-      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
+//      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
    }
 }

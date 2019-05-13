@@ -5,14 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import locale.I18N;
 
 import java.io.IOException;
-import java.net.Socket;
-
+import java.util.ResourceBundle;
 
 
 public class Home extends Application {
-
     public static void main(String[] args) throws IOException {
         ClientRequest cr = new ClientRequest();
         cr.connect("127.0.0.1");
@@ -25,16 +24,22 @@ public class Home extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        Parent root = FXMLLoader.load(this.getClass().getResource("/LoginView.fxml"));
-        Parent root = FXMLLoader.load(this.getClass().getResource("/HomeView.fxml"));
+        try {
+            // FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
+            fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
 
-        stage.setScene(new Scene(root));
-        stage.setTitle("ASAPP");
-        stage.show();
+            Parent root = fxmlLoader.load();
 
-        stage.setOnCloseRequest(event -> Platform.exit());
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.setTitle("ASAPP");
+            stage.show();
+
+            stage.setOnCloseRequest(event -> Platform.exit());
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
-
-
-
 }

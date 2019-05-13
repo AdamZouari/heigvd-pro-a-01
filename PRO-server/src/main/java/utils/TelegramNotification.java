@@ -87,13 +87,13 @@ public class TelegramNotification extends TelegramLongPollingBot {
             // arrival city
             String arg2 = command[2];
 
-            sendMessage.setText(getCff(arg1,arg2));
+            sendMessage.setText(getCffConnectionsDelays(arg1,arg2));
         }
         else {
             sendMessage.setText("Wrong");
         }
         // specify the chat ID where to send back the message
-        sendMessage.setChatId(PRO_CHAT_ID);
+        sendMessage.setChatId(update.getMessage().getChatId());
 
         // send the message back to the user calling for the ASAPP BOT
         try {
@@ -113,14 +113,29 @@ public class TelegramNotification extends TelegramLongPollingBot {
         return API_TOKEN;
     }
 
-    public String getCff(String arg1,String arg2){
+    public String getCffConnections(String arg1,String arg2){
 
         ServiceCFF cff = new ServiceCFF();
         cff.connect();
-        String trains = cff.getTrainsForPath(arg1,arg2,"2019-05-09","17:30");
+        String trains = cff.getTrainsForPath(arg1,arg2,"2019-05-12","17:30");
         String result = "";
         try {
-            result = JsonParserCFF.parseCFF(trains);
+            result = JsonParserCFF.parseCFF(trains,arg1,arg2);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public String getCffConnectionsDelays(String arg1,String arg2){
+
+        ServiceCFF cff = new ServiceCFF();
+        cff.connect();
+        String trains = cff.getTrainsForPath(arg1,arg2,"2019-05-11","19:37");
+        String result = "";
+        try {
+            result = JsonParserCFF.parseCFForDelay(trains,arg1,arg2);
 
         } catch (ParseException e) {
             e.printStackTrace();

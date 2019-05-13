@@ -49,6 +49,13 @@ public class ClientRequest {
 
     }
 
+    public void login(String username, String hashPassword) throws IOException, CustomException, ProtocolException {
+
+        sendToServer(Protocol.CMD_LOG + " " + username + ":" + hashPassword);
+        String reponse = reader.readLine();
+        checkIfSuccess(reponse);
+    }
+
     private static void checkIfFail(String response) throws CustomException, ProtocolException {
         check(response, null, false);
     }
@@ -89,11 +96,11 @@ public class ClientRequest {
         }
     }
 
-    public void login() {
 
-        // if connection ok then connect
-
-        // else refuse connection
+    public void getCFF(String fromCity, String toCity, String date, String time) throws IOException, CustomException, ProtocolException {
+        sendToServer(Protocol.CMD_GET_CFF + " " + fromCity+":"+toCity+":"+date+":"+time);
+        String response = reader.readLine();
+        checkIfSuccess(response);
     }
 
     // the rules result for
