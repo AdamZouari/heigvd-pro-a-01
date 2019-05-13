@@ -88,7 +88,7 @@
                             </font>
                         </Button>
                         <ToggleSwitch fx:id="mode" layoutX="608.0" layoutY="6.0" onMouseClicked="#onThemeToggleClick" />
-                        <Label layoutX="558.0" layoutY="8.0" text="Night Mode">
+                        <Label layoutX="558.0" layoutY="8.0" text="%nightMode">
                             <font>
                                 <Font name="System Bold" size="10.0" />
                             </font></Label>
@@ -99,7 +99,7 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-            <TitledPane fx:id="contentTitle" collapsible="false" text="Home" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TitledPane fx:id="contentTitle" collapsible="false" text="%home" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
                       <ScrollPane hbarPolicy="NEVER">
                           <content>

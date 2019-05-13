@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import locale.I18N;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,11 +25,13 @@ public class APIRuleController implements Initializable {
    public void onNewRuleClick() {
       String serviceName = getServiceName();
       try {
-         Parent root = FXMLLoader.load(this.getClass().getResource("/" + serviceName + "ServiceView.fxml"));
+         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/" + serviceName + "ServiceView.fxml"));
+         fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
+         Parent root = fxmlLoader.load();
          Stage stage = new Stage();
 
          stage.setScene(new Scene(root));
-         stage.setTitle("ASAPP - " + serviceName);
+         stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString(serviceName));
          stage.show();
       } catch (IOException e) {
          System.out.println("Failed to create new Window : " + e.getMessage());

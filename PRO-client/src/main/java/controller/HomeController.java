@@ -6,10 +6,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import locale.I18N;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
@@ -32,13 +35,13 @@ public class HomeController implements Initializable {
 
     @FXML
     private void onHomeButtonClick() {
-        setContentTitle("Home");
+        setContentTitle("home");
         changeContent("HomeFeedView.fxml");
     }
 
     @FXML
     private void onRulesListButtonClick() {
-        setContentTitle("Active rules");
+        setContentTitle("activeRules");
         changeContent("RulesView.fxml");
     }
 
@@ -49,7 +52,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private void onSettingsButtonClick() {
-        setContentTitle("Settings");
+        setContentTitle("settings");
         changeContent("SettingsView.fxml");
     }
 
@@ -77,9 +80,14 @@ public class HomeController implements Initializable {
         changeContent("APIRuleView.fxml", "Weather");
     }
 
+
+    // TODO make it less messy
     private Parent loadFXML(String name) {
         try {
-            return FXMLLoader.load(getClass().getResource(name));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
+            fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
+            return fxmlLoader.load();
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -89,6 +97,7 @@ public class HomeController implements Initializable {
     private Parent loadFXML(String name, String serviceName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
+            fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
             Parent content = fxmlLoader.load();
             APIRuleController controller = fxmlLoader.getController();
             controller.setServiceName(serviceName);
@@ -101,7 +110,9 @@ public class HomeController implements Initializable {
     }
 
     private void setContentTitle(String title) {
-        contentTitle.setText(title);
+            contentTitle.setText(ResourceBundle.getBundle("Internationalization",
+                    I18N.getLocale()).getString(title));
+
     }
 
     private void changeContent(String viewName) {
