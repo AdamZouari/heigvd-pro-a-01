@@ -16,6 +16,11 @@ import java.net.ProtocolException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,9 +28,90 @@ public class Server {
 
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
-    public void serveClients() {
+    private void serveClients() {
         new Thread(new ReceptionistWorker()).start();
     }
+
+
+    // Scheduler TEST TODO export to other .java files
+    private void handleRuleTasks() {
+        new Thread(new SchedulerWorker()).start();
+    }
+
+    private class SchedulerWorker implements Runnable {
+
+        private List<Runnable> jobs;
+
+        private ScheduledExecutorService scheduler;
+
+        public SchedulerWorker() {
+            jobs = new ArrayList<>();
+            scheduler = Executors.newScheduledThreadPool(1);
+
+            jobs.add(new CFFRuleTask(1, "I like trains !"));
+            jobs.add(new TwitterRuleTask(1, "Tweet tweet"));
+            jobs.add(new CFFRuleTask(2, "Tchoo Tchoo !"));
+
+            scheduler.scheduleAtFixedRate(jobs.get(0), 5, 5, TimeUnit.SECONDS);
+            scheduler.scheduleAtFixedRate(jobs.get(1), 1, 10, TimeUnit.SECONDS);
+            scheduler.scheduleAtFixedRate(jobs.get(2), 10, 20, TimeUnit.SECONDS);
+        }
+
+        @Override
+        public void run() {
+            LOG.info("Starting the task scheduling...");
+        }
+
+
+        private abstract class RuleTask implements Runnable {
+
+            private int id;
+            private String info;
+
+            public RuleTask(int id, String info) {
+                this.id = id;
+                this.info = info;
+            }
+
+
+            public int getId() {
+                return id;
+            }
+
+            public String getInfo() {
+                return info;
+            }
+        }
+
+        private class CFFRuleTask extends RuleTask{
+
+            public CFFRuleTask(int id, String info) {
+                super(id, info);
+                LOG.info("new CFF task scheduled");
+            }
+
+            @Override
+            public void run() {
+                LOG.info("CFF-" + getId() + " : " + getInfo());
+            }
+        }
+
+        private class TwitterRuleTask extends RuleTask {
+
+            public TwitterRuleTask(int id, String info) {
+                super(id, info);
+                LOG.info("new Twitter task scheduled");
+            }
+
+            @Override
+            public void run() {
+                LOG.info("Twitter-" + getId() + " : " + getInfo());
+            }
+
+        }
+
+    }
+    // -------
 
     private class ReceptionistWorker implements Runnable {
 
@@ -206,6 +292,7 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("This is the server");
         Server server = new Server();
+        server.handleRuleTasks(); // scheduler TEST
         server.serveClients();
     }
 }
