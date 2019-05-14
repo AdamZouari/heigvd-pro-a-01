@@ -7,14 +7,16 @@ public enum ExceptionCodes {
     REGISTRATION_FAILED("L'inscription a échoué"),
     LOGIN_FAILED("Wrong username or password"),
     ALL_FIELDS_ARE_NOT_FILLED("All fields are mandatory !"),
-    DEPARTURE_IS_NOT_A_CITY("Departure city hasn't a valid name"),
-    ARRIVAL_IS_NOT_A_CITY("Arrival city hasn't a valid name"),
-    DEPARTURE_IS_NOT_IN_TIME_FORMAT("Departure time isn't in HH:MM format"),
-    REQUEST_HOUR_IS_NOT_IN_TIME_FORMAT("Request hour isn't in HH:MM format"),
+    DEPARTURE_IS_NOT_A_CITY("Departure city hasn't a valid name !"),
+    ARRIVAL_IS_NOT_A_CITY("Arrival city hasn't a valid name !"),
+    DEPARTURE_IS_NOT_IN_TIME_FORMAT("Departure time isn't in HH:MM format !"),
+    REQUEST_HOUR_IS_NOT_IN_TIME_FORMAT("Request hour isn't in HH:MM format !"),
     PASSWORDS_DID_NOT_MATCH("Passwords didn't match !"),
     PASSWORD_INVALID("Password should have 8 characters, lowercase, uppercase, number and special chars !"),
     INVALID_PSEUDO_TELEGRAM("Pseudo Telegram is not valid !"),
-    REQUEST_APPEARS_NOWHERE("The request has to appear in the menu or in a Telegram notification !");
+    REQUEST_APPEARS_NOWHERE("The request has to appear in the menu or in a Telegram notification !"),
+    LOCATION_AND_TIME_MISSING("The location and the hour of the request are mandatory !"),
+    TEST("%test");
 
     String message;
 

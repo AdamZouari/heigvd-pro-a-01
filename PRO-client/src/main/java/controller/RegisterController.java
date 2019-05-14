@@ -40,7 +40,7 @@ public class RegisterController {
       String passwordConfirmed = this.passwordConfirmed.getText();
       String telegramUsername = this.telegramUsername.getText();
 
-      if(!CheckForm.isAllNotEmpty(username, password, passwordConfirmed, telegramUsername)){
+      if(!CheckForm.isAllFilled(username, password, passwordConfirmed, telegramUsername)){
          error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
          error.setVisible(true);
          return;

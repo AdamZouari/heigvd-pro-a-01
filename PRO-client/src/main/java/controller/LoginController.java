@@ -59,7 +59,7 @@ public class LoginController implements Initializable {
       String user = username.getText();
       String pass = password.getText();
 
-      if(!CheckForm.isAllNotEmpty(user, pass)){
+      if(!CheckForm.isAllFilled(user, pass)){
          error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
          error.setVisible(true);
          return;

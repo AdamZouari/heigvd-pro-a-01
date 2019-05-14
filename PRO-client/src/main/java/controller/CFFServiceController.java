@@ -55,7 +55,7 @@ public class CFFServiceController implements Initializable {
             return;
         }
 
-        if(!CheckForm.isAllNotEmpty(from, to, departureTime, requestTime)) {
+        if(!CheckForm.isAllFilled(from, to, departureTime, requestTime)) {
             error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
             error.setVisible(true);
             return;

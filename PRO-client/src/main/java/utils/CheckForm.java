@@ -8,7 +8,7 @@ public class CheckForm {
     * @param strings    Strings to check
     * @return  True if all the strings contain a value, false otherwise
     */
-   public static boolean isAllNotEmpty(String... strings) {
+   public static boolean isAllFilled(String... strings) {
       for(String str : strings) {
          if(str.isEmpty())
             return false;
