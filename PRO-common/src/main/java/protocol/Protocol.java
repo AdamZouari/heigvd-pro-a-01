@@ -2,7 +2,7 @@ package protocol;
 
 public class Protocol {
 
-    public final static int DEFAULT_PORT = 1111;
+    public final static int DEFAULT_PORT = 2222;
 
     public final static char EOL = '\n';
 

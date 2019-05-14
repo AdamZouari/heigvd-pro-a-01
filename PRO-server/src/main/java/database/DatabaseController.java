@@ -1,11 +1,17 @@
 package database;
 
 import database.Entities.User;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
 import exceptions.*;
 
 import java.sql.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -244,6 +250,32 @@ public class DatabaseController {
 
         System.out.println("User " + username + " updated !");
 
+    }
+
+
+    public Map<String, JSONObject> getAllRules() throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet result = null;
+        String sql = " SELECT username,rules FROM User";
+        Map<String,JSONObject> allRules = null;
+
+        try {
+
+            allRules = new HashMap<>();
+            JSONObject userRules = new JSONObject();
+            String username;
+            preparedStatement = mConnection.prepareStatement(sql);
+            result = preparedStatement.executeQuery();
+            while (result.next()) {
+                username = result.getString(1);
+                userRules = (JSONObject) result.getObject(2);
+                allRules.put(username,userRules);
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return allRules;
     }
 
     public void updatePassword(int id, String password) {
