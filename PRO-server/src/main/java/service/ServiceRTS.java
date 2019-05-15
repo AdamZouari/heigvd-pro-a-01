@@ -31,7 +31,7 @@ public class ServiceRTS extends Service {
             "  -H 'content-length: 0'";
 
     //private String programCommand = "curl -X GET --header \"Content-Type: \" --header \"Authorization: Bearer 2dIztu6lI6iAtcfUCCB3VEnffmM1\" \"https://api.srgssr.ch/epg/v1/api/programs\"\n";
-    private String programCommand = "curl -X GET --header \"Content-Type: \" --header \"Authorization: Bearer OCfY9mdiVOGskpTJLQtKl87vDDoT\" \"https://api.srgssr.ch/epg/v1/api/schedules/day\"\n";
+    private String programCommand = "curl -X GET --header \"Content-Type: \" --header \"Authorization: Bearer GgBC9SS1GxwwqJHbuszlcbzWRNaG\" \"https://api.srgssr.ch/epg/v1/api/schedules/day\"\n";
 
     public ArrayList<String> getProgram() {
         Process process = null;
