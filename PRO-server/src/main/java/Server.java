@@ -16,11 +16,9 @@ import java.net.ProtocolException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,26 +38,40 @@ public class Server {
 
     private class SchedulerWorker implements Runnable {
 
-        private List<Runnable> jobs;
+        private Map<Runnable, ScheduledFuture<?>> jobTasks;
 
-        private ScheduledExecutorService scheduler;
+        private ScheduledThreadPoolExecutor scheduler;
 
         public SchedulerWorker() {
-            jobs = new ArrayList<>();
-            scheduler = Executors.newScheduledThreadPool(1);
+            jobTasks = new HashMap<>();
+            scheduler = new ScheduledThreadPoolExecutor(1);
+            scheduler.setRemoveOnCancelPolicy(true);
 
-            jobs.add(new CFFRuleTask(1, "I like trains !"));
-            jobs.add(new TwitterRuleTask(1, "Tweet tweet"));
-            jobs.add(new CFFRuleTask(2, "Tchoo Tchoo !"));
+            RuleTask cff = new CFFRuleTask(1, "I like trains !");
+            RuleTask twitter = new TwitterRuleTask(1, "Tweet tweet");
+            RuleTask cff1 = new CFFRuleTask(2, "Tchoo Tchoo !");
 
-            scheduler.scheduleAtFixedRate(jobs.get(0), 5, 5, TimeUnit.SECONDS);
-            scheduler.scheduleAtFixedRate(jobs.get(1), 1, 10, TimeUnit.SECONDS);
-            scheduler.scheduleAtFixedRate(jobs.get(2), 10, 20, TimeUnit.SECONDS);
+            jobTasks.put(cff , scheduler.scheduleAtFixedRate(cff, 1, 2, TimeUnit.SECONDS));
+            jobTasks.put(twitter, scheduler.scheduleAtFixedRate(twitter, 3, 5, TimeUnit.SECONDS));
+            jobTasks.put(cff1, scheduler.scheduleAtFixedRate(cff1, 2, 6, TimeUnit.SECONDS));
+
+            try {
+                Thread.sleep(20000);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+            stopAll();
         }
 
         @Override
         public void run() {
             LOG.info("Starting the task scheduling...");
+        }
+
+        private void stopAll() {
+            for(ScheduledFuture<?> task : jobTasks.values()) {
+                task.cancel(true);
+            }
         }
 
 
