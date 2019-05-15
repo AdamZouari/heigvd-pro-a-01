@@ -19,7 +19,9 @@ public enum ExceptionCodes {
     WEATHER_TYPE_OR_TEMPERATURE_CONDITION("The weather type or a condition for the temperature should be selected !"),
     TEMPERATURE_MISSING("The temperature is missing !"),
     LOCATION_IS_NOT_A_CITY("Location city hasn't a valid name !"),
-    NOT_A_NUMBER("The temperature isn't a number !");
+    NOT_A_NUMBER("The temperature isn't a number !"),
+    NAME_MISSING("The name is missing !"),
+    SOME_PASS_ARE_MISSING("All the password fields are mandatory !");
 
     String message;
 
