@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane maxWidth="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WeatherServiceController">
    <children>
       <FlowPane maxWidth="700.0" minHeight="500.0" orientation="VERTICAL" prefWrapLength="550.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -45,9 +47,15 @@
                <children>
                   <Label minWidth="150.0" text="%ifWeatherIs" />
                   <ChoiceBox fx:id="weatherTypeSelection" prefWidth="150.0">
-                     <FlowPane.margin>
-                        <Insets />
-                     </FlowPane.margin></ChoiceBox>
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="Ensoleillé" />
+                           <String fx:value="Pluvieux" />
+                           <String fx:value="Venteux" />
+                           <String fx:value="Nuageux" />
+                        </FXCollections>
+                     </items>
+                  </ChoiceBox>
                </children>
                <FlowPane.margin>
                   <Insets top="20.0" />
@@ -56,7 +64,14 @@
             <FlowPane hgap="10.0" minWidth="500.0">
                <children>
                   <Label minWidth="150.0" text="%ifTempIs" />
-                  <ChoiceBox fx:id="temperatureSelection" prefWidth="150.0" />
+                  <ChoiceBox fx:id="temperatureSelection" prefWidth="150.0">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="Less" />
+                           <String fx:value="More" />
+                        </FXCollections>
+                     </items>
+                  </ChoiceBox>
                   <Label text="%than" />
                   <TextField fx:id="temperature" maxWidth="50.0" />
                   <Label text="%celsius" />

@@ -4,7 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import protocol.ExceptionCodes;
-import utils.CheckForm;
+import utils.FormUtils;
+import utils.Regexp;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -54,21 +55,50 @@ public class WeatherServiceController implements Initializable {
         boolean telegram = telegramCheckBox.isSelected();
 
         if(!menu && !telegram) {
-            error.setText(ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
-            error.setVisible(true);
+            FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
             return;
         }
 
         String location = this.location.getText();
         String time = this.time.getText();
 
-        if(!CheckForm.isAllFilled(location, time)){
-            error.setText(ExceptionCodes.LOCATION_AND_TIME_MISSING.getMessage());
-            error.setVisible(true);
+        if(!FormUtils.isAllFilled(location, time)){
+            FormUtils.displayErrorMessage(error, ExceptionCodes.LOCATION_AND_TIME_MISSING.getMessage());
             return;
         }
 
-        error.setVisible(true);
+        if(!FormUtils.isValid(location, Regexp.CITY)){
+            FormUtils.displayErrorMessage(error, ExceptionCodes.LOCATION_IS_NOT_A_CITY.getMessage());
+            return;
+        }
+
+        boolean temperature = temperatureSelection.getSelectionModel().isEmpty();
+
+        if(temperature && weatherTypeSelection.getSelectionModel().isEmpty()) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.WEATHER_TYPE_OR_TEMPERATURE_CONDITION.getMessage());
+            return;
+        }
+
+        String temperateurValue = this.temperature.getText();
+
+        if(!temperature) {
+            if(temperateurValue.isEmpty()){
+                FormUtils.displayErrorMessage(error, ExceptionCodes.TEMPERATURE_MISSING.getMessage());
+                return;
+            }
+
+            if(!FormUtils.isValid(temperateurValue, Regexp.NUMBER)){
+                FormUtils.displayErrorMessage(error, ExceptionCodes.NOT_A_NUMBER.getMessage());
+                return;
+            }
+        }
+
+        if(!FormUtils.isValid(time, Regexp.TIME)){
+            FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_HOUR_IS_NOT_IN_TIME_FORMAT.getMessage());
+            return;
+        }
+
+        FormUtils.hideErrorMessage(error);
     }
 
     @Override

@@ -12,7 +12,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import protocol.ExceptionCodes;
-import utils.CheckForm;
+import sun.misc.FormattedFloatingDecimal;
+import utils.FormUtils;
 
 import javafx.scene.control.ChoiceBox;
 import locale.I18N;
@@ -59,13 +60,12 @@ public class LoginController implements Initializable {
       String user = username.getText();
       String pass = password.getText();
 
-      if(!CheckForm.isAllFilled(user, pass)){
-         error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
-         error.setVisible(true);
+      if(!FormUtils.isAllFilled(user, pass)){
+         FormUtils.displayErrorMessage(error, ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
          return;
       }
 
-      error.setVisible(false);
+      FormUtils.hideErrorMessage(error);
       ClientRequest cr = new ClientRequest();
 
       // TODO : Afficher erreur du serveur

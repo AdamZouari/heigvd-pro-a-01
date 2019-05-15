@@ -6,7 +6,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import protocol.ExceptionCodes;
-import utils.CheckForm;
+import utils.FormUtils;
 import utils.Regexp;
 
 import java.net.URL;
@@ -34,18 +34,16 @@ public class TwitterServiceController implements Initializable {
         String twitter = twitterId.getText();
 
         if(!menu && !telegram) {
-            error.setText(ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
-            error.setVisible(true);
+            FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
             return;
         }
 
-        if(!CheckForm.isValid(twitter, Regexp.PSEUDO_TELEGRAM)) {
-            error.setText(ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
-            error.setVisible(true);
+        if(!FormUtils.isValid(twitter, Regexp.PSEUDO_TELEGRAM)) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
             return;
         }
 
-        error.setVisible(false);
+        FormUtils.hideErrorMessage(error);
     }
 
     @Override

@@ -16,7 +16,10 @@ public enum ExceptionCodes {
     INVALID_PSEUDO_TELEGRAM("Pseudo Telegram is not valid !"),
     REQUEST_APPEARS_NOWHERE("The request has to appear in the menu or in a Telegram notification !"),
     LOCATION_AND_TIME_MISSING("The location and the hour of the request are mandatory !"),
-    TEST("%test");
+    WEATHER_TYPE_OR_TEMPERATURE_CONDITION("The weather type or a condition for the temperature should be selected !"),
+    TEMPERATURE_MISSING("The temperature is missing !"),
+    LOCATION_IS_NOT_A_CITY("Location city hasn't a valid name !"),
+    NOT_A_NUMBER("The temperature isn't a number !");
 
     String message;
 

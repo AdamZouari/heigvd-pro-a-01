@@ -9,7 +9,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import protocol.ExceptionCodes;
-import utils.CheckForm;
+import utils.FormUtils;
 import utils.Regexp;
 
 import java.io.IOException;
@@ -50,38 +50,32 @@ public class CFFServiceController implements Initializable {
         String requestTime = this.requestTime.getText();
 
         if(!menu && !telegram) {
-            error.setText(ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
-            error.setVisible(true);
+            FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
             return;
         }
 
-        if(!CheckForm.isAllFilled(from, to, departureTime, requestTime)) {
-            error.setText(ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
-            error.setVisible(true);
+        if(!FormUtils.isAllFilled(from, to, departureTime, requestTime)) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
             return;
         }
 
-        if(!CheckForm.isValid(from, Regexp.CITY)) {
-            error.setText(ExceptionCodes.DEPARTURE_IS_NOT_A_CITY.getMessage());
-            error.setVisible(true);
+        if(!FormUtils.isValid(from, Regexp.CITY)) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.DEPARTURE_IS_NOT_A_CITY.getMessage());
             return;
         }
 
-        if(!CheckForm.isValid(to, Regexp.CITY)) {
-            error.setText(ExceptionCodes.ARRIVAL_IS_NOT_A_CITY.getMessage());
-            error.setVisible(true);
+        if(!FormUtils.isValid(to, Regexp.CITY)) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.ARRIVAL_IS_NOT_A_CITY.getMessage());
             return;
         }
 
-        if(!CheckForm.isValid(departureTime, Regexp.TIME)) {
-            error.setText(ExceptionCodes.DEPARTURE_IS_NOT_IN_TIME_FORMAT.getMessage());
-            error.setVisible(true);
+        if(!FormUtils.isValid(departureTime, Regexp.TIME)) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.DEPARTURE_IS_NOT_IN_TIME_FORMAT.getMessage());
             return;
         }
 
-        if(!CheckForm.isValid(requestTime, Regexp.TIME)) {
-            error.setText(ExceptionCodes.REQUEST_HOUR_IS_NOT_IN_TIME_FORMAT.getMessage());
-            error.setVisible(true);
+        if(!FormUtils.isValid(requestTime, Regexp.TIME)) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_HOUR_IS_NOT_IN_TIME_FORMAT.getMessage());
             return;
         }
 

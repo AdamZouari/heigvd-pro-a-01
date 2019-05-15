@@ -1,6 +1,8 @@
 package utils;
 
-public class CheckForm {
+import javafx.scene.control.Label;
+
+public class FormUtils {
 
    /**
     * Check if all the strings are filled
@@ -26,5 +28,24 @@ public class CheckForm {
     */
    public static boolean isValid(String str, String regex) {
       return str.matches(regex);
+   }
+
+   /**
+    * Display error message
+    *
+    * @param label Label who whill contain the message
+    * @param message Message to display
+    */
+   public static void displayErrorMessage(Label label, String message) {
+      label.setText(message);
+      label.setVisible(true);
+   }
+
+   /**
+    * Hide error message
+    * @param label   Label to hide
+    */
+   public static void hideErrorMessage(Label label) {
+      label.setVisible(false);
    }
 }
