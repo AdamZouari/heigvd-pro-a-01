@@ -1,16 +1,12 @@
 package database;
 
 import database.Entities.User;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
-import protocol.Protocol;
 import exceptions.*;
 
 import java.sql.*;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
