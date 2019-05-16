@@ -12,7 +12,11 @@ public class JsonParserRules {
 
     public static int PERIODICITY = 24;
 
-    public void parseRule() throws IOException, ParseException {
+    /**
+     *
+     *
+     * **/
+    public String parseRule() throws IOException, ParseException {
         // parsing file "rules.json"
         JSONParser parser = new JSONParser();
 
@@ -33,6 +37,8 @@ public class JsonParserRules {
          * }
          *
          * **/
+
+        return null;
     }
 
     /**
