@@ -1,10 +1,11 @@
 import database.DatabaseController;
-import database.Entities.User;
+import database.entities.User;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
+import scheduler.RuleTaskManager;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
 
@@ -15,9 +16,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,104 +23,26 @@ public class Server {
 
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
+    private RuleTaskManager ruleTaskManager;
+
+    private Server() {
+        LOG.info("Starting the RuleTaskManager...");
+        ruleTaskManager = RuleTaskManager.getInstance();
+    }
+
+    private void fetchDataBaseRules() {
+        LOG.info("Fetching rules from database...");
+        ruleTaskManager.fetchDataBaseRules();
+    }
+
+    private void startScheduler() {
+        LOG.info("Starting Scheduler from task manager...");
+        ruleTaskManager.startScheduling();
+    }
+
     private void serveClients() {
         new Thread(new ReceptionistWorker()).start();
     }
-
-
-    // Scheduler TEST TODO export to other .java files
-    private void handleRuleTasks() {
-        new Thread(new SchedulerWorker()).start();
-    }
-
-    private class SchedulerWorker implements Runnable {
-
-        private Map<Runnable, ScheduledFuture<?>> jobTasks;
-
-        private ScheduledThreadPoolExecutor scheduler;
-
-        public SchedulerWorker() {
-            jobTasks = new HashMap<>();
-            scheduler = new ScheduledThreadPoolExecutor(1);
-            scheduler.setRemoveOnCancelPolicy(true);
-
-            RuleTask cff = new CFFRuleTask(1, "I like trains !");
-            RuleTask twitter = new TwitterRuleTask(1, "Tweet tweet");
-            RuleTask cff1 = new CFFRuleTask(2, "Tchoo Tchoo !");
-
-            jobTasks.put(cff , scheduler.scheduleAtFixedRate(cff, 1, 2, TimeUnit.SECONDS));
-            jobTasks.put(twitter, scheduler.scheduleAtFixedRate(twitter, 3, 5, TimeUnit.SECONDS));
-            jobTasks.put(cff1, scheduler.scheduleAtFixedRate(cff1, 2, 6, TimeUnit.SECONDS));
-
-            try {
-                Thread.sleep(20000);
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
-            stopAll();
-        }
-
-        @Override
-        public void run() {
-            LOG.info("Starting the task scheduling...");
-        }
-
-        private void stopAll() {
-            for(ScheduledFuture<?> task : jobTasks.values()) {
-                task.cancel(true);
-            }
-        }
-
-
-        private abstract class RuleTask implements Runnable {
-
-            private int id;
-            private String info;
-
-            public RuleTask(int id, String info) {
-                this.id = id;
-                this.info = info;
-            }
-
-
-            public int getId() {
-                return id;
-            }
-
-            public String getInfo() {
-                return info;
-            }
-        }
-
-        private class CFFRuleTask extends RuleTask{
-
-            public CFFRuleTask(int id, String info) {
-                super(id, info);
-                LOG.info("new CFF task scheduled");
-            }
-
-            @Override
-            public void run() {
-                LOG.info("CFF-" + getId() + " : " + getInfo());
-            }
-        }
-
-        private class TwitterRuleTask extends RuleTask {
-
-            public TwitterRuleTask(int id, String info) {
-                super(id, info);
-                LOG.info("new Twitter task scheduled");
-            }
-
-            @Override
-            public void run() {
-                LOG.info("Twitter-" + getId() + " : " + getInfo());
-            }
-
-        }
-
-    }
-    // -------
 
     private class ReceptionistWorker implements Runnable {
 
@@ -303,7 +223,8 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("This is the server");
         Server server = new Server();
-        server.handleRuleTasks(); // scheduler TEST
+        server.fetchDataBaseRules(); // does nothing right now
+        server.startScheduler();
         server.serveClients();
     }
 }

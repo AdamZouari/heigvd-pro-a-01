@@ -1,6 +1,6 @@
 package database;
 
-import database.Entities.User;
+import database.entities.User;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;

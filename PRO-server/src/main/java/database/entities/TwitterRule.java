@@ -1,6 +1,6 @@
-package database.Entities;
+package database.entities;
 
-public class RtsRule extends Rule {
+public class TwitterRule extends Rule {
 
     private String tag;
 
@@ -11,9 +11,9 @@ public class RtsRule extends Rule {
      * @param periodicity
      * @param content
      **/
-    public RtsRule(String id, String tag, String startDate, String periodicity, String content) {
+    public TwitterRule(String id, String tag, String startDate, String periodicity, String content) {
         super(id, startDate, periodicity, content);
-        this.tag= "rts";
+        this.tag= "twitter";
 
     }
 
