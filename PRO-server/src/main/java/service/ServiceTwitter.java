@@ -1,7 +1,5 @@
 package service;
 
-
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -9,16 +7,20 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ServiceTwitter extends Service {
 
     private Twitter twitter;
     private HttpURLConnection connection;
     private ConfigurationBuilder cb;
+    private AccessToken accessToken;
 
     public ServiceTwitter() {
         cb = new ConfigurationBuilder();
@@ -27,6 +29,9 @@ public class ServiceTwitter extends Service {
                 .setOAuthConsumerSecret("b36cQpIffHxvsG6BofnvxX9l9x488e0hxEd5sx1bwthmKmddSJ");
     }
 
+    /**
+     * Recupérer un token et autoriser l'application a utiliser le compte de l'utilisateur
+     */
     @Override
     public void connect() {
         TwitterFactory tf = new TwitterFactory(cb.build());
@@ -36,16 +41,21 @@ public class ServiceTwitter extends Service {
 
             System.out.println("Request token: " + requestToken.getToken());
             System.out.println("Request token secret: " + requestToken.getTokenSecret());
-            AccessToken accessToken = null;
+            accessToken = null;
 
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            while (null == accessToken) {
-                System.out.println("Open the following URL and grant access to your account:");
-                System.out.println(requestToken.getAuthorizationURL());
+
+            // Recuperer un accessToken si on en a pas
+            while (accessToken == null) {
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
+                }
                 System.out.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
 
+                // IOException : a enlever car on passe sur l'UI
+                String pin = br.readLine();
+
                 try {
-                    String pin = br.readLine();
                     if (pin.length() > 0) {
                         accessToken = twitter.getOAuthAccessToken(requestToken, pin);
                     } else {
@@ -57,28 +67,25 @@ public class ServiceTwitter extends Service {
                     } else {
                         te.printStackTrace();
                     }
-                }   catch (IOException ex) {
-                    System.out.println("Error getting your pin");
                 }
-
             }
-            //persist to the accessToken for future reference.
-            //storeAccessToken(twitter.verifyCredentials().getId(), accessToken);
-            Status status = twitter.updateStatus("Salut");
-            System.out.println("Successfully updated the status to [" + status.getText() + "].");
-            System.exit(0);
-        } catch (TwitterException | IllegalStateException ie) {
+            // Stocker l'AT Quelque part pour eviter de se reconnecter a chaque fois
+            // storeAccessToken(twitter.verifyCredentials().getId(), accessToken);
+
+        } catch (TwitterException | IllegalStateException | URISyntaxException ie) {
 
             if (!twitter.getAuthorization().isEnabled()) {
                 System.out.println("OAuth consumer key/secret is not set");
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
 
     @Override
     public void disconnect() {
-
+        accessToken = null;
     }
 
     public void postTweet(String tweet) {
