@@ -1,16 +1,12 @@
 package database;
 
 import database.Entities.User;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
-import protocol.Protocol;
 import exceptions.*;
 
 import java.sql.*;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -253,6 +249,26 @@ public class DatabaseController {
     }
 
 
+    public JSONObject getUserRulesByUsername(String username) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet result = null;
+        String sql = "SELECT rules FROM User WHERE username=\'" + username + "\';";
+        JSONObject userRules = new JSONObject();
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+            result = preparedStatement.executeQuery();
+            while (result.next()) {
+                userRules = (JSONObject) result.getObject(1);
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return userRules;
+    }
+
     public Map<String, JSONObject> getAllRules() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -262,11 +278,11 @@ public class DatabaseController {
         try {
 
             allRules = new HashMap<>();
-            JSONObject userRules = new JSONObject();
             String username;
             preparedStatement = mConnection.prepareStatement(sql);
             result = preparedStatement.executeQuery();
             while (result.next()) {
+                JSONObject userRules = new JSONObject();
                 username = result.getString(1);
                 userRules = (JSONObject) result.getObject(2);
                 allRules.put(username,userRules);
