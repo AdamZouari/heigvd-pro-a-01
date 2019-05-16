@@ -1,6 +1,6 @@
-package database.Entities;
+package database.entities;
 
-abstract class Rule {
+public abstract class Rule {
 
     private String id,startDate,periodicity,content;
 
@@ -22,6 +22,5 @@ abstract class Rule {
         this.content=content;
 
     }
-
     abstract void formatRuleToSendServer();
 }
