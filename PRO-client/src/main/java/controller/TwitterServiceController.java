@@ -29,6 +29,11 @@ public class TwitterServiceController implements Initializable {
         // TODO
     }
 
+    @FXML
+    private void onTwitterConnectionClick() {
+        // TODO
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

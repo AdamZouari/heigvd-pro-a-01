@@ -40,6 +40,21 @@
                   </TextField>
                </children>
             </FlowPane>
+            <FlowPane hgap="10.0">
+               <children>
+                  <Label minWidth="160.0" text="Twitter Connection" />
+                  <TextField fx:id="pin" prefWidth="50">
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </TextField>
+                  <Button fx:id="twitterCnnection" mnemonicParsing="false" onMouseClicked="#onTwitterConnectionClick" text="%connexion">
+                     <FlowPane.margin>
+                        <Insets left="250.0" />
+                     </FlowPane.margin>
+                  </Button>
+               </children>
+            </FlowPane>
             <Button fx:id="addRuleButton" mnemonicParsing="false" onMouseClicked="#onAddRuleClick" text="%addTheRule">
                <FlowPane.margin>
                   <Insets left="250.0" />
