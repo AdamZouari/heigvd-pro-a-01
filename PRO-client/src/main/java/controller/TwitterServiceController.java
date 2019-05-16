@@ -20,6 +20,9 @@ public class TwitterServiceController implements Initializable {
     private TextField twitterId;
 
     @FXML
+    private TextField pin;
+
+    @FXML
     private void onTelegramClick() {
         // TODO
     }
