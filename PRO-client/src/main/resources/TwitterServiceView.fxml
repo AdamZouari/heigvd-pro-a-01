@@ -40,7 +40,7 @@
                   </TextField>
                </children>
             </FlowPane>
-            <Button fx:id="addRuleButton" mnemonicParsing="false" onMouseClicked="#onAddRuleClick" text="Add rule">
+            <Button fx:id="addRuleButton" mnemonicParsing="false" onMouseClicked="#onAddRuleClick" text="%addTheRule">
                <FlowPane.margin>
                   <Insets left="250.0" />
                </FlowPane.margin>

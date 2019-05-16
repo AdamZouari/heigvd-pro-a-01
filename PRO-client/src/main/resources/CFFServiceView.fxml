@@ -101,7 +101,7 @@
                   <CheckBox fx:id="disruptionCheckBox" mnemonicParsing="false" />
                </children>
             </FlowPane>
-            <Button mnemonicParsing="false" onMouseClicked="#onAddRuleClick" text="%addRule">
+            <Button mnemonicParsing="false" onMouseClicked="#onAddRuleClick" text="%addTheRule">
                <FlowPane.margin>
                   <Insets left="250.0" />
                </FlowPane.margin>
