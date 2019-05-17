@@ -1,7 +1,5 @@
 package controller;
 
-import commonEntities.CffRule;
-import commonEntities.Rule;
 import connection.ClientRequest;
 import exceptions.CustomException;
 import exceptions.ProtocolException;
@@ -65,7 +63,7 @@ public class CFFServiceController implements Initializable {
 
         // TODO we need to parse to create a json
         // TODO Here we send the rule
-        cr.sendRule(jsonToSend);
+        //cr.sendRule(jsonToSend);
         //cr.getCFF(from,to,departureTime,requestTime);
 
 

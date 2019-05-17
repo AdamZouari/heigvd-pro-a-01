@@ -1,20 +1,17 @@
 package database.Entities;
 
+import java.util.Date;
+
 public class RtsRule extends Rule {
 
-    private String tag;
+    private static final String TAG = "RTS";
 
     /**
      * @param id
-     * @param tag
      * @param startDate
-     * @param periodicity
-     * @param content
      **/
-    public RtsRule(String id, String tag, String startDate, String periodicity, String content) {
-        super(id, startDate, periodicity, content);
-        this.tag= "rts";
-
+    public RtsRule(int id, Date startDate,boolean menuCheckBox,boolean telegramCheckBox) {
+        super(id, TAG,startDate,menuCheckBox,telegramCheckBox);
     }
 
     @Override

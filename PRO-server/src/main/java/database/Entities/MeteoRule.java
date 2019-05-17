@@ -12,8 +12,7 @@ public class MeteoRule extends Rule {
      * @param content
      **/
     public MeteoRule(String id, String tag, String startDate, String periodicity, String content) {
-        super(id, startDate, periodicity, content);
-        this.tag= "meteo";
+
     }
 
     @Override

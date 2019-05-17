@@ -2,7 +2,7 @@ import database.DatabaseController;
 import database.Entities.Rule;
 import database.Entities.User;
 import org.json.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
@@ -151,7 +151,7 @@ public class Server {
                     JSONObject json = new JSONObject();
                     json.put("rules",new JSONArray());
                     DatabaseController db = DatabaseController.getController();
-                    db.addUser(username, telegramUsername, hashPassword, json.toJSONString(), User.LANGUE.EN);
+                    db.addUser(username, telegramUsername, hashPassword, json, User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
                 } catch (Exception e) {
@@ -203,7 +203,7 @@ public class Server {
 
                 // TODO create new Rule object to add to list of all rules
                 // iterate to switch whether it is a cff,rts,... rule
-                Rule ruleToAdd = new Rule();
+                //Rule ruleToAdd = new Rule();
                 allRUles.add(item);
 
             }
