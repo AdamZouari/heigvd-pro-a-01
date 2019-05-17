@@ -5,6 +5,7 @@ import exceptions.ProtocolException;
 import org.apache.log4j.Logger;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
+import commonEntities.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -120,7 +121,11 @@ public class ClientRequest {
 
     }
 
-    public void sendRule() {
+    public void sendRule(String ruleToSend) {
+        // TODO est ce que swtich sur le type de classe (RuleCff ou RTS...) pour choisir quoi envoyer,
+        // TODO  ou bien envoyer tel quel et c'est le serveur qui decide comment le parser
+        sendToServer(Protocol.CMD_ADD_RULE + " " + ruleToSend);
+        //String response = reader.readLine();
 
     }
 

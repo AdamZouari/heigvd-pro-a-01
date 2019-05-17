@@ -185,7 +185,7 @@ public class DatabaseController {
 
 
     // TODO : Check if exist
-    public void addUser(String username, String telegramUsername, String password, String rules, User.LANGUE langue) {
+    public void addUser(String username, String telegramUsername, String password, JSONObject rules, User.LANGUE langue) {
 
 
         PreparedStatement preparedStatement = null;
@@ -206,7 +206,7 @@ public class DatabaseController {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, telegramUsername);
             preparedStatement.setString(3, password);
-            preparedStatement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
+            preparedStatement.setObject(4, rules);                 // TODO think of a method to pass a JSON
             preparedStatement.setString(5, langue.name());
 
             preparedStatement.executeUpdate();
@@ -268,7 +268,7 @@ public class DatabaseController {
 
         return userRules;
     }
-
+    // TODO : Map<Username,List<Rule>>
     public Map<String, JSONObject> getAllRules() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -284,6 +284,8 @@ public class DatabaseController {
             while (result.next()) {
                 JSONObject userRules = new JSONObject();
                 username = result.getString(1);
+                // TODO cast in object Rule (fetched from database as string
+                // TODO parseJsonToRule
                 userRules = (JSONObject) result.getObject(2);
                 allRules.put(username,userRules);
             }

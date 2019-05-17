@@ -1,6 +1,8 @@
 package database.Entities;
 
-abstract class Rule {
+import java.util.Date;
+
+public abstract class Rule {
 
     private String id,startDate,periodicity,content;
 
@@ -15,9 +17,9 @@ abstract class Rule {
      * }
      *
      * **/
-    public Rule(String id,String startDate,String periodicity,String content){
+    public Rule(int id, Date startDate, String content){
         this.id=id;
-        this.startDate=startDate;
+        this.startDate=startDate.;
         this.periodicity=periodicity;
         this.content=content;
 

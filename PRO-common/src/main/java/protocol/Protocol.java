@@ -26,4 +26,5 @@ public class Protocol {
     public final static String RESPONSE_SUCCESS = "SUCCESS";
     public final static String RESPONSE_FAILURE = "FAILURE";
 
+    public static final String CMD_ADD_RULE = "ADD_RULE";
 }

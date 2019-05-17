@@ -1,5 +1,7 @@
 package controller;
 
+import commonEntities.CffRule;
+import commonEntities.Rule;
 import connection.ClientRequest;
 import exceptions.CustomException;
 import exceptions.ProtocolException;
@@ -56,11 +58,14 @@ public class CFFServiceController implements Initializable {
 
         ClientRequest cr = new ClientRequest();
 
-        // TODO specify on server looping each day and compare one hour before the departureTime of train
+        // specify on server looping each day and compare one hour before the departureTime of train
         // and actual date and notify to the user telegram id
+        // Rule rule = new CffRule("","","","24","");
+        //
 
-        // Here we send the rule
-        cr.sendRule();
+        // TODO we need to parse to create a json
+        // TODO Here we send the rule
+        cr.sendRule(jsonToSend);
         //cr.getCFF(from,to,departureTime,requestTime);
 
 

@@ -1,4 +1,5 @@
 import database.DatabaseController;
+import database.Entities.Rule;
 import database.Entities.User;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,12 +16,15 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
 
     final static Logger LOG = Logger.getLogger(Server.class.getName());
+
+    private static ArrayList<String> allRUles = new ArrayList<>();
 
     public void serveClients() {
         new Thread(new ReceptionistWorker()).start();
@@ -96,6 +100,9 @@ public class Server {
                             case Protocol.CMD_GET_CFF:
                                 cff(items[1]);
                                 break;
+
+                            case Protocol.CMD_ADD_RULE:
+                           addRule(items[1]);
                         }
 
                     }
@@ -186,6 +193,18 @@ public class Server {
                 }
 
                 cff.disconnect();
+
+            }
+
+
+            private void addRule(String item) {
+
+                // TODO Stores in database as a jsonObjectwith jsonObject cast
+
+                // TODO create new Rule object to add to list of all rules
+                // iterate to switch whether it is a cff,rts,... rule
+                Rule ruleToAdd = new Rule();
+                allRUles.add(item);
 
             }
 

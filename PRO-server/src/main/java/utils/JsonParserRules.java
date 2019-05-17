@@ -3,6 +3,8 @@ package utils;
 import java.io.FileReader;
 import java.io.IOException;
 
+import database.Entities.CffRule;
+import database.Entities.Rule;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -72,6 +74,11 @@ public class JsonParserRules {
         JSONArray rules = (JSONArray) allRules.get("rules");
 
         rules.put(newRule);
+    }
+
+    // TODO fetch json from database and
+    public Rule jsonToRule(){
+        return new CffRule();
     }
 
 }
