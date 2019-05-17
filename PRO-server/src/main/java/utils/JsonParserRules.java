@@ -78,7 +78,8 @@ public class JsonParserRules {
 
     // TODO fetch json from database and
     public Rule jsonToRule(){
-        return new CffRule();
+        //return new CffRule();
+        return null;
     }
 
 }
