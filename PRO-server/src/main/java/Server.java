@@ -32,7 +32,7 @@ public class Server {
 
     private void fetchDataBaseRules() {
         LOG.info("Fetching rules from database...");
-        ruleTaskManager.fetchDataBaseRules();
+        // ruleTaskManager.loadRules(???);
     }
 
     private void startScheduler() {
