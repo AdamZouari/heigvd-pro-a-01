@@ -175,6 +175,7 @@ public class Server {
                 String[] creds = item.split(":");
                 String username =  creds[0], hashPassword =  creds[1];
 
+                // TODO : Check if username is correct, use try&catch
                 User user = DatabaseController.getController().getUserByUsername(username);
                 if(user.getHashPassword().equals(hashPassword)){
                     System.out.println("User " +username+ " logged");

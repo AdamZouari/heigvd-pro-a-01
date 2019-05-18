@@ -6,10 +6,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import connection.ClientRequest;
 import exceptions.*;
+import javafx.stage.Stage;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Crypto;
 import java.io.IOException;
+
 import utils.Regexp;
 
 import static connection.ClientRequest.SALT;
@@ -63,6 +65,9 @@ public class RegisterController {
       FormUtils.hideErrorMessage(error);
       cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
 
-      // TODO : Afficher les erreurs du serveurs
+      // Close current window
+      ((Stage) this.username.getScene().getWindow()).close();
+
+      // TODO : Si enregistrer, connecter l'utilisateur, afficher les erreurs du serveur sinon
    }
 }
