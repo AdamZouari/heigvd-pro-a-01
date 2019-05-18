@@ -1,5 +1,7 @@
 import database.DatabaseController;
 import database.entities.User;
+import exceptions.CustomException;
+import exceptions.ProtocolException;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -165,9 +167,17 @@ public class Server {
                     db.addUser(username, telegramUsername, hashPassword, json.toJSONString(), User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
-                } catch (Exception e) {
+                } catch (ProtocolException e) {
                     System.out.println(e.getMessage());
-                    sendError(ExceptionCodes.REGISTRATION_FAILED.ordinal());
+
+                    if(e.getMessage().equals(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage()))
+                        sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.ordinal());
+                    else
+                        sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.ordinal());
+
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+
                 }
             }
             private void login(String item) throws SQLException {
@@ -175,16 +185,18 @@ public class Server {
                 String[] creds = item.split(":");
                 String username =  creds[0], hashPassword =  creds[1];
 
-                // TODO : Check if username is correct, use try&catch
-                User user = DatabaseController.getController().getUserByUsername(username);
-                if(user.getHashPassword().equals(hashPassword)){
-                    System.out.println("User " +username+ " logged");
-                    sendToClient(Protocol.RESPONSE_SUCCESS);
-                }else {
+                try {
+                    User user = DatabaseController.getController().getUserByUsername(username);
+
+                    if(user.getHashPassword().equals(hashPassword)) {
+                        System.out.println("User " + username + " logged");
+                        sendToClient(Protocol.RESPONSE_SUCCESS);
+                    } else
+                        sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
+
+                } catch(Exception e) {
                     sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
-
                 }
-
             }
 
             private void cff(String item) throws ParseException {

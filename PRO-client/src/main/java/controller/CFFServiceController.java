@@ -86,14 +86,20 @@ public class CFFServiceController implements Initializable {
 
         ClientRequest cr = new ClientRequest();
 
-        // TODO specify on server looping each day and compare one hour before the departureTime of train
-        // and actual date and notify to the user telegram id
+        // TODO : Décommenter try & catch en même temps que cr.getCFF
+//        try {
+            // TODO specify on server looping each day and compare one hour before the departureTime of train
+            // and actual date and notify to the user telegram id
 
-        // Here we send the rule
-        cr.sendRule();
-        //cr.getCFF(from,to,departureTime,requestTime);
+            // Here we send the rule
+            cr.sendRule();
+            //cr.getCFF(from,to,departureTime,requestTime);
 
-        error.setVisible(false);
+            error.setVisible(false);
+//        } catch (CustomException | ProtocolException e) {
+//            FormUtils.displayErrorMessage(error, e.getMessage());
+//        }
+
     }
 
     @Override

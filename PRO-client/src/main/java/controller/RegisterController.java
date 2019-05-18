@@ -42,7 +42,7 @@ public class RegisterController {
       String passwordConfirmed = this.passwordConfirmed.getText();
       String telegramUsername = this.telegramUsername.getText();
 
-      if(!FormUtils.isAllFilled(username, password, passwordConfirmed, telegramUsername)){
+      if(!FormUtils.isAllFilled(username, password, passwordConfirmed, telegramUsername)) {
          FormUtils.displayErrorMessage(error, ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
          return;
       }
@@ -62,12 +62,13 @@ public class RegisterController {
          return;
       }
 
-      FormUtils.hideErrorMessage(error);
-      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
+      try {
+         cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
 
-      // Close current window
-      ((Stage) this.username.getScene().getWindow()).close();
-
-      // TODO : Si enregistrer, connecter l'utilisateur, afficher les erreurs du serveur sinon
+         // Close current window
+         ((Stage) this.username.getScene().getWindow()).close();
+      } catch (CustomException | ProtocolException e) {
+         FormUtils.displayErrorMessage(error, e.getMessage());
+      }
    }
 }
