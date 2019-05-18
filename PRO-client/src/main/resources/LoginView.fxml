@@ -68,6 +68,7 @@
                         </ChoiceBox>
                     </children>
                 </FlowPane>
+                <Label fx:id="error" maxWidth="330" text="error" textFill="RED" visible="false" wrapText="true" />
             </children>
             <padding>
                 <Insets left="30.0" top="20.0" />
