@@ -10,9 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import protocol.ExceptionCodes;
-import sun.misc.FormattedFloatingDecimal;
 import utils.FormUtils;
 
 import javafx.scene.control.ChoiceBox;
@@ -40,18 +40,27 @@ public class LoginController implements Initializable {
    private Label error;
 
    @FXML
+   private FlowPane pane;
+
+   @FXML
    private void onSignUpClick() {
       try {
          FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/RegisterView.fxml"));
          fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
-         Parent root = fxmlLoader.load();
-         Stage stage = new Stage();
 
-         stage.setScene(new Scene(root));
-         stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("registration"));
-         stage.show();
+         Parent root = fxmlLoader.load();
+         Stage register = new Stage();
+
+         register.setScene(new Scene(root));
+         register.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("registration"));
+         register.setOnCloseRequest(event -> pane.setDisable(false));
+         register.setOnHidden(event -> pane.setDisable(false));
+
+         pane.setDisable(true);
+         register.show();
+
       } catch (IOException e) {
-         System.out.println("Failed to create new Window : " + e.getMessage());
+         FormUtils.displayErrorMessage(error, e.getMessage());
       }
    }
 
@@ -80,6 +89,10 @@ public class LoginController implements Initializable {
          stage.setScene(new Scene(root));
          stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("home"));
          stage.show();
+
+         // Close current window
+         ((Stage) this.username.getScene().getWindow()).close();
+
       } catch (IOException e) {
          e.getMessage();
       } catch (ProtocolException e) {
@@ -91,7 +104,6 @@ public class LoginController implements Initializable {
 
    @FXML
    private void changeLanguage() {
-
       if (languageChoice.getSelectionModel().getSelectedItem().equals("English")) {
          I18N.setLocale(I18N.EN);
       } else {
@@ -105,6 +117,9 @@ public class LoginController implements Initializable {
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       languageChoice.getSelectionModel().selectFirst();
-//      usernameLabel.setText(bundle.getString("username"));
+   }
+
+   private void enableWindow() {
+      pane.setDisable(false);
    }
 }

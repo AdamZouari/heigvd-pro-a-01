@@ -14,7 +14,7 @@
 
 <AnchorPane minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <children>
-        <FlowPane layoutX="25.0" layoutY="15.0" maxHeight="250.0" orientation="VERTICAL" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <FlowPane fx:id="pane" layoutX="25.0" layoutY="15.0" maxHeight="250.0" orientation="VERTICAL" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <FlowPane hgap="10.0" prefWidth="350">
                     <children>
