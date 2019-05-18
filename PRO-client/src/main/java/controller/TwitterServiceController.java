@@ -27,6 +27,9 @@ public class TwitterServiceController implements Initializable {
     private Label error;
 
     @FXML
+    private TextField pin;
+
+    @FXML
     private void onAddRuleClick() {
         boolean menu = menuCheckBox.isSelected();
         boolean telegram = telegramCheckBox.isSelected();
@@ -44,6 +47,11 @@ public class TwitterServiceController implements Initializable {
         }
 
         FormUtils.hideErrorMessage(error);
+    }
+
+    @FXML
+    private void onTwitterConnectionClick() {
+        // TODO
     }
 
     @Override

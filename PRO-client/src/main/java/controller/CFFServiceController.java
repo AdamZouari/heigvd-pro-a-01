@@ -37,6 +37,9 @@ public class CFFServiceController implements Initializable {
     private TextField requestTime;
 
     @FXML
+    private CheckBox disruptionCheckBox;
+
+    @FXML
     private Label error;
 
     @FXML
@@ -79,15 +82,16 @@ public class CFFServiceController implements Initializable {
             return;
         }
 
-        // TODO : Afficher les erreurs du serveur
+        boolean disruptionNotif = disruptionCheckBox.isSelected();
 
         ClientRequest cr = new ClientRequest();
 
-        cr.getCFF(from,to,departureTime,requestTime);
-        if(telegram){
-            // TODO specify on server looping each day and compare one hour before the departureTime of train
-            // and actual date and notify to the user telegram id
-        }
+        // TODO specify on server looping each day and compare one hour before the departureTime of train
+        // and actual date and notify to the user telegram id
+
+        // Here we send the rule
+        cr.sendRule();
+        //cr.getCFF(from,to,departureTime,requestTime);
 
         error.setVisible(false);
     }

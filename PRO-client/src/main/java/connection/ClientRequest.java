@@ -23,6 +23,7 @@ public class ClientRequest {
     private static Socket clientSocket;
     private static BufferedReader reader = null;
     private static PrintWriter writer = null;
+    private static String loggedUser;
 
     public void connect(String server) throws IOException {
         if (!isConnected()) {
@@ -47,6 +48,7 @@ public class ClientRequest {
         String response = reader.readLine();
         checkIfSuccess(response);
 
+
     }
 
     public void login(String username, String hashPassword) throws IOException, CustomException, ProtocolException {
@@ -54,6 +56,7 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_LOG + " " + username + ":" + hashPassword);
         String reponse = reader.readLine();
         checkIfSuccess(reponse);
+        loggedUser = username;
     }
 
     private static void checkIfFail(String response) throws CustomException, ProtocolException {
