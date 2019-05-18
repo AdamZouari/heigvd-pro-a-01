@@ -61,7 +61,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Button>
-            <FlowPane fx:id="passwordChangePane" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="10.0" visible="true">
+            <FlowPane fx:id="passwordChangePane" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="10.0" visible="false">
                <children>
                   <FlowPane>
                      <children>
