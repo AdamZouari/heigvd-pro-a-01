@@ -77,7 +77,6 @@ public class LoginController implements Initializable {
       FormUtils.hideErrorMessage(error);
       ClientRequest cr = new ClientRequest();
 
-      // TODO : Afficher erreur du serveur
       try {
          cr.login(user, Crypto.sha512(pass,SALT));
 
@@ -86,6 +85,7 @@ public class LoginController implements Initializable {
          Parent root = fxmlLoader.load();
          Stage stage = new Stage();
 
+         // TODO : get Language from DB
          stage.setScene(new Scene(root));
          stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("home"));
          stage.show();
@@ -104,14 +104,10 @@ public class LoginController implements Initializable {
 
    @FXML
    private void changeLanguage() {
-      if (languageChoice.getSelectionModel().getSelectedItem().equals("English")) {
+      if (languageChoice.getSelectionModel().getSelectedItem().equals("English"))
          I18N.setLocale(I18N.EN);
-      } else {
+      else
          I18N.setLocale(I18N.FR);
-      }
-
-      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
-      fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
    }
 
    @Override

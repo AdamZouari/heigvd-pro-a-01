@@ -9,6 +9,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SettingsController">
    <children>
@@ -49,10 +51,16 @@
             <FlowPane>
                <children>
                   <Label text="%language" />
-                  <ChoiceBox fx:id="languageSelection" prefWidth="150.0">
-                     <FlowPane.margin>
-                        <Insets left="7.0" />
-                     </FlowPane.margin>
+                  <ChoiceBox fx:id="languageSelection" prefWidth="150.0" onAction="#changeLanguage">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="English" />
+                              <String fx:value="Français" />
+                          </FXCollections>
+                      </items>
+                      <FlowPane.margin>
+                          <Insets left="7.0" />
+                      </FlowPane.margin>
                   </ChoiceBox>
                </children>
             </FlowPane>

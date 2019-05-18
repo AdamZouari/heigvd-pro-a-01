@@ -1,12 +1,11 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import locale.I18N;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Regexp;
@@ -40,6 +39,9 @@ public class SettingsController implements Initializable {
 
     @FXML
     private PasswordField confirmedPassword;
+
+    @FXML
+    private ChoiceBox languageSelection;
 
     @FXML
     private Label error;
@@ -94,7 +96,21 @@ public class SettingsController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        String currentLanguage = I18N.getLocale().getLanguage();
 
+        if(currentLanguage.equals("en"))
+            languageSelection.getSelectionModel().select("English");
+        else
+            languageSelection.getSelectionModel().select("Français");
+    }
+
+    // TODO : Change language in DB for user
+    @FXML
+    private void changeLanguage() {
+        if (languageSelection.getSelectionModel().getSelectedItem().equals("English"))
+            I18N.setLocale(I18N.EN);
+        else
+            I18N.setLocale(I18N.FR);
     }
 
     @FXML
