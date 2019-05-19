@@ -1,8 +1,6 @@
 package service;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
@@ -22,11 +20,14 @@ public class ServiceTwitter extends Service {
     private ConfigurationBuilder cb;
     private AccessToken accessToken;
 
+    final private String CONSUMER_KEY = "n9E1yBbhc1hSBGj61iU3lvGT6";
+    final private String CONSUMER_SECRET = "b36cQpIffHxvsG6BofnvxX9l9x488e0hxEd5sx1bwthmKmddSJ";
+
     public ServiceTwitter() {
         cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("n9E1yBbhc1hSBGj61iU3lvGT6")
-                .setOAuthConsumerSecret("b36cQpIffHxvsG6BofnvxX9l9x488e0hxEd5sx1bwthmKmddSJ");
+                .setOAuthConsumerKey(CONSUMER_KEY)
+                .setOAuthConsumerSecret(CONSUMER_SECRET);
     }
 
     /**
@@ -96,15 +97,31 @@ public class ServiceTwitter extends Service {
         }
     }
 
-    public void getTimeline() {
-
-    }
-
     public void sendMessages(long id, String message) {
         try {
             twitter.sendDirectMessage(id, message);
         } catch (TwitterException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isconnected() {
+        return accessToken != null;
+    }
+
+    public ResponseList<Status> getUserTimeline(String user) throws TwitterException {
+        return twitter.getUserTimeline(user);
+    }
+
+    public String getLastTweet(String user) {
+        String tweet = "";
+        try {
+            ResponseList<Status> timeline = twitter.getUserTimeline(user);
+            tweet = timeline.get(0).getText();
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+        return tweet;
     }
 }

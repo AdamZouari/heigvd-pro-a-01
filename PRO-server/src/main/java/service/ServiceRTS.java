@@ -17,7 +17,6 @@ import java.util.*;
 
 public class ServiceRTS extends Service {
 
-
     public ServiceRTS() {
     }
 
