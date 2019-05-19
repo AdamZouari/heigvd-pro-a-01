@@ -1,4 +1,4 @@
-package database.Entities;
+package database.entities;
 
 public class MeteoRule extends Rule {
     private String tag;

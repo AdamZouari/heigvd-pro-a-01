@@ -22,7 +22,7 @@
                   <FlowPane orientation="VERTICAL" prefHeight="50.0" vgap="10.0">
                      <children>
                         <CheckBox fx:id="menuCheckBox" mnemonicParsing="false" text="%inMenu" />
-                        <CheckBox fx:id="telegramCheckBox" mnemonicParsing="false" onMouseClicked="#onTelegramClick" text="%onTelegram" />
+                        <CheckBox fx:id="telegramCheckBox" mnemonicParsing="false" text="%onTelegram" />
                      </children>
                   </FlowPane>
                </children>
@@ -65,7 +65,7 @@
                         <Insets />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="departureTime">
+                  <TextField fx:id="departureTime" promptText="HH:MM">
                      <FlowPane.margin>
                         <Insets bottom="10.0" />
                      </FlowPane.margin>
@@ -82,7 +82,7 @@
                         <Insets right="10.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="requestTime">
+                  <TextField fx:id="requestTime" promptText="HH:MM">
                      <FlowPane.margin>
                         <Insets />
                      </FlowPane.margin></TextField>
@@ -106,6 +106,7 @@
                   <Insets left="250.0" />
                </FlowPane.margin>
             </Button>
+            <Label fx:id="error" maxWidth="370" text="error" textFill="RED" visible="false" wrapText="true" />
          </children>
          <padding>
             <Insets left="30.0" top="20.0" />

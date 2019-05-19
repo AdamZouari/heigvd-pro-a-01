@@ -18,10 +18,6 @@ import java.util.regex.Pattern;
  * **/
 
 public class SecurityFilter {
-
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
     // Source : https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
 
     private static final Pattern VALID_PASSWORD_POLICY = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$",Pattern.CASE_INSENSITIVE);
@@ -66,9 +62,6 @@ public class SecurityFilter {
         return hashPassword(passwordTest).equals(hashPassword(pw));
     }
 
-
-
-
     public static String generateRandomString(int nbChars) {
         char buf[] = new char[nbChars];
         SecureRandom random = new SecureRandom();
@@ -77,28 +70,12 @@ public class SecurityFilter {
             buf[idx] = charSymbols[random.nextInt(charSymbols.length)];
 
         }
+
         return new String(buf);
-
     }
-    public static boolean isAgoodPassword(String password){
 
+    public static boolean isAgoodPassword(String password){
         Matcher matcher = VALID_PASSWORD_POLICY.matcher(password);
         return matcher.find();
-    }
-
-    // id of 256 bits (32 characters)
-
-    public static void main(String[] args){
-
-        String randomTest = generateRandomString(32);
-        Scanner scanner = new Scanner(System.in);
-
-        String pass = "heeeeo123$E";
-        String pass2 = scanner.nextLine();
-        System.out.println(randomTest);
-        System.out.println("My password is:" + pass2);
-        System.out.println("Is this password sufficient ? -> " + isAgoodPassword(pass2));
-
-
     }
 }

@@ -1,4 +1,4 @@
-package database.Entities;
+package database.entities;
 
 public class CffRule extends Rule{
     private String tag;

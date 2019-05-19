@@ -15,18 +15,16 @@ public class Home extends Application {
     public static void main(String[] args) throws IOException {
 
         launch(Home.class);
-
     }
 
     @Override
     public void start(Stage stage) throws Exception {
         try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
 
             ClientRequest cr = new ClientRequest();
 
-
-            // FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/HomeView.fxml"));
-            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
             fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
 
             Parent root = fxmlLoader.load();

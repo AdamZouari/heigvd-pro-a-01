@@ -1,10 +1,11 @@
 import database.DatabaseController;
-import database.Entities.User;
+import database.entities.User;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
+import scheduler.RuleTaskManager;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
 
@@ -22,7 +23,24 @@ public class Server {
 
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
-    public void serveClients() {
+    private RuleTaskManager ruleTaskManager;
+
+    private Server() {
+        LOG.info("Starting the RuleTaskManager...");
+        ruleTaskManager = RuleTaskManager.getInstance();
+    }
+
+    private void fetchDataBaseRules() {
+        LOG.info("Fetching rules from database...");
+        // ruleTaskManager.loadRules(???);
+    }
+
+    private void startScheduler() {
+        LOG.info("Starting Scheduler from task manager...");
+        ruleTaskManager.startScheduling();
+    }
+
+    private void serveClients() {
         new Thread(new ReceptionistWorker()).start();
     }
 
@@ -157,6 +175,7 @@ public class Server {
                 String[] creds = item.split(":");
                 String username =  creds[0], hashPassword =  creds[1];
 
+                // TODO : Check if username is correct, use try&catch
                 User user = DatabaseController.getController().getUserByUsername(username);
                 if(user.getHashPassword().equals(hashPassword)){
                     System.out.println("User " +username+ " logged");
@@ -205,6 +224,8 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("This is the server");
         Server server = new Server();
+        server.fetchDataBaseRules(); // does nothing right now
+        server.startScheduler();
         server.serveClients();
     }
 }
