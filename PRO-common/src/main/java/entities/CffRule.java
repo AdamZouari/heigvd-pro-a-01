@@ -1,6 +1,4 @@
-package Entities;
-
-import java.util.Date;
+package entities;
 
 public class CffRule extends Rule{
     String from, to, departureTime, arrivalTime;

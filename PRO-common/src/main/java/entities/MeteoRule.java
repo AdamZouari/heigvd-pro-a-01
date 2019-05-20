@@ -1,6 +1,4 @@
-package Entities;
-
-import java.util.Date;
+package entities;
 
 public class MeteoRule extends Rule {
     private static final String TAG = "METEO";

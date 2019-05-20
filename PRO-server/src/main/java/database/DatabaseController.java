@@ -1,14 +1,13 @@
 package database;
 
-import Entities.User;
+import entities.User;
+
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;

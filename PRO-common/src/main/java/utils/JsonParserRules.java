@@ -1,10 +1,8 @@
 package utils;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Date;
 
-import Entities.CffRule;
+import entities.CffRule;
 import org.json.*;
 import org.json.simple.parser.*;
 
