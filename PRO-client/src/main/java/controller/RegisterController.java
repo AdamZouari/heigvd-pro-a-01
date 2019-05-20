@@ -1,21 +1,20 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import connection.ClientRequest;
 import exceptions.*;
 import javafx.stage.Stage;
+import protocol.ExceptionCodes;
+import utils.FormUtils;
 import utils.Crypto;
-
 import java.io.IOException;
 
-import static connection.ClientRequest.SALT;
+import utils.Regexp;
 
+import static connection.ClientRequest.SALT;
 
 public class RegisterController {
    @FXML
@@ -31,36 +30,44 @@ public class RegisterController {
    private TextField telegramUsername;
 
    @FXML
+   private Label error;
+
+   @FXML
    public void onRegisterClick() throws CustomException, IOException, ProtocolException {
 
       ClientRequest cr = new ClientRequest();
-
-      // TODO Check the length of the password ? Min 8
-      // TODO check if not empty
 
       String username = this.username.getText();
       String password = this.password.getText();
       String passwordConfirmed = this.passwordConfirmed.getText();
       String telegramUsername = this.telegramUsername.getText();
 
-      // TODO change exception by message in interface (label?)
-      if(!password.equals(passwordConfirmed))
-         throw new CustomException("Password didn't match");
-      else{
-         cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
-
-         // TODO refermer la fenetre de register et ouvrir celle de login
-         /*try {
-            Parent root = FXMLLoader.load(this.getClass().getResource("/LoginView.fxml"));
-            Stage stage = new Stage();
-
-            stage.setScene(new Scene(root));
-            stage.setTitle("ASAPP - Login");
-            stage.show();
-         } catch (IOException e) {
-            System.out.println("Failed to create new Window : " + e.getMessage());
-         }*/
+      if(!FormUtils.isAllFilled(username, password, passwordConfirmed, telegramUsername)){
+         FormUtils.displayErrorMessage(error, ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
+         return;
       }
 
+      if(!password.equals(passwordConfirmed)) {
+         FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORDS_DID_NOT_MATCH.getMessage());
+         return;
+      }
+
+      if(!FormUtils.isValid(password, Regexp.PASSWORD)) {
+         FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORD_INVALID.getMessage());
+         return;
+      }
+
+      if(!FormUtils.isValid(telegramUsername, Regexp.PSEUDO_TELEGRAM)) {
+         FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
+         return;
+      }
+
+      FormUtils.hideErrorMessage(error);
+      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
+
+      // Close current window
+      ((Stage) this.username.getScene().getWindow()).close();
+
+      // TODO : Si enregistrer, connecter l'utilisateur, afficher les erreurs du serveur sinon
    }
 }

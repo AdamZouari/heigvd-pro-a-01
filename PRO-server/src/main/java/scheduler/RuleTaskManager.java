@@ -1,9 +1,12 @@
 package scheduler;
 
-import scheduler.tasks.RuleTask;
+
+import entities.Rule;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +15,7 @@ import java.util.logging.Logger;
 public class RuleTaskManager {
 
     private static RuleTaskManager rtm;
+    private int period;
     final static Logger LOG = Logger.getLogger(RuleTaskManager.class.getName());
 
     private boolean running;
@@ -20,7 +24,7 @@ public class RuleTaskManager {
     private Map<String, Map<RuleTask, ScheduledFuture<?>>> taskMap;
 
     public static RuleTaskManager getInstance() {
-        if(rtm == null) {
+        if (rtm == null) {
             rtm = new RuleTaskManager();
         }
         return rtm;
@@ -28,49 +32,54 @@ public class RuleTaskManager {
 
     private RuleTaskManager() {
         running = false;
+        period = 24 * 60; // 1 day in minutes
         taskMap = new HashMap<>();
     }
 
-    public void fetchDataBaseRules() {
-        // TODO if the fetch is at a higher level, this method will be changed to addFetchedRules(Map<userId, ruleTask>)
-        if(!running) {
-            // TODO load taskMap with database content
+    public void loadRules(Map<String, List<Rule>> ruleLists) {
+        if (!running) {
+            for (String user : ruleLists.keySet()) {
+                Map<RuleTask, ScheduledFuture<?>> userRulesMap = new HashMap<>();
+                for (Rule r : ruleLists.get(user)) {
+                    userRulesMap.put(new RuleTask(r), null);
+                }
+                taskMap.put(user, userRulesMap);
+            }
         }
-        // for now, can't load taskMap on running scheduler
     }
 
     public void startScheduling() {
-        if(!running) {
+        if (!running) {
             executor = new ScheduledThreadPoolExecutor(1);
             executor.setRemoveOnCancelPolicy(true);
             running = true;
-            // TODO go through taskMap and start all tasks (none if empty)
+            for (Map<RuleTask, ScheduledFuture<?>> ruleMap : taskMap.values()) {
+                for (RuleTask task : ruleMap.keySet()) {
+                    ruleMap.replace(task, schedule(task));
+                }
+            }
         }
     }
 
-    public void addRule(String userId, RuleTask ruleTask) {
-        ScheduledFuture<?> sf = executor.scheduleAtFixedRate(
-                ruleTask,
-                ruleTask.getInitialDelay(),
-                ruleTask.getPeriod(),
-                TimeUnit.MINUTES);
-
-        if(taskMap.containsKey(userId)) {
-            taskMap.get(userId).put(ruleTask, sf);
+    public void addRule(String userId, RuleTask task) {
+        if (taskMap.containsKey(userId)) {
+            taskMap.get(userId).put(task, schedule(task));
         } else {
             Map<RuleTask, ScheduledFuture<?>> map = new HashMap<>();
-            map.put(ruleTask, sf);
+            map.put(task, schedule(task));
             taskMap.put(userId, map);
         }
     }
 
-    public void deleteRule(String userId, int ruleId) {
+    public Set<RuleTask> getUserTasks(String userId) {
+        return taskMap.get(userId).keySet();
+    }
 
-        // TODO not really good but I don't know how to do it better without using the RuleTask as id
-        if(taskMap.containsKey(userId)) {
+    public void deleteRule(String userId, int ruleId) {
+        if (taskMap.containsKey(userId)) {
             Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(userId);
-            for (RuleTask ruleTask: userRulesMap.keySet()) {
-                if(ruleTask.getRuleID() == ruleId) {
+            for (RuleTask ruleTask : userRulesMap.keySet()) {
+                if (ruleTask.getRuleID() == ruleId) {
                     userRulesMap.get(ruleTask).cancel(true);
                     userRulesMap.remove(ruleTask);
                 }
@@ -80,6 +89,14 @@ public class RuleTaskManager {
 
     public boolean isRunning() {
         return running;
+    }
+
+    private ScheduledFuture<?> schedule(RuleTask task) {
+        return executor.scheduleAtFixedRate(
+                task,
+                task.getInitialDelay(),
+                period,
+                TimeUnit.MINUTES);
     }
 
 }
