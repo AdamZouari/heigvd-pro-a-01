@@ -7,6 +7,8 @@ import exceptions.*;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -144,7 +146,6 @@ public class DatabaseController {
 
             }
 
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -249,18 +250,19 @@ public class DatabaseController {
     }
 
 
-    public JSONObject getUserRulesByUsername(String username) throws SQLException {
+    public String getUserRulesByUsername(String username) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
-        String sql = "SELECT rules FROM User WHERE username=\'" + username + "\';";
-        JSONObject userRules = new JSONObject();
+        String sql = "SELECT rules FROM User WHERE username=?";
+        String userRules = "none";
 
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1,username);
             result = preparedStatement.executeQuery();
             while (result.next()) {
-                userRules = (JSONObject) result.getObject(1);
+                userRules = result.getString(1);
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -268,25 +270,22 @@ public class DatabaseController {
 
         return userRules;
     }
-    // TODO : Map<Username,List<Entities.Rule>>
-    public Map<String, JSONObject> getAllRules() throws SQLException {
+
+    public Map<String, String> getAllRules() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT username,rules FROM User";
-        Map<String,JSONObject> allRules = null;
+        Map<String,String> allRules = null;
 
         try {
-
             allRules = new HashMap<>();
             String username;
             preparedStatement = mConnection.prepareStatement(sql);
             result = preparedStatement.executeQuery();
             while (result.next()) {
-                JSONObject userRules = new JSONObject();
+                String userRules;
                 username = result.getString(1);
-                // TODO cast in object Entities.Rule (fetched from database as string
-                // TODO parseJsonToRule
-                userRules = (JSONObject) result.getObject(2);
+                userRules = result.getString(2);
                 allRules.put(username,userRules);
             }
         }catch(Exception e){
