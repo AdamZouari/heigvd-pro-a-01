@@ -1,6 +1,5 @@
 import database.DatabaseController;
-import database.Entities.Rule;
-import database.Entities.User;
+import Entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -102,7 +101,7 @@ public class Server {
                                 break;
 
                             case Protocol.CMD_ADD_RULE:
-                           addRule(items[1]);
+                                addRule(items[1]);
                         }
 
                     }
@@ -199,12 +198,14 @@ public class Server {
 
             private void addRule(String item) {
 
+                JSONObject json = new JSONObject(item);
+                System.out.println(json);
                 // TODO Stores in database as a jsonObjectwith jsonObject cast
 
-                // TODO create new Rule object to add to list of all rules
+                // TODO create new Entities.Rule object to add to list of all rules
                 // iterate to switch whether it is a cff,rts,... rule
-                //Rule ruleToAdd = new Rule();
-                allRUles.add(item);
+                //Entities.Rule ruleToAdd = new Entities.Rule();
+                //allRUles.add(item);
 
             }
 

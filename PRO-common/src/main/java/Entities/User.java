@@ -1,4 +1,4 @@
-package database.Entities;
+package Entities;
 
 
 public class User {

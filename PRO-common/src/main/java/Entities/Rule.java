@@ -1,6 +1,4 @@
-package database.Entities;
-
-import java.util.Date;
+package Entities;
 
 import java.util.Date;
 
@@ -8,7 +6,7 @@ public abstract class Rule {
 
     private int id;
     private String tag;
-    private Date startDate;
+    private String startDate;
     private boolean telegramNotif, menuNotif;
 
 
@@ -22,7 +20,7 @@ public abstract class Rule {
      * }
      *
      * **/
-    public Rule(int id, String tag, Date startDate, boolean menuNotif, boolean telegramNotif){
+    public Rule(int id, String tag, String startDate, boolean menuNotif, boolean telegramNotif){
 
         this.id=id;
         this.tag=tag;

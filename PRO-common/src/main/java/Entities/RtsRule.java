@@ -1,4 +1,4 @@
-package database.Entities;
+package Entities;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ public class RtsRule extends Rule {
      * @param id
      * @param startDate
      **/
-    public RtsRule(int id, Date startDate,boolean menuCheckBox,boolean telegramCheckBox) {
+    public RtsRule(int id, String startDate,boolean menuCheckBox,boolean telegramCheckBox) {
         super(id, TAG,startDate,menuCheckBox,telegramCheckBox);
     }
 

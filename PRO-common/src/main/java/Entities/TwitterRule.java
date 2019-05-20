@@ -1,4 +1,4 @@
-package database.Entities;
+package Entities;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ public class TwitterRule extends Rule {
      * @param id
      * @param startDate
      **/
-    public TwitterRule(int id, Date startDate,String twitterId,String pin, boolean menuNotif,boolean telegramNotif) {
+    public TwitterRule(int id, String startDate,String twitterId,String pin, boolean menuNotif,boolean telegramNotif) {
         super(id,TAG, startDate,menuNotif,telegramNotif);
         this.twitterId= twitterId;
         this.pin=pin;

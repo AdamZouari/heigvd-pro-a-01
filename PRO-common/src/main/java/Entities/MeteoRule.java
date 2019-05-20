@@ -1,4 +1,4 @@
-package database.Entities;
+package Entities;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ public class MeteoRule extends Rule {
      *
      * @param id
      **/
-    public MeteoRule(int id, Date startDate, boolean telegramNotif, boolean menuNotif) {
+    public MeteoRule(int id, String startDate, boolean telegramNotif, boolean menuNotif) {
         super(id, TAG, startDate, menuNotif,telegramNotif);
         // TODO voir ce qu'on a besoin
     }

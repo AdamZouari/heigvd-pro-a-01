@@ -1,6 +1,6 @@
 package database;
 
-import database.Entities.User;
+import Entities.User;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;
@@ -268,7 +268,7 @@ public class DatabaseController {
 
         return userRules;
     }
-    // TODO : Map<Username,List<Rule>>
+    // TODO : Map<Username,List<Entities.Rule>>
     public Map<String, JSONObject> getAllRules() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -284,7 +284,7 @@ public class DatabaseController {
             while (result.next()) {
                 JSONObject userRules = new JSONObject();
                 username = result.getString(1);
-                // TODO cast in object Rule (fetched from database as string
+                // TODO cast in object Entities.Rule (fetched from database as string
                 // TODO parseJsonToRule
                 userRules = (JSONObject) result.getObject(2);
                 allRules.put(username,userRules);
