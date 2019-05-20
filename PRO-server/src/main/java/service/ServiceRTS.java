@@ -1,11 +1,5 @@
 package service;
 
-
-/*import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;*/
-
-
 import okhttp3.*;
 import org.json.JSONObject;
 
@@ -14,7 +8,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class ServiceRTS extends Service {
 
     public ServiceRTS() { }
@@ -22,6 +15,9 @@ public class ServiceRTS extends Service {
     private String accessToken;
     final private String urlToken = "https://api.srgssr.ch/oauth/v1/accesstoken?grant_type=client_credentials";
 
+    /**
+     * Set accessToken to access to the RTS API content
+     */
     public void setToken() {
 
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
@@ -41,6 +37,7 @@ public class ServiceRTS extends Service {
                     .method("POST", body)
                     .build();
 
+            // Get tne token in the response
             try (Response response = client.newCall(request).execute()) {
 
                 JSONObject json = new JSONObject(response.body().string());
@@ -52,14 +49,15 @@ public class ServiceRTS extends Service {
         // Assign Token
         accessToken = token;
     }
-
+    
     public String getAccessToken() {
         return accessToken;
     }
 
-    //private String programCommand = "curl -X GET --header \"Content-Type: \" --header \"Authorization: Bearer 2dIztu6lI6iAtcfUCCB3VEnffmM1\" \"https://api.srgssr.ch/epg/v1/api/programs\"\n";
-    private String programCommand = "curl -X GET --header \"Content-Type: \" --header \"Authorization: Bearer GgBC9SS1GxwwqJHbuszlcbzWRNaG\" \"https://api.srgssr.ch/epg/v1/api/schedules/day\"\n";
-
+    /**
+     * Get The TV program
+     * @return the json program in a string
+     */
     public String getProgram() {
 
         String program = new String();
@@ -77,6 +75,7 @@ public class ServiceRTS extends Service {
                     .get()
                     .build();
 
+            // Read the response
             try (Response response = client.newCall(request).execute()) {
                 JSONObject json = new JSONObject(response.body().string());
                 program = json.toString();
@@ -85,7 +84,6 @@ public class ServiceRTS extends Service {
             Logger.getLogger(ServiceRTS.class.getName()).log(Level.SEVERE, null, ex);
         }
         return program;
-
     }
 
 
