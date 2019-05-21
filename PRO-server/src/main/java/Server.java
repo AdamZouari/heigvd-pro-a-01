@@ -1,4 +1,6 @@
 import database.DatabaseController;
+import exceptions.CustomException;
+import exceptions.ProtocolException;
 import entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -158,7 +160,6 @@ public class Server {
             }
 
             private void register(String item) {
-
                 try {
                     String[] creds = item.split(":");
                     String username =  creds[0], telegramUsername =  creds[1], hashPassword = creds[2];
@@ -167,26 +168,37 @@ public class Server {
                     db.addUser(username, telegramUsername, hashPassword, json.toString(), User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
-                } catch (Exception e) {
+                } catch (ProtocolException e) {
                     System.out.println(e.getMessage());
-                    sendError(ExceptionCodes.REGISTRATION_FAILED.ordinal());
+
+                    if(e.getMessage().equals(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage()))
+                        sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.ordinal());
+                    else
+                        sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.ordinal());
+                // TODO : Check CustomException ? Send to client ?
+                } catch (CustomException e) {
+                    System.out.println(e.getMessage());
+
                 }
             }
+
             private void login(String item) throws SQLException {
 
                 String[] creds = item.split(":");
                 String username =  creds[0], hashPassword =  creds[1];
 
-                // TODO : Check if username is correct, use try&catch
-                User user = DatabaseController.getController().getUserByUsername(username);
-                if(user.getHashPassword().equals(hashPassword)){
-                    System.out.println("User " +username+ " logged");
-                    sendToClient(Protocol.RESPONSE_SUCCESS);
-                }else {
+                try {
+                    User user = DatabaseController.getController().getUserByUsername(username);
+
+                    if(user.getHashPassword().equals(hashPassword)) {
+                        System.out.println("User " + username + " logged");
+                        sendToClient(Protocol.RESPONSE_SUCCESS);
+                    } else
+                        sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
+
+                } catch(Exception e) {
                     sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
-
                 }
-
             }
 
             private void cff(String item) {
