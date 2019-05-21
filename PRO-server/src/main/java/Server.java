@@ -1,9 +1,9 @@
 import database.DatabaseController;
+import exceptions.CustomException;
 import exceptions.ProtocolException;
 import entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
 import scheduler.RuleTaskManager;
@@ -26,6 +26,7 @@ public class Server {
 
     private RuleTaskManager ruleTaskManager;
 
+    private static DatabaseController db = DatabaseController.getController();
 
     private Server() {
         LOG.info("Starting the RuleTaskManager...");
@@ -113,12 +114,13 @@ public class Server {
                                 login(items[1]);
                                 break;
 
-                            case Protocol.CMD_GET_CFF:
-                                cff(items[1]);
+                            case Protocol.CMD_ADD_RULE:
+                                addRule(items[1], items[2]);
                                 break;
 
-                            case Protocol.CMD_ADD_RULE:
-                                addRule(items[1]);
+                            case Protocol.CMD_GET_RULES:
+                                getRules(items[1]); //username
+                                break;
                         }
 
                     }
@@ -149,8 +151,6 @@ public class Server {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (SQLException e) {
                     e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -160,14 +160,12 @@ public class Server {
             }
 
             private void register(String item) {
-
                 try {
                     String[] creds = item.split(":");
                     String username =  creds[0], telegramUsername =  creds[1], hashPassword = creds[2];
                     JSONObject json = new JSONObject();
                     json.put("rules",new JSONArray());
-                    DatabaseController db = DatabaseController.getController();
-                    db.addUser(username, telegramUsername, hashPassword, json, User.LANGUE.EN);
+                    db.addUser(username, telegramUsername, hashPassword, json.toString(), User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
                 } catch (ProtocolException e) {
@@ -177,12 +175,13 @@ public class Server {
                         sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.ordinal());
                     else
                         sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.ordinal());
-
-                } catch (SQLException e) {
+                // TODO : Check CustomException ? Send to client ?
+                } catch (CustomException e) {
                     System.out.println(e.getMessage());
 
                 }
             }
+
             private void login(String item) throws SQLException {
 
                 String[] creds = item.split(":");
@@ -202,7 +201,7 @@ public class Server {
                 }
             }
 
-            private void cff(String item) throws ParseException {
+            private void cff(String item) {
 
                 ServiceCFF cff = new ServiceCFF();
                 cff.connect();
@@ -224,11 +223,19 @@ public class Server {
             }
 
 
-            private void addRule(String item) throws SQLException {
 
-                String username = item.split(":")[0];
-                String rules = item.split(":")[1];
+            private void getRules(String username) throws SQLException {
 
+                String rules = db.getUserRulesByUsername(username);
+                sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+
+            }
+
+
+            private void addRule(String username,String rules) throws SQLException {
+
+
+                LOG.info("rules " + rules);
                 // we extracted the rules to add to the database
                 JSONObject json = new JSONObject(rules);
                 System.out.println(json);
@@ -237,16 +244,26 @@ public class Server {
                 // iterate to switch whether it is a cff,rts,... rule
 
 
-                String userRulesString = DatabaseController.getController().getUserRulesByUsername(username);
+                String userRulesString = db.getUserRulesByUsername(username);
 
-                JSONObject userRules = new JSONObject(userRulesString);
-                userRules.put("rules",json);
+                // get the previous rules of a user
+                JSONObject userRulesToJson = new JSONObject (userRulesString);
+                JSONArray userRules = (JSONArray) userRulesToJson.get("rules");
 
-                // TODO update or store new rules
+                // add new rule
+                userRules.put(json);
 
+                // update old rules with new ones
+                JSONObject fin = new JSONObject();
+                fin.put("rules", userRules);
+
+                // update or store new rules
+                db.updateRule(username, fin.toString());
                 //TODO christoph ? need of a rule
                 //Rule ruleToAdd = new CffRule();
                 //allRUles.add(ruleToAdd);
+
+                sendToClient(Protocol.RESPONSE_SUCCESS);
 
             }
 
@@ -260,8 +277,6 @@ public class Server {
             }
         }
     }
-
-
 
     public static void main(String[] args) {
         System.out.println("This is the server");

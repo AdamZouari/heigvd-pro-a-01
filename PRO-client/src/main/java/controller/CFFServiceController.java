@@ -8,8 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.json.JSONObject;
-import utils.JsonParserCFF;
 import utils.JsonParserRules;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
@@ -58,14 +58,12 @@ public class CFFServiceController implements Initializable {
         boolean menuNotif = this.menuCheckBox.isSelected();
 
 
-        String requestTime = this.requestTime.getText();
-
         if(!menu && !telegram) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
             return;
         }
 
-        if(!FormUtils.isAllFilled(from, to, departureTime, requestTime)) {
+        if(!FormUtils.isAllFilled(from, to, departureTime, arrivalTime)) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
             return;
         }
@@ -85,7 +83,7 @@ public class CFFServiceController implements Initializable {
             return;
         }
 
-        if(!FormUtils.isValid(requestTime, Regexp.TIME)) {
+        if(!FormUtils.isValid(arrivalTime, Regexp.TIME)) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_HOUR_IS_NOT_IN_TIME_FORMAT.getMessage());
             return;
         }
@@ -111,7 +109,7 @@ public class CFFServiceController implements Initializable {
 
 
         // TODO once json as string stored in DB, then transform from string (then JsonObject then finally to rule)
-        error.setVisible(false);
+        ((Stage) this.from.getScene().getWindow()).close();
 //        } catch (CustomException | ProtocolException e) {
 //            FormUtils.displayErrorMessage(error, e.getMessage());
 //        }

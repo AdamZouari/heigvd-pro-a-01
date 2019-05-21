@@ -2,7 +2,6 @@ package database;
 
 import entities.User;
 
-import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;
 
@@ -305,7 +304,7 @@ public class DatabaseController {
     public void updateRule(String username, String rule) {
 
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE User SET rule = ?  WHERE username = ? ";
+        String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
 
 
         try {
