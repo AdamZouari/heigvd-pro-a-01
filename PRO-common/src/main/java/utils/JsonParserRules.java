@@ -34,7 +34,6 @@ public class JsonParserRules {
 
 
 //    public static CffRule parseCffRuleFromServer(String storedJsonAsString) {
-//
 //        JSONObject json = new JSONObject(storedJsonAsString);
 //
 //        int id = (int  ) json.get("id");
@@ -49,7 +48,6 @@ public class JsonParserRules {
 //        boolean disruptionNotif = (boolean) json.get("disruptionNotif");
 //
 //        return new CffRule(id,date_debut,from,to,departureTime,arrivalTime,telegramNotif,menuNotif,disruptionNotif);
-//
 //    }
 
     /**

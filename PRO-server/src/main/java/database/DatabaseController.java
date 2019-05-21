@@ -183,17 +183,12 @@ public class DatabaseController {
     }
 
 
-    // TODO : Check if exist
-    public void addUser(String username, String telegramUsername, String password, String rules, User.LANGUE langue) {
-
-
+    public void addUser(String username, String telegramUsername, String password, String rules, User.LANGUE langue) throws ProtocolException, CustomException {
         PreparedStatement preparedStatement = null;
-        String sql = " INSERT INTO User( username, telegramUsername,password, rules, langue)" +
-                " VALUES (?,?,?,?,?) ;";
+        String sql = " INSERT INTO User( username, telegramUsername,password, rules, langue) VALUES (?,?,?,?,?) ;";
 
         try {
             if (usernameExist(username)) {
-
                 throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage());
             }
 
@@ -205,30 +200,23 @@ public class DatabaseController {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, telegramUsername);
             preparedStatement.setString(3, password);
-            preparedStatement.setObject(4, rules);                 // TODO think of a method to pass a JSON
+            preparedStatement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
             preparedStatement.setString(5, langue.name());
 
             preparedStatement.executeUpdate();
             System.out.println("User " + username + " added !");
-
-
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
+            throw new CustomException(ExceptionCodes.REGISTRATION_FAILED.ordinal());
         }
-
-
     }
 
     public void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
-
-
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET username = ? , password = ? , rules = ? , langue = ? " +
                 " WHERE id = ? ";
 
         try {
-
             preparedStatement = mConnection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
@@ -239,13 +227,9 @@ public class DatabaseController {
 
             preparedStatement.executeUpdate();
             System.out.println("User " + username + " updated !");
-
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
 
@@ -301,7 +285,6 @@ public class DatabaseController {
 
 
         try {
-
             preparedStatement = mConnection.prepareStatement(sql);
 
             preparedStatement.setString(1, password);
@@ -334,12 +317,11 @@ public class DatabaseController {
             preparedStatement.executeUpdate();
             System.out.println("Rule of updated !");
 
+            System.out.println("Password of updated !");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
     public void specifyRules(int id, String rules) {

@@ -108,12 +108,8 @@ public class LoginController implements Initializable {
          // Close current window
          ((Stage) this.username.getScene().getWindow()).close();
 
-      } catch (IOException e) {
-         e.getMessage();
-      } catch (ProtocolException e) {
-         e.printStackTrace();
-      } catch (CustomException e) {
-         e.printStackTrace();
+      } catch (IOException | ProtocolException | CustomException e) {
+         FormUtils.displayErrorMessage(error, e.getMessage());
       }
    }
 
@@ -131,7 +127,7 @@ public class LoginController implements Initializable {
    public void initialize(URL location, ResourceBundle resources) {
       languageChoice.getSelectionModel().selectFirst();
    }
-
+  
    private void enableWindow() {
       pane.setDisable(false);
    }
