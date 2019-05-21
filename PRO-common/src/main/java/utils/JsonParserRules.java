@@ -1,8 +1,6 @@
 package utils;
 
 import java.io.IOException;
-
-import entities.CffRule;
 import org.json.*;
 
 
@@ -35,24 +33,24 @@ public class JsonParserRules {
     }
 
 
-    public static CffRule parseCffRuleFromServer(String storedJsonAsString) {
-
-        JSONObject json = new JSONObject(storedJsonAsString);
-
-        int id = (int  ) json.get("id");
-        String tag = (String) json.get("tag");
-        String date_debut = (String) json.get("date_debut");
-        String from = (String) json.get("from");
-        String to = (String) json.get("to");
-        String departureTime = (String) json.get("departureTime");
-        String arrivalTime = (String) json.get("arrivalTime");
-        boolean telegramNotif = (boolean) json.get("telegramNotif");
-        boolean menuNotif = (boolean) json.get("menuNotif");
-        boolean disruptionNotif = (boolean) json.get("disruptionNotif");
-
-        return new CffRule(id,date_debut,from,to,departureTime,arrivalTime,telegramNotif,menuNotif,disruptionNotif);
-
-    }
+//    public static CffRule parseCffRuleFromServer(String storedJsonAsString) {
+//
+//        JSONObject json = new JSONObject(storedJsonAsString);
+//
+//        int id = (int  ) json.get("id");
+//        String tag = (String) json.get("tag");
+//        String date_debut = (String) json.get("date_debut");
+//        String from = (String) json.get("from");
+//        String to = (String) json.get("to");
+//        String departureTime = (String) json.get("departureTime");
+//        String arrivalTime = (String) json.get("arrivalTime");
+//        boolean telegramNotif = (boolean) json.get("telegramNotif");
+//        boolean menuNotif = (boolean) json.get("menuNotif");
+//        boolean disruptionNotif = (boolean) json.get("disruptionNotif");
+//
+//        return new CffRule(id,date_debut,from,to,departureTime,arrivalTime,telegramNotif,menuNotif,disruptionNotif);
+//
+//    }
 
     /**
      *
