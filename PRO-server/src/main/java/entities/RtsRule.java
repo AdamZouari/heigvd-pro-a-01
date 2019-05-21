@@ -12,8 +12,9 @@ public class RtsRule extends Rule {
         super(id, TAG,startDate,menuCheckBox,telegramCheckBox);
     }
 
-    @Override
-    void formatRuleToSendServer() {
 
+    @Override
+    public void execute() {
+        // TO DO
     }
 }
