@@ -28,4 +28,5 @@ public abstract class Rule {
     }
 
     abstract void formatRuleToSendServer();
+    abstract void execute();
 }
