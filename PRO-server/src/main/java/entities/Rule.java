@@ -2,10 +2,10 @@ package entities;
 
 public abstract class Rule {
 
-    private int id;
-    private String tag;
-    private String startDate;
-    private boolean telegramNotif, menuNotif;
+    protected int id;
+    protected String tag;
+    protected String startDate;
+    protected boolean telegramNotif, menuNotif;
 
 
     /**
@@ -27,5 +27,5 @@ public abstract class Rule {
         this.telegramNotif = telegramNotif;
     }
 
-    abstract void formatRuleToSendServer();
+    abstract void execute();
 }

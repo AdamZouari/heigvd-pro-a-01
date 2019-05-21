@@ -17,10 +17,9 @@ public class TwitterRule extends Rule {
     }
 
     @Override
-    void formatRuleToSendServer() {
-
+    public void execute() {
+        // TO DO
     }
-
     public static String getTAG() {
         return TAG;
     }
@@ -40,5 +39,6 @@ public class TwitterRule extends Rule {
     public boolean isTelegramnotif() {
         return telegramnotif;
     }
+
 
 }

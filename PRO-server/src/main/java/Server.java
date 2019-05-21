@@ -1,6 +1,4 @@
 import database.DatabaseController;
-import entities.CffRule;
-import entities.Rule;
 import entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,7 +15,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
