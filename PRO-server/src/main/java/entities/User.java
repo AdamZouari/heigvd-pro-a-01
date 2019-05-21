@@ -1,4 +1,4 @@
-package database.entities;
+package entities;
 
 
 public class User {

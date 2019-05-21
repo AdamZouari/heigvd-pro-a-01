@@ -3,7 +3,6 @@ package utils;
 // https://github.com/rubenlagus/TelegramBots/wiki/Getting-Started
 
 
-import org.json.simple.parser.ParseException;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -16,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -119,12 +117,10 @@ public class TelegramNotification extends TelegramLongPollingBot {
         cff.connect();
         String trains = cff.getTrainsForPath(arg1,arg2,"2019-05-12","17:30");
         String result = "";
-        try {
-            result = JsonParserCFF.parseCFF(trains,arg1,arg2);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        result = JsonParserCFF.parseCFF(trains,arg1,arg2);
+
+
         return result;
     }
 
@@ -134,12 +130,9 @@ public class TelegramNotification extends TelegramLongPollingBot {
         cff.connect();
         String trains = cff.getTrainsForPath(arg1,arg2,"2019-05-11","19:37");
         String result = "";
-        try {
-            result = JsonParserCFF.parseCFForDelay(trains,arg1,arg2);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        result = JsonParserCFF.parseCFForDelay(trains,arg1,arg2);
+
         return result;
     }
 

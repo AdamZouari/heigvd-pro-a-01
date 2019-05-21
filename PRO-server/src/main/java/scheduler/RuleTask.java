@@ -1,6 +1,6 @@
 package scheduler;
 
-import database.entities.Rule;
+import entities.Rule;
 
 public class RuleTask implements Runnable {
 

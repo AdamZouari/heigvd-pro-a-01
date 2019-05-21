@@ -1,16 +1,14 @@
 package utils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Iterator;
 
-import com.mysql.cj.log.NullLogger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.*;
 
-import static org.json.simple.JSONValue.parse;
 
 public class JsonParserCFF {
 
@@ -18,17 +16,16 @@ public class JsonParserCFF {
      * For each connection we parse the timestamp of arrival time and the "quai" where the train starts
      *
      * **/
-    public static String parseCFF(String cffResponse,String arg1,String arg2) throws ParseException {
+    public static String parseCFF(String cffResponse,String arg1,String arg2) {
         // parsing file "JSONExample.json"
         StringBuilder result = new StringBuilder();
-        JSONParser parser = new JSONParser();
-        JSONObject json = (JSONObject) parser.parse(cffResponse);
+        JSONObject json = new JSONObject(cffResponse);
 
         // getting connections
         JSONArray connections = ((JSONArray)json.get("connections"));
 
         // iterating on connections
-        Iterator<JSONObject> connectionIt = connections.iterator();
+        Iterator<Object> connectionIt = connections.iterator();
 
         // In each connection we need to get:
         // - the timestamp departure
@@ -42,7 +39,7 @@ public class JsonParserCFF {
         while (connectionIt.hasNext()) {
 
             System.out.println("Connection n° " + (i++) + ":");
-            JSONObject nthConnection = connectionIt.next();
+            JSONObject nthConnection = (JSONObject) connectionIt.next();
 
             // we get the departure connection
             JSONObject from = (JSONObject) nthConnection.get("from");
@@ -72,17 +69,16 @@ public class JsonParserCFF {
      * and verifies for each sub-connection if there is the train has a delay
      *
      * **/
-    public static String parseCFForDelay(String cffResponse,String arg1,String arg2) throws ParseException {
+    public static String parseCFForDelay(String cffResponse,String arg1,String arg2) {
 
         StringBuilder result = new StringBuilder();
-        JSONParser parser = new JSONParser();
-        JSONObject json = (JSONObject) parser.parse(cffResponse);
+        JSONObject json = new JSONObject (cffResponse);
 
         // getting connections
         JSONArray connections = ((JSONArray)json.get("connections"));
 
         // iterating on connections
-        Iterator<JSONObject> connectionIt = connections.iterator();
+        Iterator<Object> connectionIt = connections.iterator();
 
         int i = 0;
         int totalDelay = 0;
@@ -91,7 +87,7 @@ public class JsonParserCFF {
         while (connectionIt.hasNext()) {
 
             System.out.println("Connection n° " + (i++) + ":");
-            JSONObject nthConnection = connectionIt.next();
+            JSONObject nthConnection = (JSONObject) connectionIt.next();
 
             // we get the departure connection
             JSONObject from = (JSONObject) nthConnection.get("from");

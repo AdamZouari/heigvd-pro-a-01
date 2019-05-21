@@ -1,5 +1,3 @@
-import org.json.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import service.ServiceCFF;
 import service.ServiceRTS;
@@ -11,13 +9,13 @@ import java.util.ArrayList;
 public class RTSJUnitTests {
 
     @Test
-    public void testRTSPRograms() throws FileNotFoundException, ParseException {
+    public void testRTSPRograms() throws FileNotFoundException {
         ServiceRTS rts = new ServiceRTS();
         rts.connect();
 
         System.out.println("Voici tout les programmes :");
-        ArrayList<String> programs = rts.getProgram();
-        System.out.println(programs);
+        //ArrayList<String> programs = rts.getProgram();
+        //System.out.println(programs);
 
         //System.out.println(JsonParserRTS.parseRTS(connectionsLtoG,"laUsanne","genEve"));
 
@@ -26,7 +24,7 @@ public class RTSJUnitTests {
 
 
     @Test
-    public void testCFFModificationOfTrain() throws FileNotFoundException, ParseException {
+    public void testCFFModificationOfTrain() throws FileNotFoundException{
         String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
         System.out.println(JsonParserCFF.parseCFForDelay(cff,"Lausanne","Geneve"));
 
