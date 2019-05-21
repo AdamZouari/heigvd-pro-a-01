@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import entities.CffRule;
 import org.json.*;
-import org.json.simple.parser.*;
 
 
 public class JsonParserRules {
@@ -36,10 +35,9 @@ public class JsonParserRules {
     }
 
 
-    public static CffRule parseCffRuleFromServer(String storedJsonAsString) throws ParseException {
+    public static CffRule parseCffRuleFromServer(String storedJsonAsString) {
 
-        JSONParser parser = new JSONParser();
-        JSONObject json = (JSONObject) parser.parse(storedJsonAsString);
+        JSONObject json = new JSONObject(storedJsonAsString);
 
         int id = (int  ) json.get("id");
         String tag = (String) json.get("tag");
@@ -60,9 +58,9 @@ public class JsonParserRules {
      *
      *
      * **/
-    public String parseRule() throws IOException, ParseException {
+    public String parseRule() throws IOException {
         // parsing file "rules.json"
-        JSONParser parser = new JSONParser();
+
 
         //JSONObject json = (JSONObject) parser.parse());
 

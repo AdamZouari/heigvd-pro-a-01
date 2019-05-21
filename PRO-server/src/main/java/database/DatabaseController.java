@@ -2,7 +2,6 @@ package database;
 
 import entities.User;
 
-import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;
 
@@ -185,7 +184,7 @@ public class DatabaseController {
 
 
     // TODO : Check if exist
-    public void addUser(String username, String telegramUsername, String password, JSONObject rules, User.LANGUE langue) {
+    public void addUser(String username, String telegramUsername, String password, String rules, User.LANGUE langue) {
 
 
         PreparedStatement preparedStatement = null;
@@ -322,7 +321,7 @@ public class DatabaseController {
     public void updateRule(String username, String rule) {
 
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE User SET rule = ?  WHERE username = ? ";
+        String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
 
 
         try {

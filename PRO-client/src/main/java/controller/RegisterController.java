@@ -52,10 +52,10 @@ public class RegisterController {
          return;
       }
 
-      if(!FormUtils.isValid(password, Regexp.PASSWORD)) {
+      /*if(!FormUtils.isValid(password, Regexp.PASSWORD)) {
          FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORD_INVALID.getMessage());
          return;
-      }
+      }*/
 
       if(!FormUtils.isValid(telegramUsername, Regexp.PSEUDO_TELEGRAM)) {
          FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
