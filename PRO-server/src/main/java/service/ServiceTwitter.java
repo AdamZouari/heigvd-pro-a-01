@@ -1,33 +1,32 @@
 package service;
 
 import twitter4j.*;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class ServiceTwitter extends Service {
 
     private Twitter twitter;
     private HttpURLConnection connection;
     private ConfigurationBuilder cb;
-    private AccessToken accessToken;
 
-    final private String CONSUMER_KEY = "n9E1yBbhc1hSBGj61iU3lvGT6";
-    final private String CONSUMER_SECRET = "b36cQpIffHxvsG6BofnvxX9l9x488e0hxEd5sx1bwthmKmddSJ";
+    private String accessToken = "1130810417767473154-w13f7SFTB4CTVFQk1yLGEiRPzYnPeh";
+    private String accessTokenSecret = "RzD5X9DuLqgZikMrmZV0vHd4A6Dm6VphnLzBMq1zLhU2k";
+    final private String CONSUMER_KEY = "Lgi1IKBOsazJ9L6uaSVzxsMWb";
+    final private String CONSUMER_SECRET = "FVzYIg860Re8WXQbhfw8jfUl5rk0ZxUdfXWYJq8pFF9eympB7T";
 
     public ServiceTwitter() {
+
         cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
                 .setOAuthConsumerKey(CONSUMER_KEY)
-                .setOAuthConsumerSecret(CONSUMER_SECRET);
+                .setOAuthConsumerSecret(CONSUMER_SECRET)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret);
+
+        TwitterFactory tf = new TwitterFactory(cb.build());
+        twitter = tf.getInstance();
     }
 
     /**
@@ -35,6 +34,7 @@ public class ServiceTwitter extends Service {
      */
     @Override
     public void connect() {
+        /*
         TwitterFactory tf = new TwitterFactory(cb.build());
         twitter = tf.getInstance();
         try {
@@ -81,7 +81,12 @@ public class ServiceTwitter extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        */
+        try {
+            twitter.getOAuthAccessToken(accessToken);
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -113,6 +118,13 @@ public class ServiceTwitter extends Service {
         return twitter.getUserTimeline(user);
     }
 
+    public void followUser(String user) {
+        try {
+            twitter.createFriendship(user);
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+    }
     public String getLastTweet(String user) {
         String tweet = "";
         try {
