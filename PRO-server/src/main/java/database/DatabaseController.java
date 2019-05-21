@@ -210,13 +210,14 @@ public class DatabaseController {
             preparedStatement.setString(5, langue.name());
 
             preparedStatement.executeUpdate();
+            System.out.println("User " + username + " added !");
+
 
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("User " + username + " added !");
 
     }
 
@@ -238,13 +239,13 @@ public class DatabaseController {
 
 
             preparedStatement.executeUpdate();
+            System.out.println("User " + username + " updated !");
 
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("User " + username + " updated !");
 
     }
 
@@ -308,13 +309,37 @@ public class DatabaseController {
             preparedStatement.setInt(2, id);
 
             preparedStatement.executeUpdate();
+            System.out.println("Password of updated !");
 
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("Password of updated !");
+
+    }
+
+    public void updateRule(String username, String rule) {
+
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE User SET rule = ?  WHERE username = ? ";
+
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, rule);
+            preparedStatement.setString(2, username);
+
+            preparedStatement.executeUpdate();
+            System.out.println("Rule of updated !");
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
 
     }
 
