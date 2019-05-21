@@ -1,12 +1,11 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import locale.I18N;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Regexp;
@@ -42,7 +41,43 @@ public class SettingsController implements Initializable {
     private PasswordField confirmedPassword;
 
     @FXML
+    private ChoiceBox languageSelection;
+
+    @FXML
     private Label error;
+
+    @FXML
+    private Label usernameLabel;
+
+    @FXML
+    private Button editNameButton;
+
+    @FXML
+    private Label telegramUsername;
+
+    @FXML
+    private Button editTelegramButton;
+
+    @FXML
+    private Label language;
+
+    @FXML
+    private Button passwordChangeButton;
+
+    @FXML
+    private Label oldPasswordLabel;
+
+    @FXML
+    private Label newPasswordLabel;
+
+    @FXML
+    private Label confirmPass;
+
+    @FXML
+    private Button savePasswordButton;
+
+    @FXML
+    private Button cancelPasswordButton;
 
     @FXML
     private void onEditTelegramButtonClick() {
@@ -94,7 +129,23 @@ public class SettingsController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        String currentLanguage = I18N.getLocale().getLanguage();
 
+        if(currentLanguage.equals("en"))
+            languageSelection.getSelectionModel().select("English");
+        else
+            languageSelection.getSelectionModel().select("Français");
+    }
+
+    // TODO : Change language in DB for user
+    @FXML
+    private void changeLanguage() {
+        if (languageSelection.getSelectionModel().getSelectedItem().equals("English"))
+            I18N.setLocale(I18N.EN);
+        else
+            I18N.setLocale(I18N.FR);
+
+        changeDisplayedLanguage();
     }
 
     @FXML
@@ -135,5 +186,27 @@ public class SettingsController implements Initializable {
         } else {
             passwordChangePane.setVisible(true);
         }
+    }
+
+    private void changeDisplayedLanguage() {
+        ResourceBundle resource = ResourceBundle.getBundle("Internationalization", I18N.getLocale());
+
+        usernameLabel.setText(resource.getString("username"));
+        editNameButton.setText(resource.getString("edit"));
+        saveNameButton.setText(resource.getString("save"));
+
+        telegramUsername.setText(resource.getString("telegramUsername"));
+        editTelegramButton.setText(resource.getString("edit"));
+        saveTelegramButton.setText(resource.getString("save"));
+
+        language.setText(resource.getString("language"));
+
+        passwordChangeButton.setText(resource.getString("changePassword"));
+
+        oldPasswordLabel.setText(resource.getString("oldPassword"));
+        newPasswordLabel.setText(resource.getString("newPassword"));
+        confirmPass.setText(resource.getString("confirmation"));
+        savePasswordButton.setText(resource.getString("save"));
+        cancelPasswordButton.setText(resource.getString("cancel"));
     }
 }

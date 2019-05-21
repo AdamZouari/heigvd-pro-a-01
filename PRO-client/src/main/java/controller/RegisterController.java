@@ -42,7 +42,7 @@ public class RegisterController {
       String passwordConfirmed = this.passwordConfirmed.getText();
       String telegramUsername = this.telegramUsername.getText();
 
-      if(!FormUtils.isAllFilled(username, password, passwordConfirmed, telegramUsername)){
+      if(!FormUtils.isAllFilled(username, password, passwordConfirmed, telegramUsername)) {
          FormUtils.displayErrorMessage(error, ExceptionCodes.ALL_FIELDS_ARE_NOT_FILLED.getMessage());
          return;
       }
@@ -52,22 +52,24 @@ public class RegisterController {
          return;
       }
 
-      /*if(!FormUtils.isValid(password, Regexp.PASSWORD)) {
-         FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORD_INVALID.getMessage());
-         return;
-      }*/
+      // TODO : Uncomment
+//      if(!FormUtils.isValid(password, Regexp.PASSWORD)) {
+//         FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORD_INVALID.getMessage());
+//         return;
+//      }
 
       if(!FormUtils.isValid(telegramUsername, Regexp.PSEUDO_TELEGRAM)) {
          FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
          return;
       }
 
-      FormUtils.hideErrorMessage(error);
-      cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
+      try {
+         cr.register(username, Crypto.sha512(password,SALT),telegramUsername);
 
-      // Close current window
-      ((Stage) this.username.getScene().getWindow()).close();
-
-      // TODO : Si enregistrer, connecter l'utilisateur, afficher les erreurs du serveur sinon
+         // Close current window
+         ((Stage) this.username.getScene().getWindow()).close();
+      } catch (CustomException | ProtocolException e) {
+         FormUtils.displayErrorMessage(error, e.getMessage());
+      }
    }
 }

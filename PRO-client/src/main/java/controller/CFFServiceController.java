@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.json.JSONObject;
-import utils.JsonParserCFF;
 import utils.JsonParserRules;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
@@ -91,6 +90,8 @@ public class CFFServiceController implements Initializable {
 
         ClientRequest cr = new ClientRequest();
 
+        // TODO : Décommenter try & catch en même temps que cr.getCFF
+//        try {
         // specify on server looping each day and compare one hour before the departureTime of train
         // and actual date and notify to the user telegram id
         // Entities.Rule rule = new Entities.CffRule("","","","24","");
@@ -105,10 +106,10 @@ public class CFFServiceController implements Initializable {
 
 
         // TODO once json as string stored in DB, then transform from string (then JsonObject then finally to rule)
-        error.setVisible(false);
-
         ((Stage) this.from.getScene().getWindow()).close();
-
+//        } catch (CustomException | ProtocolException e) {
+//            FormUtils.displayErrorMessage(error, e.getMessage());
+//        }
     }
 
     @Override
