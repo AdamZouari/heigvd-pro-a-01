@@ -123,7 +123,7 @@ public class ClientRequest {
     public void addRule(String ruleToSend) throws IOException {
         // TODO est ce que swtich sur le type de classe (RuleCff ou RTS...) pour choisir quoi envoyer,
         // TODO  ou bien envoyer tel quel et c'est le serveur qui decide comment le parser
-        sendToServer(Protocol.CMD_ADD_RULE + " " + ruleToSend);
+        sendToServer(Protocol.CMD_ADD_RULE + " " + loggedUser +":" + ruleToSend);
         String response = reader.readLine();
         //LOG.info("Got : " + reader.readLine());
 

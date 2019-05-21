@@ -1,4 +1,6 @@
 import database.DatabaseController;
+import entities.CffRule;
+import entities.Rule;
 import entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ public class Server {
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
     private RuleTaskManager ruleTaskManager;
+
 
     private Server() {
         LOG.info("Starting the RuleTaskManager...");
@@ -213,16 +216,29 @@ public class Server {
             }
 
 
-            private void addRule(String item) {
+            private void addRule(String item) throws SQLException {
 
-                JSONObject json = new JSONObject(item);
+                String username = item.split(":")[0];
+                String rules = item.split(":")[1];
+
+                // we extracted the rules to add to the database
+                JSONObject json = new JSONObject(rules);
                 System.out.println(json);
-                // TODO Stores in database as a jsonObjectwith jsonObject cast
 
                 // TODO create new Entities.Rule object to add to list of all rules
                 // iterate to switch whether it is a cff,rts,... rule
-                //Entities.Rule ruleToAdd = new Entities.Rule();
-                //allRUles.add(item);
+
+
+                String userRulesString = DatabaseController.getController().getUserRulesByUsername(username);
+
+                JSONObject userRules = new JSONObject(userRulesString);
+                userRules.put("rules",json);
+
+                // TODO update or store new rules
+
+                //TODO christoph ? need of a rule
+                //Rule ruleToAdd = new CffRule();
+                //allRUles.add(ruleToAdd);
 
             }
 
