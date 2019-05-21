@@ -27,5 +27,5 @@ public abstract class Rule {
         this.telegramNotif = telegramNotif;
     }
 
-    abstract void execute();
+    public abstract String execute();
 }

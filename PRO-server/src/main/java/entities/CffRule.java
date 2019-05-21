@@ -1,5 +1,8 @@
 package entities;
 
+import service.ServiceCFF;
+import utils.JsonParserCFF;
+
 public class CffRule extends Rule{
     String from, to, departureTime, arrivalTime;
     private boolean disruptionNotif;
@@ -41,7 +44,18 @@ public class CffRule extends Rule{
 
 
     @Override
-    public void execute() {
+    public String execute() {
         // To Do
+        ServiceCFF cff = new ServiceCFF();
+        cff.connect();
+
+        String connections = cff.getTrainsForPath(from,to,departureTime,arrivalTime);
+
+        // Here we parse the response from the server to show
+
+        cff.disconnect();
+
+        return JsonParserCFF.parseCFF(connections,from,to);
+
     }
 }

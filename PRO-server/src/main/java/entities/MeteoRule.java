@@ -21,7 +21,7 @@ public class MeteoRule extends Rule {
 
 
     @Override
-    public void execute() {
-
+    public String execute() {
+        return "";
     }
 }
