@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 import utils.JsonParserCFF;
 import utils.JsonParserRules;
@@ -108,6 +109,9 @@ public class CFFServiceController implements Initializable {
 
         // TODO once json as string stored in DB, then transform from string (then JsonObject then finally to rule)
         error.setVisible(false);
+
+        ((Stage) this.from.getScene().getWindow()).close();
+
     }
 
     @Override

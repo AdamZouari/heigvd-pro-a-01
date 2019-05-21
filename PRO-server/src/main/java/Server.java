@@ -115,12 +115,13 @@ public class Server {
                                 login(items[1]);
                                 break;
 
-                            case Protocol.CMD_GET_CFF:
-                                cff(items[1]);
-                                break;
-
                             case Protocol.CMD_ADD_RULE:
                                 addRule(items[1], items[2]);
+                                break;
+
+                            case Protocol.CMD_GET_RULES:
+                                getRules(items[1]); //username
+                                break;
                         }
 
                     }
@@ -213,6 +214,15 @@ public class Server {
             }
 
 
+
+            private void getRules(String username) throws SQLException {
+
+                String rules = db.getUserRulesByUsername(username);
+                sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+
+            }
+
+
             private void addRule(String username,String rules) throws SQLException {
 
 
@@ -244,6 +254,8 @@ public class Server {
                 //Rule ruleToAdd = new CffRule();
                 //allRUles.add(ruleToAdd);
 
+                sendToClient(Protocol.RESPONSE_SUCCESS);
+
             }
 
             /**
@@ -256,8 +268,6 @@ public class Server {
             }
         }
     }
-
-
 
     public static void main(String[] args) {
         System.out.println("This is the server");
