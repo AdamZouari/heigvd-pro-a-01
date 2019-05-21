@@ -1,6 +1,7 @@
 package database;
 
-import database.entities.User;
+import entities.User;
+
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;
@@ -144,7 +145,6 @@ public class DatabaseController {
 
             }
 
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -184,28 +184,32 @@ public class DatabaseController {
     }
 
 
-    public void addUser(String username, String telegramUsername, String password, String rules, User.LANGUE langue) throws ProtocolException, SQLException {
+    public void addUser(String username, String telegramUsername, String password, String rules, User.LANGUE langue) throws ProtocolException, CustomException {
         PreparedStatement preparedStatement = null;
-        String sql = " INSERT INTO User( username, telegramUsername,password, rules, langue)" +
-                " VALUES (?,?,?,?,?) ;";
+        String sql = " INSERT INTO User( username, telegramUsername,password, rules, langue) VALUES (?,?,?,?,?) ;";
 
-        if (usernameExist(username)) {
-            throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage());
+        try {
+            if (usernameExist(username)) {
+                throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage());
+            }
+
+            if(usernameTelegramExist(telegramUsername)){
+                throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.getMessage());
+            }
+
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, telegramUsername);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
+            preparedStatement.setString(5, langue.name());
+
+            preparedStatement.executeUpdate();
+            System.out.println("User " + username + " added !");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new CustomException(ExceptionCodes.REGISTRATION_FAILED.ordinal());
         }
-
-        if(usernameTelegramExist(telegramUsername)){
-            throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.getMessage());
-        }
-
-        preparedStatement = mConnection.prepareStatement(sql);
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(2, telegramUsername);
-        preparedStatement.setString(3, password);
-        preparedStatement.setString(4, String.valueOf(rules));                 // TODO think of a method to pass a JSON
-        preparedStatement.setString(5, langue.name());
-
-        preparedStatement.executeUpdate();
-        System.out.println("User " + username + " added !");
     }
 
     public void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
@@ -230,18 +234,19 @@ public class DatabaseController {
     }
 
 
-    public JSONObject getUserRulesByUsername(String username) throws SQLException {
+    public String getUserRulesByUsername(String username) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
-        String sql = "SELECT rules FROM User WHERE username=\'" + username + "\';";
-        JSONObject userRules = new JSONObject();
+        String sql = "SELECT rules FROM User WHERE username=?";
+        String userRules = "none";
 
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1,username);
             result = preparedStatement.executeQuery();
             while (result.next()) {
-                userRules = (JSONObject) result.getObject(1);
+                userRules = result.getString(1);
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -250,22 +255,21 @@ public class DatabaseController {
         return userRules;
     }
 
-    public Map<String, JSONObject> getAllRules() throws SQLException {
+    public Map<String, String> getAllRules() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT username,rules FROM User";
-        Map<String,JSONObject> allRules = null;
+        Map<String,String> allRules = null;
 
         try {
-
             allRules = new HashMap<>();
             String username;
             preparedStatement = mConnection.prepareStatement(sql);
             result = preparedStatement.executeQuery();
             while (result.next()) {
-                JSONObject userRules = new JSONObject();
+                String userRules;
                 username = result.getString(1);
-                userRules = (JSONObject) result.getObject(2);
+                userRules = result.getString(2);
                 allRules.put(username,userRules);
             }
         }catch(Exception e){
@@ -288,6 +292,31 @@ public class DatabaseController {
             preparedStatement.setInt(2, id);
 
             preparedStatement.executeUpdate();
+            System.out.println("Password of updated !");
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+
+    public void updateRule(String username, String rule) {
+
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE User SET rule = ?  WHERE username = ? ";
+
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, rule);
+            preparedStatement.setString(2, username);
+
+            preparedStatement.executeUpdate();
+            System.out.println("Rule of updated !");
 
             System.out.println("Password of updated !");
 

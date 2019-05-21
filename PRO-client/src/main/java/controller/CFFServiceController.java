@@ -8,10 +8,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import org.json.JSONObject;
+import utils.JsonParserCFF;
+import utils.JsonParserRules;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Regexp;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -50,6 +52,12 @@ public class CFFServiceController implements Initializable {
         String from = this.from.getText();
         String to = this.to.getText();
         String departureTime = this.departureTime.getText();
+        String arrivalTime = this.requestTime.getText();
+        boolean telegramNotif = telegramCheckBox.isSelected();
+        boolean disruptionNotif = disruptionCheckBox.isSelected();
+        boolean menuNotif = this.menuCheckBox.isSelected();
+
+
         String requestTime = this.requestTime.getText();
 
         if(!menu && !telegram) {
@@ -82,24 +90,31 @@ public class CFFServiceController implements Initializable {
             return;
         }
 
-        boolean disruptionNotif = disruptionCheckBox.isSelected();
-
         ClientRequest cr = new ClientRequest();
 
         // TODO : Décommenter try & catch en même temps que cr.getCFF
 //        try {
-            // TODO specify on server looping each day and compare one hour before the departureTime of train
-            // and actual date and notify to the user telegram id
+        // specify on server looping each day and compare one hour before the departureTime of train
+        // and actual date and notify to the user telegram id
+        // Entities.Rule rule = new Entities.CffRule("","","","24","");
+        //
+        JSONObject jsonToSend = null; // parse to create a json
 
-            // Here we send the rule
-            cr.sendRule();
-            //cr.getCFF(from,to,departureTime,requestTime);
+        jsonToSend = JsonParserRules.createCffRuleJson( from,  to,  departureTime,  arrivalTime,  telegramNotif, menuNotif,
+         disruptionNotif);
 
-            error.setVisible(false);
+        // TODO we need to parse to create a json
+        cr.addRule(jsonToSend.toString());
+
+        // TODO Here we send the rule
+        //cr.getCFF(from,to,departureTime,requestTime);
+
+
+        // TODO once json as string stored in DB, then transform from string (then JsonObject then finally to rule)
+        error.setVisible(false);
 //        } catch (CustomException | ProtocolException e) {
 //            FormUtils.displayErrorMessage(error, e.getMessage());
 //        }
-
     }
 
     @Override

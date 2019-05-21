@@ -1,6 +1,7 @@
 package scheduler;
 
-import database.entities.Rule;
+
+import entities.Rule;
 
 import java.util.HashMap;
 import java.util.List;

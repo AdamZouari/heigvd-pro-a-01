@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Iterator;
 
-import com.mysql.cj.log.NullLogger;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.*;

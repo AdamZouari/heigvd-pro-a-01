@@ -1,9 +1,8 @@
 import database.DatabaseController;
-import database.entities.User;
-import exceptions.CustomException;
 import exceptions.ProtocolException;
+import entities.User;
 import org.json.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
@@ -26,6 +25,7 @@ public class Server {
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
     private RuleTaskManager ruleTaskManager;
+
 
     private Server() {
         LOG.info("Starting the RuleTaskManager...");
@@ -116,6 +116,9 @@ public class Server {
                             case Protocol.CMD_GET_CFF:
                                 cff(items[1]);
                                 break;
+
+                            case Protocol.CMD_ADD_RULE:
+                                addRule(items[1]);
                         }
 
                     }
@@ -164,7 +167,7 @@ public class Server {
                     JSONObject json = new JSONObject();
                     json.put("rules",new JSONArray());
                     DatabaseController db = DatabaseController.getController();
-                    db.addUser(username, telegramUsername, hashPassword, json.toJSONString(), User.LANGUE.EN);
+                    db.addUser(username, telegramUsername, hashPassword, json, User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
                 } catch (ProtocolException e) {
@@ -217,6 +220,33 @@ public class Server {
                 }
 
                 cff.disconnect();
+
+            }
+
+
+            private void addRule(String item) throws SQLException {
+
+                String username = item.split(":")[0];
+                String rules = item.split(":")[1];
+
+                // we extracted the rules to add to the database
+                JSONObject json = new JSONObject(rules);
+                System.out.println(json);
+
+                // TODO create new Entities.Rule object to add to list of all rules
+                // iterate to switch whether it is a cff,rts,... rule
+
+
+                String userRulesString = DatabaseController.getController().getUserRulesByUsername(username);
+
+                JSONObject userRules = new JSONObject(userRulesString);
+                userRules.put("rules",json);
+
+                // TODO update or store new rules
+
+                //TODO christoph ? need of a rule
+                //Rule ruleToAdd = new CffRule();
+                //allRUles.add(ruleToAdd);
 
             }
 
