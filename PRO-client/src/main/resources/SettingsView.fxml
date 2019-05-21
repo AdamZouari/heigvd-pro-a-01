@@ -9,6 +9,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SettingsController">
    <children>
@@ -16,7 +18,7 @@
          <children>
              <FlowPane>
                  <children>
-                     <Label minWidth="150.0" text="%username" />
+                     <Label fx:id="usernameLabel" minWidth="150.0" text="%username" />
                      <TextField fx:id="nameTextField" editable="false" />
                      <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick" text="%edit">
                          <FlowPane.margin>
@@ -32,7 +34,7 @@
              </FlowPane>
              <FlowPane>
                  <children>
-                     <Label minWidth="150.0" text="%telegramUsername" />
+                     <Label fx:id="telegramUsername" minWidth="150.0" text="%telegramUsername" />
                      <TextField fx:id="telegramTextField" editable="false" />
                      <Button fx:id="editTelegramButton" mnemonicParsing="false" onMouseClicked="#onEditTelegramButtonClick" text="%edit">
                          <FlowPane.margin>
@@ -48,11 +50,17 @@
              </FlowPane>
             <FlowPane>
                <children>
-                  <Label text="%language" />
-                  <ChoiceBox fx:id="languageSelection" prefWidth="150.0">
-                     <FlowPane.margin>
-                        <Insets left="7.0" />
-                     </FlowPane.margin>
+                  <Label fx:id="language" text="%language" />
+                  <ChoiceBox fx:id="languageSelection" prefWidth="150.0" onAction="#changeLanguage">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="English" />
+                              <String fx:value="Français" />
+                          </FXCollections>
+                      </items>
+                      <FlowPane.margin>
+                          <Insets left="7.0" />
+                      </FlowPane.margin>
                   </ChoiceBox>
                </children>
             </FlowPane>
@@ -65,7 +73,7 @@
                <children>
                   <FlowPane>
                      <children>
-                        <Label minWidth="160.0" text="%oldPassword" />
+                        <Label fx:id="oldPasswordLabel" minWidth="160.0" text="%oldPassword" />
                         <PasswordField fx:id="oldPassword">
                            <FlowPane.margin>
                               <Insets />
@@ -75,7 +83,7 @@
                   </FlowPane>
                   <FlowPane>
                      <children>
-                        <Label minWidth="160.0" text="%newPassword" />
+                        <Label fx:id="newPasswordLabel" minWidth="160.0" text="%newPassword" />
                         <PasswordField fx:id="newPassword">
                            <FlowPane.margin>
                               <Insets />
@@ -85,7 +93,7 @@
                   </FlowPane>
                   <FlowPane minWidth="500.0">
                      <children>
-                        <Label minWidth="160.0" text="%confirmation" />
+                        <Label fx:id="confirmPass" minWidth="160.0" text="%confirmation" />
                         <PasswordField fx:id="confirmedPassword">
                            <FlowPane.margin>
                               <Insets />
