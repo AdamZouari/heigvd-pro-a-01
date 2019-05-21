@@ -27,6 +27,5 @@ public abstract class Rule {
         this.telegramNotif = telegramNotif;
     }
 
-    abstract void formatRuleToSendServer();
     abstract void execute();
 }

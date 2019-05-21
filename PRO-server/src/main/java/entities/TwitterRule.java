@@ -17,11 +17,6 @@ public class TwitterRule extends Rule {
     }
 
     @Override
-    void formatRuleToSendServer() {
-
-    }
-
-    @Override
     public void execute() {
         // TO DO
     }
