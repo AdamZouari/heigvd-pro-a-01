@@ -16,4 +16,9 @@ public class RtsRule extends Rule {
     void formatRuleToSendServer() {
 
     }
+
+    @Override
+    public void execute() {
+        // TO DO
+    }
 }

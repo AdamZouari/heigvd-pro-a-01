@@ -16,4 +16,10 @@ public class MeteoRule extends Rule {
     void formatRuleToSendServer() {
 
     }
+
+    @Override
+    public void execute() {
+
+        // TO DO
+    }
 }

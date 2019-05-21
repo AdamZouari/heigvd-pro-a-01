@@ -44,4 +44,9 @@ public class CffRule extends Rule{
     void formatRuleToSendServer() {
 
     }
+
+    @Override
+    public void execute() {
+        // To Do
+    }
 }
