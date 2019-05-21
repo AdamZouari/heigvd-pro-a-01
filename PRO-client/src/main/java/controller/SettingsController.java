@@ -47,6 +47,39 @@ public class SettingsController implements Initializable {
     private Label error;
 
     @FXML
+    private Label usernameLabel;
+
+    @FXML
+    private Button editNameButton;
+
+    @FXML
+    private Label telegramUsername;
+
+    @FXML
+    private Button editTelegramButton;
+
+    @FXML
+    private Label language;
+
+    @FXML
+    private Button passwordChangeButton;
+
+    @FXML
+    private Label oldPasswordLabel;
+
+    @FXML
+    private Label newPasswordLabel;
+
+    @FXML
+    private Label confirmPass;
+
+    @FXML
+    private Button savePasswordButton;
+
+    @FXML
+    private Button cancelPasswordButton;
+
+    @FXML
     private void onEditTelegramButtonClick() {
         saveTelegramButton.setVisible(true);
         telegramTextField.setEditable(true);
@@ -111,6 +144,8 @@ public class SettingsController implements Initializable {
             I18N.setLocale(I18N.EN);
         else
             I18N.setLocale(I18N.FR);
+
+        changeDisplayedLanguage();
     }
 
     @FXML
@@ -151,5 +186,27 @@ public class SettingsController implements Initializable {
         } else {
             passwordChangePane.setVisible(true);
         }
+    }
+
+    private void changeDisplayedLanguage() {
+        ResourceBundle resource = ResourceBundle.getBundle("Internationalization", I18N.getLocale());
+
+        usernameLabel.setText(resource.getString("username"));
+        editNameButton.setText(resource.getString("edit"));
+        saveNameButton.setText(resource.getString("save"));
+
+        telegramUsername.setText(resource.getString("telegramUsername"));
+        editTelegramButton.setText(resource.getString("edit"));
+        saveTelegramButton.setText(resource.getString("save"));
+
+        language.setText(resource.getString("language"));
+
+        passwordChangeButton.setText(resource.getString("changePassword"));
+
+        oldPasswordLabel.setText(resource.getString("oldPassword"));
+        newPasswordLabel.setText(resource.getString("newPassword"));
+        confirmPass.setText(resource.getString("confirmation"));
+        savePasswordButton.setText(resource.getString("save"));
+        cancelPasswordButton.setText(resource.getString("cancel"));
     }
 }
