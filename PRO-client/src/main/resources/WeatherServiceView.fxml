@@ -67,8 +67,7 @@
                   <ChoiceBox fx:id="temperatureSelection" prefWidth="150.0">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
-                           <String fx:value=" < " />
-                           <String fx:value=" > " />
+
                         </FXCollections>
                      </items>
                   </ChoiceBox>
