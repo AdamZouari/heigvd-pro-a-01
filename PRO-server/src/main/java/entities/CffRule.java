@@ -1,8 +1,10 @@
 package entities;
 
+import database.DatabaseController;
 import org.json.JSONObject;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
+import utils.TelegramNotification;
 
 public class CffRule extends Rule{
     String from, to, departureTime, arrivalTime;
@@ -65,6 +67,11 @@ public class CffRule extends Rule{
         if(telegramNotif){
             // TODO choper le telegram id et envoyer via le bot
             // retard
+
+            // TODO HELP ANTOINE
+            String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
+            TelegramNotification telegram = new TelegramNotification();
+            telegram.sendRuleResult(telegramId,connections);
         }
         return JsonParserCFF.parseCFF(connections,from,to);
 

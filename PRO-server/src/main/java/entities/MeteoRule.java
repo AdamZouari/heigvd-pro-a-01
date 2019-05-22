@@ -1,7 +1,9 @@
 package entities;
 
+import database.DatabaseController;
 import org.json.JSONObject;
 import service.ServiceMeteo;
+import utils.TelegramNotification;
 
 public class MeteoRule extends Rule {
 
@@ -106,6 +108,12 @@ public class MeteoRule extends Rule {
         // Regardez si on envoie des notifs sur telegram
         if (telegramNotif) {
             // A voir
+
+            // TODO HELP ANTOINE
+            String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
+            TelegramNotification telegram = new TelegramNotification();
+            telegram.sendRuleResult(telegramId, toString());
+
         }
 
         return result;

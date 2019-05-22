@@ -234,6 +234,7 @@ public class ClientRequest {
         }
     }
 
+    // get id for the last user that added
     public int getIdFromTelegramPseudo(String json) {
 
         String[] from = json.split("from");

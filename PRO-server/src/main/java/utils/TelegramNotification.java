@@ -32,10 +32,9 @@ public class TelegramNotification extends TelegramLongPollingBot {
 
     HttpURLConnection connection;
 
-    public String sendHelloWorld(String chatID){
+    public String sendRuleResult(String chatID,String result){
 
-        String rqst = "https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6j" +
-                "FEepAGRMITfhv2ok/sendMessage?chat_id=" + chatID + "&text=Hello%20World%20bis";
+        String rqst = "https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6jFEepAGRMITfhv2ok/sendMessage?chat_id=" + chatID + "&text=" + result;
         try {
 
             URL url = new URL(rqst);

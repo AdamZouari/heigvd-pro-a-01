@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
+import utils.TelegramNotification;
 
 import java.io.FileNotFoundException;
 
@@ -29,9 +30,17 @@ public class CFFJUnitTests {
 
 
     @Test
-    public void testCFFModificationOfTrain() throws FileNotFoundException {
+    public void testCFFModificationOfTrain()  {
         String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
         System.out.println(JsonParserCFF.parseCFForDelay(cff,"Lausanne","Geneve"));
 
+    }
+
+
+    @Test
+    public void testIfCffNotifIsSendToUserTelegram(){
+        String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
+        TelegramNotification t = new TelegramNotification();
+        t.sendRuleResult("142772696",JsonParserCFF.parseCFF(cff,"Lausanne","Geneve"));
     }
 }
