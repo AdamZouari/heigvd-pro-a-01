@@ -104,9 +104,6 @@ public class CFFServiceController implements Initializable {
         // TODO we need to parse to create a json
         cr.addRule(jsonToSend.toString());
 
-        // TODO Here we send the rule
-        //cr.getCFF(from,to,departureTime,requestTime);
-
 
         // TODO once json as string stored in DB, then transform from string (then JsonObject then finally to rule)
         ((Stage) this.from.getScene().getWindow()).close();

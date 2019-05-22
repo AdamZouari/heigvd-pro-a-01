@@ -7,15 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 
-import javafx.scene.control.ChoiceBox;
 import locale.I18N;
 import java.io.IOException;
 import java.net.URL;
@@ -28,19 +25,37 @@ import static connection.ClientRequest.SALT;
 public class LoginController implements Initializable {
 
    @FXML
-   private ChoiceBox languageChoice;
+   private FlowPane pane;
+
+   @FXML
+   private Label usernameLabel;
 
    @FXML
    private TextField username;
 
    @FXML
+   private Label passwordLabel;
+
+   @FXML
    private PasswordField password;
 
    @FXML
-   private Label error;
+   private Button login;
 
    @FXML
-   private FlowPane pane;
+   private Label needAccount;
+
+   @FXML
+   private Hyperlink signUp;
+
+   @FXML
+   private Label language;
+
+   @FXML
+   private ChoiceBox languageChoice;
+
+   @FXML
+   private Label error;
 
    @FXML
    private void onSignUpClick() {
@@ -77,7 +92,6 @@ public class LoginController implements Initializable {
       FormUtils.hideErrorMessage(error);
       ClientRequest cr = new ClientRequest();
 
-      // TODO : Afficher erreur du serveur
       try {
          cr.login(user, Crypto.sha512(pass,SALT));
 
@@ -86,6 +100,7 @@ public class LoginController implements Initializable {
          Parent root = fxmlLoader.load();
          Stage stage = new Stage();
 
+         // TODO : get Language from DB
          stage.setScene(new Scene(root));
          stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("home"));
          stage.show();
@@ -100,18 +115,31 @@ public class LoginController implements Initializable {
 
    @FXML
    private void changeLanguage() {
-      if (languageChoice.getSelectionModel().getSelectedItem().equals("English")) {
+      if (languageChoice.getSelectionModel().getSelectedItem().equals("English"))
          I18N.setLocale(I18N.EN);
-      } else {
+      else
          I18N.setLocale(I18N.FR);
-      }
 
-      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
-      fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
+      changeDisplayedLanguage();
    }
 
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       languageChoice.getSelectionModel().selectFirst();
+   }
+  
+   private void enableWindow() {
+      pane.setDisable(false);
+   }
+
+   private void changeDisplayedLanguage() {
+      ResourceBundle resource = ResourceBundle.getBundle("Internationalization", I18N.getLocale());
+
+      usernameLabel.setText(resource.getString("username"));
+      passwordLabel.setText(resource.getString("password"));
+      login.setText(resource.getString("connexion"));
+      needAccount.setText(resource.getString("needAccount"));
+      signUp.setText(resource.getString("createAccount"));
+      language.setText(resource.getString("language"));
    }
 }

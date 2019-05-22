@@ -1,11 +1,12 @@
 import database.DatabaseController;
+import entities.*;
 import exceptions.CustomException;
 import exceptions.ProtocolException;
-import entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
+import scheduler.RuleTask;
 import scheduler.RuleTaskManager;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
@@ -251,7 +252,43 @@ public class Server {
                 JSONObject userRulesToJson = new JSONObject (userRulesString);
                 JSONArray userRules = (JSONArray) userRulesToJson.get("rules");
 
-                // add new rule
+                // Here we create the rule for the rule task manager
+
+                Rule rule = null;
+                int id = (int) json.get("id");
+                String starting_date  = "" + (json.get("date_debut"));
+                // TODO parse in function of the tag (if tag == meteo then)
+                switch((String)json.get("tag")){
+                    case "METEO":
+                        //  parse all infos for meteo
+                        rule = new MeteoRule(id,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
+                                (String)json.get("time"), (String)json.get("location"),(String)json.get("weatherType"),
+                                (String)json.get("temperature"),
+                                (String)json.get("temperatureSelection"),(String)json.get("noteText"));
+                        break;
+                    case "CFF":
+                        //  parse all infos for meteo
+                        rule = new CffRule(id,starting_date,(String)json.get("from"),(String)json.get("to"),
+                                (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
+                                (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
+                        break;
+                    case "RTS":
+                        //  parse all infos for meteo
+                        rule = new RtsRule(id,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
+                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                        break;
+                    case "TWITTER":
+                        //  parse all infos for meteo
+                        rule = new TwitterRule(id,starting_date,(String)json.get("twitterId"),(String)json.get("pin"),
+                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                        break;
+                    default:
+                        break;
+                }
+
+                ruleTaskManager.addRule(username, new RuleTask(rule));
+
+                // Here we add the rule for the database
                 userRules.put(json);
 
                 // update old rules with new ones
