@@ -122,6 +122,9 @@ public class Server {
                             case Protocol.CMD_GET_RULES:
                                 getRules(items[1]); //username
                                 break;
+                            case Protocol.CMD_GET_RES_RULES:
+                                getRulesResult(items[1]);
+                                break;
                         }
 
                     }
@@ -234,6 +237,13 @@ public class Server {
             }
 
 
+            private void getRulesResult(String username) {
+                String rules = ruleTaskManager.getUserTasks(username);
+                sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+
+            }
+
+
             private void addRule(String username,String rules) throws SQLException {
 
 
@@ -316,6 +326,7 @@ public class Server {
             }
         }
     }
+
 
     public static void main(String[] args) {
         System.out.println("This is the server");
