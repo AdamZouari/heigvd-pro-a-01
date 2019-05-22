@@ -36,7 +36,7 @@ public class MeteoRule extends Rule {
         JSONObject json = new JSONObject();
 
         json.put("id", id);
-        json.put("tag", tag);
+        json.put("tag", TAG);
         json.put("date_debut", startDate);
         json.put("location", location);
         json.put("weather_type", weatherType);
@@ -54,7 +54,6 @@ public class MeteoRule extends Rule {
         return toJSON().toString();
     }
 
-
     public String getStartDate() {
         return this.startDate;
     }
@@ -66,7 +65,7 @@ public class MeteoRule extends Rule {
     @Override
     public String execute() {
 
-        String result = new String();
+        StringBuilder result = new StringBuilder();
 
         ServiceMeteo service = new ServiceMeteo();
 
@@ -74,40 +73,42 @@ public class MeteoRule extends Rule {
         int tmp = Integer.parseInt(temperature);
 
         // Si l'utilisateur a defini une regle concernant la temperature
-        if (temperatureSelection != null) {
+        if (!temperatureSelection.equals("null")) {
             if (temperatureSelection.equals("<")) {
                 if (temp <= tmp) {
-                    // Notify
+                    result.append("La temperature est inférieure à :");
+                    result.append(tmp);
                 }
             } else {
                 if (temp >= tmp) {
-                    // Notify
+                    result.append("La temperature est superieur à :");
+                    result.append(tmp);
                 }
             }
         }
 
         // Si l'utilisateur a defini une regle concernant le temps
-        if (weatherType != null) {
+        if (!weatherType.equals("null")) {
             if(weatherType.equals("sunny")) {
                 if (service.isSunny(location)) {
-                    // notify
+                    result.append("Le temps est ensoleillé");
                 }
             } else if (weatherType.equals("rainy")) {
                 if (service.isRainy(location)) {
-                    // notify
+                    result.append("Le temps est pluvieux");
                 }
             } else if (weatherType.equals("snowy")) {
                 if (service.isSnowy(location)) {
-                    // notify
+                    result.append("Des chutes de neiges sont présentes");
+                }
+            } else if (weatherType.equals("cloudy")) {
+                if (service.isCloudy(location)) {
+                    result.append("Le temps est nuageux");
                 }
             }
         }
-        // Regardez si on envoie des notifs sur telegram
-        if (telegramNotif) {
-            // A voir
-        }
 
-        return result;
+        return result.toString();
 
     }
 }

@@ -70,15 +70,15 @@ public class WeatherServiceController implements Initializable {
             return;
         }
 
-        String temperateurValue = this.temperature.getText();
+        String temperatureValue = this.temperature.getText();
 
         if(!temperature) {
-            if(temperateurValue.isEmpty()){
+            if(temperatureValue.isEmpty()){
                 FormUtils.displayErrorMessage(error, ExceptionCodes.TEMPERATURE_MISSING.getMessage());
                 return;
             }
 
-            if(!FormUtils.isValid(temperateurValue, Regexp.NUMBER)){
+            if(!FormUtils.isValid(temperatureValue, Regexp.NUMBER)){
                 FormUtils.displayErrorMessage(error, ExceptionCodes.NOT_A_NUMBER.getMessage());
                 return;
             }
@@ -101,14 +101,15 @@ public class WeatherServiceController implements Initializable {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
-        if (temperatureSelection.getValue().toString() == null || temperatureSelection.getValue().toString().equals("")) {
+        if (temperatureSelection.getValue().toString() == null && temperatureValue == null) {
             tempSelec = "null";
+            temperatureValue = "null";
         } else {
             tempSelec = temperatureSelection.getValue().toString();
         }
 
         JSONObject json = JsonParserRules.createMeteoRuleJson(telegram, menu, time, location, weatherSelec,
-                                                              temperateurValue, tempSelec);
+                                                              temperatureValue, tempSelec);
 
         // Send Rules to server;
         try {

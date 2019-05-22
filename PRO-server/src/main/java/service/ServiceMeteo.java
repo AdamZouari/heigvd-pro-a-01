@@ -32,7 +32,7 @@ public class ServiceMeteo extends Service {
             String urlRequest = urlService + "weather?q=" + city + apiKey;
             URL url = new URL(urlRequest);
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             int statusCode = connection.getResponseCode();
@@ -58,7 +58,7 @@ public class ServiceMeteo extends Service {
             String urlRequest = urlService + "forecast?q=" + city + apiKey;
             URL url = new URL(urlRequest);
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             int statusCode = connection.getResponseCode();
@@ -94,13 +94,8 @@ public class ServiceMeteo extends Service {
         // Return the main information :
         return jsonData.getJSONArray("weather").getJSONObject(0).getString("main");
     }
-
-    public boolean isSunny(String city) {
-        return getMain(city).contains("Clear");
-    }
-
-    public boolean isRainy(String city) {
-        return getMain(city).contains("Rain");
-    }
-    public boolean isSnowy(String city) { return getMain(city).contains("Snow"); }
+    public boolean isCloudy(String city) { return getMain(city).contains("Cloud");}
+    public boolean isSunny(String city) { return getMain(city).contains("Clear");}
+    public boolean isRainy(String city) { return getMain(city).contains("Rain");}
+    public boolean isSnowy(String city) { return getMain(city).contains("Snow");}
 }
