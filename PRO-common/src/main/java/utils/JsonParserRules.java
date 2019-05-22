@@ -66,7 +66,7 @@ public class JsonParserRules {
      * it in the database
      * **/
     public static JSONObject createMeteoRuleJson( boolean telegramNotif, boolean menuNotif, String time, String location,
-                                                  String weatherType, String temperature, String temperatureSelection, String noteText) {
+                                                  String weatherType, String temperature, String temperatureSelection) {
 
         JSONObject newRule = new JSONObject();
 
@@ -81,8 +81,6 @@ public class JsonParserRules {
         newRule.put("weatherType",weatherType);
         newRule.put("temperature",temperature);
         newRule.put("temperatureSelection",temperatureSelection);
-        newRule.put("noteText",noteText);
-
         newRule.put("menuNotif",menuNotif);
         newRule.put("telegram_notif",telegramNotif);
 

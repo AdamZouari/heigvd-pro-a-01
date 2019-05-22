@@ -37,20 +37,8 @@ public class WeatherServiceController implements Initializable {
     private TextField time;
 
     @FXML
-    private TextArea noteTextArea;
-
-    @FXML
     private Label error;
 
-    @FXML
-    private void onAdditionalNoteClick() {
-        if(noteTextArea.isEditable()) {
-            noteTextArea.setEditable(false);
-            noteTextArea.clear();
-        } else {
-            noteTextArea.setEditable(true);
-        }
-    }
 
     @FXML
     private void onAddRuleClick() {
@@ -103,8 +91,25 @@ public class WeatherServiceController implements Initializable {
 
         FormUtils.hideErrorMessage(error);
 
-        JSONObject json = JsonParserRules.createMeteoRuleJson(telegram, menu, time, location, weatherTypeSelection.getValue().toString(),
-                                            temperateurValue, temperatureSelection.getValue().toString(), noteTextArea.getText());
+
+        String tempSelec;
+        String weatherSelec;
+
+        // Permettre de laisser des cases sans les valider
+        if (weatherTypeSelection.getValue().toString() == null) {
+            weatherSelec = "null";
+        } else {
+            weatherSelec = weatherTypeSelection.getValue().toString();
+        }
+
+        if (temperatureSelection.getValue().toString() == null) {
+            tempSelec = "null";
+        } else {
+            tempSelec = temperatureSelection.getValue().toString();
+        }
+
+        JSONObject json = JsonParserRules.createMeteoRuleJson(telegram, menu, time, location, weatherSelec,
+                                                              temperateurValue, tempSelec);
 
         // Send Rules to server;
         try {
