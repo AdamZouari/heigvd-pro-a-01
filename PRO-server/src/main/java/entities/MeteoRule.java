@@ -4,21 +4,22 @@ import org.json.JSONObject;
 import service.ServiceMeteo;
 
 public class MeteoRule extends Rule {
+
     private static final String TAG = "METEO";
-    private String location, weatherType, temperature, temperatureSelection, noteText;
+    private String location, weatherType, temperature, temperatureSelection;
     /**
      *
      * @param id
      **/
     public MeteoRule(int id, String startDate, boolean telegramNotif, boolean menuNotif, String location,
-                     String weatherType, String temperature, String temperatureSelection, String noteText)
+                     String weatherType, String temperature, String temperatureSelection)
     {
         super(id, TAG, startDate, menuNotif,telegramNotif);
         this.location = location;
         this.weatherType = weatherType;
         this.temperature = temperature;
         this.temperatureSelection = temperatureSelection;
-        this.noteText = noteText;
+
     }
 
     public MeteoRule(JSONObject json) {
@@ -27,7 +28,6 @@ public class MeteoRule extends Rule {
         weatherType = json.get("weatherType").toString();
         temperature = json.get("temperature").toString();
         temperatureSelection = json.get("temperatureSelection").toString();
-        noteText = json.get("noteText").toString();
     }
 
     @Override
@@ -42,7 +42,6 @@ public class MeteoRule extends Rule {
         json.put("weather_type", weatherType);
         json.put("temperature", temperature);
         json.put("temperatureSelection", temperatureSelection);
-        json.put("noteText", noteText);
         json.put("menuNotif", menuNotif);
         json.put("telegram_notif", telegramNotif);
 
@@ -51,7 +50,8 @@ public class MeteoRule extends Rule {
 
     @Override
     public String toString() {
-        return this.toJSON().toString(3);
+
+        return toJSON().toString();
     }
 
 
