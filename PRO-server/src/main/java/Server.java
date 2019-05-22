@@ -261,10 +261,7 @@ public class Server {
                 switch((String)json.get("tag")){
                     case "METEO":
                         //  parse all infos for meteo
-                        rule = new MeteoRule(id,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
-                                (String)json.get("time"), (String)json.get("location"),(String)json.get("weatherType"),
-                                (String)json.get("temperature"),
-                                (String)json.get("temperatureSelection"),(String)json.get("noteText"));
+                        rule = new MeteoRule(json);
                         break;
                     case "CFF":
                         //  parse all infos for meteo
