@@ -51,7 +51,7 @@
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="Ensoleillé" />
                            <String fx:value="Pluvieux" />
-                           <String fx:value="Venteux" />
+                           <String fx:value="Neigeux" />
                            <String fx:value="Nuageux" />
                         </FXCollections>
                      </items>

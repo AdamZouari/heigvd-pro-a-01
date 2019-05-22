@@ -39,7 +39,7 @@ public class MeteoRule extends Rule {
         JSONObject json = new JSONObject();
 
         json.put("id", id);
-        json.put("tag", tag);
+        json.put("tag", TAG);
         json.put("date_debut", startDate);
         json.put("location", location);
         json.put("weather_type", weatherType);
@@ -57,7 +57,6 @@ public class MeteoRule extends Rule {
         return toJSON().toString();
     }
 
-
     public String getStartDate() {
         return this.startDate;
     }
@@ -69,45 +68,64 @@ public class MeteoRule extends Rule {
     @Override
     public String execute() {
 
-        String result = new String();
-
+        JSONObject result = new JSONObject();
         ServiceMeteo service = new ServiceMeteo();
+        String temps = service.getMain(location);
+        boolean sendTelegram = false;
+
+        // Resultat de l'execution de la règle --> donner la meteo
+        switch (temps) {
+            case ("Clear") :
+                result.put("meteo","Ensoleillé");
+            case ("Rain") :
+                result.put("meteo","Pluvieuse");
+            case("Cloud"):
+                result.put("meteo", "Nuageuse");
+            case("Snow"):
+                result.put("meteo", "Chutes de neige");
+        }
 
         int temp = service.getTemperature(location);
         int tmp = Integer.parseInt(temperature);
 
+        result.put("temperature", temp);
+
         // Si l'utilisateur a defini une regle concernant la temperature
-        if (temperatureSelection != null) {
+        if (!temperatureSelection.equals("null")) {
             if (temperatureSelection.equals("<")) {
                 if (temp <= tmp) {
-                    // Notify
+                    sendTelegram = true;
                 }
             } else {
                 if (temp >= tmp) {
-                    // Notify
+                    sendTelegram = true;
                 }
             }
         }
 
         // Si l'utilisateur a defini une regle concernant le temps
-        if (weatherType != null) {
-            if(weatherType.equals("sunny")) {
+        if (!weatherType.equals("null")) {
+            if(weatherType.equals("Ensoleillé")) {
                 if (service.isSunny(location)) {
-                    // notify
+                    sendTelegram = true;
                 }
-            } else if (weatherType.equals("rainy")) {
+            } else if (weatherType.equals("Pluvieux")) {
                 if (service.isRainy(location)) {
-                    // notify
+                    sendTelegram = true;
                 }
-            } else if (weatherType.equals("snowy")) {
+            } else if (weatherType.equals("Neigeux")) {
                 if (service.isSnowy(location)) {
-                    // notify
+                    sendTelegram = true;
+                }
+            } else if (weatherType.equals("Nuageux")) {
+                if (service.isCloudy(location)) {
+                    sendTelegram = true;
                 }
             }
         }
-        // Regardez si on envoie des notifs sur telegram
-        if (telegramNotif) {
-            // A voir
+        // Si l'utilisateur veut des notifications Telegram et que les conditions sont réunis on les envoies
+        if (telegramNotif&& sendTelegram) {
+            // envoye notif to Telegram si les conditions du dessus sont présentes
 
             // TODO HELP ANTOINE
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
@@ -115,8 +133,11 @@ public class MeteoRule extends Rule {
             telegram.sendRuleResult(telegramId, Integer.toString(new ServiceMeteo().getTemperature("Lausanne")));
 
         }
+        if (menuNotif) {
+            return result.toString();
 
-        return result;
-
+        } else {
+            return "";
+        }
     }
 }

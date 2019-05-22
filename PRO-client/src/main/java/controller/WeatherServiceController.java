@@ -4,6 +4,7 @@ import connection.ClientRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
@@ -70,15 +71,15 @@ public class WeatherServiceController implements Initializable {
             return;
         }
 
-        String temperateurValue = this.temperature.getText();
+        String temperatureValue = this.temperature.getText();
 
         if(!temperature) {
-            if(temperateurValue.isEmpty()){
+            if(temperatureValue.isEmpty()){
                 FormUtils.displayErrorMessage(error, ExceptionCodes.TEMPERATURE_MISSING.getMessage());
                 return;
             }
 
-            if(!FormUtils.isValid(temperateurValue, Regexp.NUMBER)){
+            if(!FormUtils.isValid(temperatureValue, Regexp.NUMBER)){
                 FormUtils.displayErrorMessage(error, ExceptionCodes.NOT_A_NUMBER.getMessage());
                 return;
             }
@@ -91,7 +92,6 @@ public class WeatherServiceController implements Initializable {
 
         FormUtils.hideErrorMessage(error);
 
-
         String tempSelec;
         String weatherSelec;
 
@@ -102,14 +102,15 @@ public class WeatherServiceController implements Initializable {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
-        if (temperatureSelection.getValue().toString() == null) {
+        if (temperatureSelection.getValue().toString() == null && temperatureValue == null) {
             tempSelec = "null";
+            temperatureValue = "null";
         } else {
             tempSelec = temperatureSelection.getValue().toString();
         }
 
         JSONObject json = JsonParserRules.createMeteoRuleJson(telegram, menu, time, location, weatherSelec,
-                                                              temperateurValue, tempSelec);
+                                                              temperatureValue, tempSelec);
 
         // Send Rules to server;
         try {
@@ -117,11 +118,14 @@ public class WeatherServiceController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Close Window
+        ((Stage) this.temperatureSelection.getScene().getWindow()).close();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        temperatureSelection.getItems().addAll("<",">");
+        temperatureSelection.getItems().addAll("<",">","");
     }
 }
