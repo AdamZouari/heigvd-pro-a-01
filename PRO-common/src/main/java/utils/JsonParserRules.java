@@ -16,10 +16,12 @@ public class JsonParserRules {
 
         JSONObject newRule = new JSONObject();
 
-        newRule.put("id",1); // TODO Comment generer et gerer les id
+        newRule.put("id",(int)(System.currentTimeMillis() % Integer.MAX_VALUE));
         newRule.put("tag","CFF");
 
         // take the actual dateTime, so once the rule is created
+
+        // TODO a enlever
         newRule.put("date_debut",System.currentTimeMillis());
 
         newRule.put("from",from);
@@ -46,7 +48,7 @@ public class JsonParserRules {
 
         JSONObject newRule = new JSONObject();
 
-        newRule.put("id",1); // TODO Comment generer et gerer les id
+        newRule.put("id",(int)(System.currentTimeMillis() % Integer.MAX_VALUE));
         newRule.put("tag","RTS");
 
         // take the actual dateTime, so once the rule is created
@@ -70,7 +72,7 @@ public class JsonParserRules {
 
         JSONObject newRule = new JSONObject();
 
-        newRule.put("id",1); // TODO Comment generer et gerer les id
+        newRule.put("id",(int)(System.currentTimeMillis() % Integer.MAX_VALUE));
         newRule.put("tag","METEO");
 
         // take the actual dateTime, so once the rule is created
@@ -97,7 +99,7 @@ public class JsonParserRules {
 
         JSONObject newRule = new JSONObject();
 
-        newRule.put("id",1); // TODO Comment generer et gerer les id
+        newRule.put("id",(int)(System.currentTimeMillis() % Integer.MAX_VALUE));
         newRule.put("tag","TWITTER");
 
         // take the actual dateTime, so once the rule is created

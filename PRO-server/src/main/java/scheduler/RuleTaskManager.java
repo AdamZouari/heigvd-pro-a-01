@@ -71,8 +71,12 @@ public class RuleTaskManager {
         }
     }
 
-    public Set<RuleTask> getUserTasks(String userId) {
-        return taskMap.get(userId).keySet();
+    public String getUserTasks(String userId) {
+
+        // TODO return rules result depending on tags ordered
+        // TODO and separed by new line between same tag and ----- if tags changes
+        //return taskMap.get(userId).keySet();
+        return "";
     }
 
     public void deleteRule(String userId, int ruleId) {

@@ -11,8 +11,8 @@ public class TwitterRule extends Rule {
      * @param id
      * @param startDate
      **/
-    public TwitterRule(int id, String startDate,String twitterId,String pin, boolean menuNotif,boolean telegramNotif) {
-        super(id,TAG, startDate,menuNotif,telegramNotif);
+    public TwitterRule(int id,String username, String startDate,String twitterId,String pin, boolean menuNotif,boolean telegramNotif) {
+        super(id,username,TAG, startDate,menuNotif,telegramNotif);
         this.twitterId= twitterId;
         this.pin=pin;
 

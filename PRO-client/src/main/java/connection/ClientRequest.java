@@ -116,8 +116,12 @@ public class ClientRequest {
     }
 
     // the rules result for
-    public void getRulesResult(String username) {
+    public void getRulesResult(String username) throws IOException, CustomException, ProtocolException {
         //
+        sendToServer(Protocol.CMD_GET_RES_RULES + " " + loggedUser);
+        String response = reader.readLine();
+        checkIfSuccess(response);
+        //TODO fetch result
     }
 
     // the rules content
@@ -130,9 +134,7 @@ public class ClientRequest {
 
     }
 
-    public void createNewRule() {
 
-    }
 
     public void addRule(String ruleToSend) throws IOException, CustomException, ProtocolException {
         // TODO est ce que swtich sur le type de classe (RuleCff ou RTS...) pour choisir quoi envoyer,

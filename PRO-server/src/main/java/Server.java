@@ -122,6 +122,9 @@ public class Server {
                             case Protocol.CMD_GET_RULES:
                                 getRules(items[1]); //username
                                 break;
+                            case Protocol.CMD_GET_RES_RULES:
+                                getRulesResult(items[1]);
+                                break;
                         }
 
                     }
@@ -234,6 +237,13 @@ public class Server {
             }
 
 
+            private void getRulesResult(String username) {
+                String rules = ruleTaskManager.getUserTasks(username);
+                sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+
+            }
+
+
             private void addRule(String username,String rules) throws SQLException {
 
 
@@ -261,22 +271,26 @@ public class Server {
                 switch((String)json.get("tag")){
                     case "METEO":
                         //  parse all infos for meteo
-                        rule = new MeteoRule(json);
+                        rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
+                                (String)json.get("location"),(String)json.get("weatherType"),
+                                (String)json.get("temperature"),
+                                (String)json.get("temperatureSelection"));
+
                         break;
                     case "CFF":
                         //  parse all infos for meteo
-                        rule = new CffRule(id,starting_date,(String)json.get("from"),(String)json.get("to"),
+                        rule = new CffRule(id,username,starting_date,(String)json.get("from"),(String)json.get("to"),
                                 (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
                                 (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
                         break;
                     case "RTS":
                         //  parse all infos for meteo
-                        rule = new RtsRule(id,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
+                        rule = new RtsRule(id,username,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
                                 (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
                         break;
                     case "TWITTER":
                         //  parse all infos for meteo
-                        rule = new TwitterRule(id,starting_date,(String)json.get("twitterId"),(String)json.get("pin"),
+                        rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),(String)json.get("pin"),
                                 (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
                         break;
                     default:
@@ -312,6 +326,7 @@ public class Server {
             }
         }
     }
+
 
     public static void main(String[] args) {
         System.out.println("This is the server");

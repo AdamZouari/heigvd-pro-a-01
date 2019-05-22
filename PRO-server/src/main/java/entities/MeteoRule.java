@@ -11,10 +11,11 @@ public class MeteoRule extends Rule {
      *
      * @param id
      **/
-    public MeteoRule(int id, String startDate, boolean telegramNotif, boolean menuNotif, String location,
+
+    public MeteoRule(int id,String username, String startDate, boolean telegramNotif, boolean menuNotif, String location,
                      String weatherType, String temperature, String temperatureSelection)
     {
-        super(id, TAG, startDate, menuNotif,telegramNotif);
+        super(id,username, TAG, startDate, menuNotif,telegramNotif);
         this.location = location;
         this.weatherType = weatherType;
         this.temperature = temperature;

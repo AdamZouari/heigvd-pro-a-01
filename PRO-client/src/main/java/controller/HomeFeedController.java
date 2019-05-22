@@ -21,6 +21,7 @@ public class HomeFeedController implements Initializable{
 
         ClientRequest cr = new ClientRequest();
 
+
         try {
             rules.setText(cr.getRulesContent());
         } catch (IOException e) {
