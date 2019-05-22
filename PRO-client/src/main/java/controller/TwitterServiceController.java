@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Regexp;
@@ -46,7 +47,7 @@ public class TwitterServiceController implements Initializable {
             return;
         }
 
-        FormUtils.hideErrorMessage(error);
+        ((Stage) this.twitterId.getScene().getWindow()).close();
     }
 
     @FXML

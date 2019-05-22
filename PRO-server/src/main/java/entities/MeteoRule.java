@@ -46,7 +46,7 @@ public class MeteoRule extends Rule {
         json.put("temperature", temperature);
         json.put("temperatureSelection", temperatureSelection);
         json.put("menuNotif", menuNotif);
-        json.put("telegram_notif", telegramNotif);
+        json.put("telegramNotif", telegramNotif);
 
         return json;
     }

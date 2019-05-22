@@ -58,7 +58,7 @@ public class JsonParserRules {
         newRule.put("requestTime",requestTime);
 
         newRule.put("menuNotif",menuNotif);
-        newRule.put("telegram_notif",telegramNotif);
+        newRule.put("telegramNotif",telegramNotif);
 
         return newRule;
     }
@@ -84,7 +84,7 @@ public class JsonParserRules {
         newRule.put("temperature",temperature);
         newRule.put("temperatureSelection",temperatureSelection);
         newRule.put("menuNotif",menuNotif);
-        newRule.put("telegram_notif",telegramNotif);
+        newRule.put("telegramNotif",telegramNotif);
 
         return newRule;
     }
@@ -109,7 +109,7 @@ public class JsonParserRules {
         newRule.put("pin",pin);
 
         newRule.put("menuNotif",menuNotif);
-        newRule.put("telegram_notif",telegramNotif);
+        newRule.put("telegramNotif",telegramNotif);
 
         return newRule;
     }

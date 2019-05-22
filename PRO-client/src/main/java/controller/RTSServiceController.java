@@ -6,6 +6,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Regexp;
@@ -49,7 +50,8 @@ public class RTSServiceController {
          return;
       }
 
-      FormUtils.hideErrorMessage(error);
+      ((Stage) this.channel.getScene().getWindow()).close();
+
 
    }
 }
