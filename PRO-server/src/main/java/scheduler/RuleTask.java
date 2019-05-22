@@ -6,14 +6,14 @@ public class RuleTask implements Runnable {
 
     private Rule rule;
 
-    private String RuleResult;
+    private String ruleResult;
 
     public RuleTask(Rule rule) {
         this.rule = rule;
     }
 
     public String getRuleResult() {
-        return RuleResult;
+        return ruleResult;
     }
 
     public int getRuleID() {
@@ -26,6 +26,7 @@ public class RuleTask implements Runnable {
 
     @Override
     public void run() {
-        RuleResult = null; // rule.execute();
+        ruleResult = rule.execute();
+        System.out.println(ruleResult);
     }
 }

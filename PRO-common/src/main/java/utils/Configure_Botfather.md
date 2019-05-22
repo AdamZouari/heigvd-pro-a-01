@@ -19,4 +19,6 @@ Voici ci dessous un tutoriel step-by step pour ajouter le bot:
 2. Chercher le Bot ASAPP: @pro_cff_bot
 3. Ajouter le Bot à un groupe ou bien communiquer directement
    avec le Bot en cliquant sur start
+   
+   https://telegram.me/pro_cff_bot?startgroup=1
 

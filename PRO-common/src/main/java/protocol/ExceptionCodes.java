@@ -2,9 +2,9 @@ package protocol;
 
 public enum ExceptionCodes {
 
-    A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO("Un utilisateur avec ce pseudo existe déjà."),
-    A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM("Un utilisateur avec ce compte Telegram existe déjà."),
-    REGISTRATION_FAILED("L'inscription a échoué"),
+    A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO("A user already exists with this pseudo."),
+    A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM("A user already exists with this Telegram account."),
+    REGISTRATION_FAILED("Registration failed."),
     LOGIN_FAILED("Wrong username or password"),
     ALL_FIELDS_ARE_NOT_FILLED("All fields are mandatory !"),
     DEPARTURE_IS_NOT_A_CITY("Departure city hasn't a valid name !"),

@@ -73,5 +73,6 @@ public class MeteoRule extends Rule {
         }
 
         return result;
+
     }
 }

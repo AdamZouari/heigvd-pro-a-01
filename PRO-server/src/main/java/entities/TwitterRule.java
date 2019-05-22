@@ -17,8 +17,9 @@ public class TwitterRule extends Rule {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         // TO DO
+        return "";
     }
     public static String getTAG() {
         return TAG;

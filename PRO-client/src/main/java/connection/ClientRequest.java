@@ -2,7 +2,11 @@ package connection;
 
 import exceptions.CustomException;
 import exceptions.ProtocolException;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
 
@@ -11,7 +15,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
+import java.util.logging.Level;
 
 import static protocol.Protocol.RESPONSE_FAILURE;
 
@@ -24,6 +31,8 @@ public class ClientRequest {
     private static BufferedReader reader = null;
     private static PrintWriter writer = null;
     private static String loggedUser;
+    private static String URL_TELEGRAM = "https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6jFEepAGRMITfhv2ok/getUpdates";
+
 
     public void connect(String server) throws IOException {
         if (!isConnected()) {
@@ -42,9 +51,9 @@ public class ClientRequest {
         }
     }
 
-    public void register(String username, String hashPassword, String telegramUsername) throws IOException, CustomException, ProtocolException {
+    public void register(String username, String hashPassword, String telegramUsername,int idTelegram) throws IOException, CustomException, ProtocolException {
 
-        sendToServer(Protocol.CMD_REG + " " + username+":"+telegramUsername+":"+hashPassword);
+        sendToServer(Protocol.CMD_REG + " " + username+":"+telegramUsername+":"+hashPassword+":"+idTelegram);
         String response = reader.readLine();
         checkIfSuccess(response);
 
@@ -112,7 +121,12 @@ public class ClientRequest {
     }
 
     // the rules content
-    public void getRulesContent(String username) {
+    public String getRulesContent() throws IOException, CustomException, ProtocolException {
+        sendToServer(Protocol.CMD_GET_RULES + " " + loggedUser);
+        String response = reader.readLine();
+        checkIfSuccess(response);
+        // checker
+        return response;
 
     }
 
@@ -120,11 +134,12 @@ public class ClientRequest {
 
     }
 
-    public void addRule(String ruleToSend) throws IOException {
+    public void addRule(String ruleToSend) throws IOException, CustomException, ProtocolException {
         // TODO est ce que swtich sur le type de classe (RuleCff ou RTS...) pour choisir quoi envoyer,
         // TODO  ou bien envoyer tel quel et c'est le serveur qui decide comment le parser
-        sendToServer(Protocol.CMD_ADD_RULE + " " + loggedUser +":" + ruleToSend);
+        sendToServer(Protocol.CMD_ADD_RULE + " " + loggedUser +" " + ruleToSend);
         String response = reader.readLine();
+        checkIfSuccess(response);
         //LOG.info("Got : " + reader.readLine());
 
     }
@@ -146,5 +161,84 @@ public class ClientRequest {
 
     public boolean isConnected() {
         return clientSocket != null;
+    }
+
+    public String getJsonTelegram(){
+        String reponse = new String();
+
+        try {
+            URL url = new URL("https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6jFEepAGRMITfhv2ok/getUpdates");
+
+            // Get API request
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("content-type", "application/json")
+                    .get()
+                    .build();
+
+            // Read the response
+            try (Response response = client.newCall(request).execute()) {
+                JSONObject json = new JSONObject(response.body().string());
+                reponse = json.toString();
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        LOG.info("json : "+ reponse);
+        return reponse;
+    }
+
+
+    public void addBot() {
+
+
+        String url = "https://telegram.me/pro_cff_bot";
+        String os = System.getProperty("os.name").toLowerCase();
+        Runtime rt = Runtime.getRuntime();
+
+
+        try{
+
+            if (os.contains("win")) {
+
+                // this doesn't support showing urls in the form of "page.html#nameLink"
+                rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
+
+            } else if (os.contains("mac")) {
+
+                rt.exec( "open " + url);
+
+            } else if (os.contains("nix") || os.contains("nux")) {
+
+                // Do a best guess on unix until we get a platform independent way
+                // Build a list of browsers to try, in this order.
+                String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
+                        "netscape","opera","links","lynx"};
+
+                // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
+                StringBuffer cmd = new StringBuffer();
+                for (int i=0; i<browsers.length; i++)
+                    cmd.append(i == 0 ? "" : " || ").append(browsers[i]).append(" \"").append(url).append("\" ");
+
+                rt.exec(new String[] { "sh", "-c", cmd.toString() });
+
+            } else {
+                return;
+            }
+        }catch (Exception e){
+            return;
+        }
+    }
+
+    public int getIdFromTelegramPseudo(String json) {
+
+        String[] from = json.split("from");
+
+        int id = Integer.parseInt(from[from.length - 1].split("\"id\":")[1].split(",")[0]);
+        String user = from[from.length - 1].split("\"username\":\"")[1].split("\"")[0];
+
+        return id;
     }
 }

@@ -1,4 +1,3 @@
-import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
@@ -15,7 +14,7 @@ public class CFFJUnitTests {
     }
 
     @Test
-    public void testCFFConnectionsBetweenTwoCities() throws FileNotFoundException, ParseException {
+    public void testCFFConnectionsBetweenTwoCities() throws FileNotFoundException{
         ServiceCFF cff = new ServiceCFF();
         cff.connect();
 
@@ -30,7 +29,7 @@ public class CFFJUnitTests {
 
 
     @Test
-    public void testCFFModificationOfTrain() throws FileNotFoundException, ParseException {
+    public void testCFFModificationOfTrain() throws FileNotFoundException {
         String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
         System.out.println(JsonParserCFF.parseCFForDelay(cff,"Lausanne","Geneve"));
 

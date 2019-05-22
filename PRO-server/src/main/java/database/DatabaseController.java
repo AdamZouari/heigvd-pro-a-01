@@ -2,7 +2,6 @@ package database;
 
 import entities.User;
 
-import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;
 
@@ -87,7 +86,7 @@ public class DatabaseController {
 
         try {
 
-            int userId;
+            int userId,idTelegram;
             String username, password, telegramUsername, rules;
             User.LANGUE langue;
             preparedStatement = mConnection.prepareStatement(sql);
@@ -99,11 +98,11 @@ public class DatabaseController {
                 userId = Integer.parseInt(result.getString(1));
                 username = result.getString(2);
                 telegramUsername = result.getString(3);
-
-                password = result.getString(4);
-                rules = result.getString(5);
-                langue = User.LANGUE.valueOf(result.getString(6));
-                return new User(id, username, telegramUsername, password, rules, langue);
+                idTelegram = result.getInt(4);
+                password = result.getString(5);
+                rules = result.getString(6);
+                langue = User.LANGUE.valueOf(result.getString(7));
+                return new User(id, username, telegramUsername, idTelegram,password, rules, langue);
 
             }
 
@@ -124,7 +123,7 @@ public class DatabaseController {
 
         try {
 
-            int id;
+            int id, idTelegram;
             String usernameId, telegramUsername, password, rules;
             User.LANGUE langue;
             preparedStatement = mConnection.prepareStatement(sql);
@@ -136,12 +135,13 @@ public class DatabaseController {
                 id = Integer.parseInt(result.getString(1));
                 usernameId = result.getString(2);
                 telegramUsername = result.getString(3);
+                idTelegram = result.getInt(4);
 
-                password = result.getString(4);
-                rules = result.getString(5);
-                langue = User.LANGUE.valueOf(result.getString(6));
-                LOG.log(Level.SEVERE," User created : ", new User(id, usernameId, telegramUsername, password, rules, langue).toString());
-                return new User(id, usernameId, telegramUsername, password, rules, langue);
+                password = result.getString(5);
+                rules = result.getString(6);
+                langue = User.LANGUE.valueOf(result.getString(7));
+                LOG.log(Level.SEVERE," User created : ", new User(id, usernameId,telegramUsername, idTelegram, password, rules, langue).toString());
+                return new User(id, usernameId, telegramUsername, idTelegram, password, rules, langue);
 
             }
 
@@ -184,17 +184,12 @@ public class DatabaseController {
     }
 
 
-    // TODO : Check if exist
-    public void addUser(String username, String telegramUsername, String password, JSONObject rules, User.LANGUE langue) {
-
-
+    public void addUser(String username, String telegramUsername, int idTelegram ,String password, String rules, User.LANGUE langue) throws ProtocolException, CustomException {
         PreparedStatement preparedStatement = null;
-        String sql = " INSERT INTO User( username, telegramUsername,password, rules, langue)" +
-                " VALUES (?,?,?,?,?) ;";
+        String sql = " INSERT INTO User( username, telegramUsername,idTelegram,password, rules, langue) VALUES (?,?,?,?,?,?) ;";
 
         try {
             if (usernameExist(username)) {
-
                 throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage());
             }
 
@@ -205,31 +200,26 @@ public class DatabaseController {
             preparedStatement = mConnection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, telegramUsername);
-            preparedStatement.setString(3, password);
-            preparedStatement.setObject(4, rules);                 // TODO think of a method to pass a JSON
-            preparedStatement.setString(5, langue.name());
+            preparedStatement.setInt(3, idTelegram);
+            preparedStatement.setString(4, password);
+            preparedStatement.setString(5, String.valueOf(rules));                 // TODO think of a method to pass a JSON
+            preparedStatement.setString(6, langue.name());
 
             preparedStatement.executeUpdate();
             System.out.println("User " + username + " added !");
-
-
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
+            throw new CustomException(ExceptionCodes.REGISTRATION_FAILED.ordinal());
         }
-
-
     }
 
+    // TODO check idTelegram
     public void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
-
-
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET username = ? , password = ? , rules = ? , langue = ? " +
                 " WHERE id = ? ";
 
         try {
-
             preparedStatement = mConnection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
@@ -240,13 +230,9 @@ public class DatabaseController {
 
             preparedStatement.executeUpdate();
             System.out.println("User " + username + " updated !");
-
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
 
@@ -302,7 +288,6 @@ public class DatabaseController {
 
 
         try {
-
             preparedStatement = mConnection.prepareStatement(sql);
 
             preparedStatement.setString(1, password);
@@ -322,7 +307,7 @@ public class DatabaseController {
     public void updateRule(String username, String rule) {
 
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE User SET rule = ?  WHERE username = ? ";
+        String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
 
 
         try {
@@ -335,12 +320,11 @@ public class DatabaseController {
             preparedStatement.executeUpdate();
             System.out.println("Rule of updated !");
 
+            System.out.println("Password of updated !");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
     public void specifyRules(int id, String rules) {

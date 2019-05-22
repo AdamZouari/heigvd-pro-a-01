@@ -32,7 +32,7 @@ public class RuleTaskManager {
 
     private RuleTaskManager() {
         running = false;
-        period = 24 * 60; // 1 day in minutes
+        period = 1;//24 * 60; // 1 day in minutes
         taskMap = new HashMap<>();
     }
 

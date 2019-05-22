@@ -1,10 +1,12 @@
 import database.DatabaseController;
-import entities.User;
+import entities.*;
+import exceptions.CustomException;
+import exceptions.ProtocolException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.simple.parser.ParseException;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
+import scheduler.RuleTask;
 import scheduler.RuleTaskManager;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
@@ -25,6 +27,7 @@ public class Server {
 
     private RuleTaskManager ruleTaskManager;
 
+    private static DatabaseController db = DatabaseController.getController();
 
     private Server() {
         LOG.info("Starting the RuleTaskManager...");
@@ -93,7 +96,7 @@ public class Server {
 
                 try {
                     LOG.info("Reading until client sends BYE or closes the connection...");
-                    //TODO CHANGER COMPORTEMENT, RENVOIE SEULEMENT CE QUE LE CLIENT LUI ENVOI
+                    //TODO check items
                     while ((shouldRun) && (line = in.readLine()) != null) {
                         LOG.info(clientSocket.getRemoteSocketAddress().toString().substring(1) + " > " + line);
                         String[] items = line.split(" ");
@@ -112,12 +115,13 @@ public class Server {
                                 login(items[1]);
                                 break;
 
-                            case Protocol.CMD_GET_CFF:
-                                cff(items[1]);
+                            case Protocol.CMD_ADD_RULE:
+                                addRule(items[1], items[2]);
                                 break;
 
-                            case Protocol.CMD_ADD_RULE:
-                                addRule(items[1]);
+                            case Protocol.CMD_GET_RULES:
+                                getRules(items[1]); //username
+                                break;
                         }
 
                     }
@@ -148,8 +152,6 @@ public class Server {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (SQLException e) {
                     e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -159,39 +161,49 @@ public class Server {
             }
 
             private void register(String item) {
-
                 try {
                     String[] creds = item.split(":");
                     String username =  creds[0], telegramUsername =  creds[1], hashPassword = creds[2];
+                    int idTelegram = Integer.parseInt(creds[3]);
                     JSONObject json = new JSONObject();
                     json.put("rules",new JSONArray());
-                    DatabaseController db = DatabaseController.getController();
-                    db.addUser(username, telegramUsername, hashPassword, json, User.LANGUE.EN);
+                    db.addUser(username, telegramUsername, idTelegram ,hashPassword, json.toString(), User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
-                } catch (Exception e) {
+                } catch (ProtocolException e) {
                     System.out.println(e.getMessage());
-                    sendError(ExceptionCodes.REGISTRATION_FAILED.ordinal());
+
+                    if(e.getMessage().equals(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage()))
+                        sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.ordinal());
+                    else
+                        sendError(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.ordinal());
+                // TODO : Check CustomException ? Send to client ?
+                } catch (CustomException e) {
+                    System.out.println(e.getMessage());
+
                 }
             }
+
             private void login(String item) throws SQLException {
 
                 String[] creds = item.split(":");
                 String username =  creds[0], hashPassword =  creds[1];
 
-                // TODO : Check if username is correct, use try&catch
-                User user = DatabaseController.getController().getUserByUsername(username);
-                if(user.getHashPassword().equals(hashPassword)){
-                    System.out.println("User " +username+ " logged");
-                    sendToClient(Protocol.RESPONSE_SUCCESS);
-                }else {
+                try {
+                    User user = DatabaseController.getController().getUserByUsername(username);
+
+                    if(user.getHashPassword().equals(hashPassword)) {
+                        System.out.println("User " + username + " logged");
+                        sendToClient(Protocol.RESPONSE_SUCCESS);
+                    } else
+                        sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
+
+                } catch(Exception e) {
                     sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
-
                 }
-
             }
 
-            private void cff(String item) throws ParseException {
+            private void cff(String item) {
 
                 ServiceCFF cff = new ServiceCFF();
                 cff.connect();
@@ -213,11 +225,19 @@ public class Server {
             }
 
 
-            private void addRule(String item) throws SQLException {
 
-                String username = item.split(":")[0];
-                String rules = item.split(":")[1];
+            private void getRules(String username) throws SQLException {
 
+                String rules = db.getUserRulesByUsername(username);
+                sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+
+            }
+
+
+            private void addRule(String username,String rules) throws SQLException {
+
+
+                LOG.info("rules " + rules);
                 // we extracted the rules to add to the database
                 JSONObject json = new JSONObject(rules);
                 System.out.println(json);
@@ -226,16 +246,62 @@ public class Server {
                 // iterate to switch whether it is a cff,rts,... rule
 
 
-                String userRulesString = DatabaseController.getController().getUserRulesByUsername(username);
+                String userRulesString = db.getUserRulesByUsername(username);
 
-                JSONObject userRules = new JSONObject(userRulesString);
-                userRules.put("rules",json);
+                // get the previous rules of a user
+                JSONObject userRulesToJson = new JSONObject (userRulesString);
+                JSONArray userRules = (JSONArray) userRulesToJson.get("rules");
 
-                // TODO update or store new rules
+                // Here we create the rule for the rule task manager
 
+                Rule rule = null;
+                int id = (int) json.get("id");
+                String starting_date  = "" + (json.get("date_debut"));
+                // TODO parse in function of the tag (if tag == meteo then)
+                switch((String)json.get("tag")){
+                    case "METEO":
+                        //  parse all infos for meteo
+                        rule = new MeteoRule(id,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
+                                (String)json.get("time"), (String)json.get("location"),(String)json.get("weatherType"),
+                                (String)json.get("temperature"),
+                                (String)json.get("temperatureSelection"),(String)json.get("noteText"));
+                        break;
+                    case "CFF":
+                        //  parse all infos for meteo
+                        rule = new CffRule(id,starting_date,(String)json.get("from"),(String)json.get("to"),
+                                (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
+                                (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
+                        break;
+                    case "RTS":
+                        //  parse all infos for meteo
+                        rule = new RtsRule(id,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
+                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                        break;
+                    case "TWITTER":
+                        //  parse all infos for meteo
+                        rule = new TwitterRule(id,starting_date,(String)json.get("twitterId"),(String)json.get("pin"),
+                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                        break;
+                    default:
+                        break;
+                }
+
+                ruleTaskManager.addRule(username, new RuleTask(rule));
+
+                // Here we add the rule for the database
+                userRules.put(json);
+
+                // update old rules with new ones
+                JSONObject fin = new JSONObject();
+                fin.put("rules", userRules);
+
+                // update or store new rules
+                db.updateRule(username, fin.toString());
                 //TODO christoph ? need of a rule
                 //Rule ruleToAdd = new CffRule();
                 //allRUles.add(ruleToAdd);
+
+                sendToClient(Protocol.RESPONSE_SUCCESS);
 
             }
 
@@ -249,8 +315,6 @@ public class Server {
             }
         }
     }
-
-
 
     public static void main(String[] args) {
         System.out.println("This is the server");
