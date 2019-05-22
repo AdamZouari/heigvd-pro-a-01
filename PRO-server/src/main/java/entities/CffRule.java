@@ -62,7 +62,12 @@ public class CffRule extends Rule{
 
         cff.disconnect();
 
+        if(telegramNotif){
+            // TODO choper le telegram id et envoyer via le bot
+            // retard
+        }
         return JsonParserCFF.parseCFF(connections,from,to);
+
 
     }
 }
