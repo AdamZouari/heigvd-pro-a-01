@@ -30,7 +30,7 @@ public abstract class Rule {
     }
 
     public Rule(JSONObject rule) {
-        id = Integer.parseInt((String)rule.get("id"));
+        id = (int)rule.get("id");
         tag = rule.get("tag").toString();
         startDate = rule.get("date_debut").toString();
         menuNotif = (boolean)rule.get("menuNotif");

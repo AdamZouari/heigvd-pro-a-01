@@ -108,7 +108,7 @@ public class WeatherServiceController implements Initializable {
 
         // Send Rules to server;
         try {
-            new ClientRequest().addRule(json.toString(3));
+            new ClientRequest().addRule(json.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

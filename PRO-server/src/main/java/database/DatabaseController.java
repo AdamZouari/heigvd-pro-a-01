@@ -320,7 +320,6 @@ public class DatabaseController {
             preparedStatement.executeUpdate();
             System.out.println("Rule of updated !");
 
-            System.out.println("Password of updated !");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
