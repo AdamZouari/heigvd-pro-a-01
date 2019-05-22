@@ -41,7 +41,7 @@ public class CffRule extends Rule{
 
 
     @Override
-    public void execute() {
-        // To Do
+    public String execute() {
+        return new String();
     }
 }
