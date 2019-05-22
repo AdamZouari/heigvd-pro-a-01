@@ -235,12 +235,15 @@ public class ClientRequest {
     }
 
     // get id for the last user that added
-    public int getIdFromTelegramPseudo(String json) {
+    public int getIdFromTelegramPseudo(String json) throws ProtocolException {
 
         String[] from = json.split("from");
 
         int id = Integer.parseInt(from[from.length - 1].split("\"id\":")[1].split(",")[0]);
         String user = from[from.length - 1].split("\"username\":\"")[1].split("\"")[0];
+
+        if(!user.equals(loggedUser))
+            throw new ProtocolException(ExceptionCodes.USER_DIDNT_ADD_TELEGRAM_BOT.getMessage());
 
         return id;
     }

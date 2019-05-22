@@ -3,6 +3,7 @@ package entities;
 import database.DatabaseController;
 import org.json.JSONObject;
 import service.ServiceMeteo;
+import sun.rmi.runtime.Log;
 import utils.TelegramNotification;
 
 public class MeteoRule extends Rule {
@@ -77,12 +78,16 @@ public class MeteoRule extends Rule {
         switch (temps) {
             case ("Clear") :
                 result.put("meteo","Ensoleillé");
+                break;
             case ("Rain") :
                 result.put("meteo","Pluvieuse");
+                break;
             case("Cloud"):
                 result.put("meteo", "Nuageuse");
+                break;
             case("Snow"):
                 result.put("meteo", "Chutes de neige");
+                break;
         }
 
         int temp = service.getTemperature(location);
@@ -130,7 +135,7 @@ public class MeteoRule extends Rule {
             // TODO HELP ANTOINE
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
             TelegramNotification telegram = new TelegramNotification();
-            telegram.sendRuleResult(telegramId, Integer.toString(new ServiceMeteo().getTemperature("Lausanne")));
+            telegram.sendRuleResult(telegramId,result.toString());
 
         }
         if (menuNotif) {

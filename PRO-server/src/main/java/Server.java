@@ -312,7 +312,8 @@ public class Server {
 
                 // update or store new rules
                 db.updateRule(username, fin.toString());
-                //TODO christoph ? need of a rule
+
+                // TODO christoph ? need of a rule
                 //Rule ruleToAdd = new CffRule();
                 //allRUles.add(ruleToAdd);
 

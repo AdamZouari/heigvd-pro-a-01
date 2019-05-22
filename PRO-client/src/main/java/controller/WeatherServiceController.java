@@ -95,6 +95,7 @@ public class WeatherServiceController implements Initializable {
         String tempSelec;
         String weatherSelec;
 
+        //TODO Checker car retourne NullPointerException ..
         // Permettre de laisser des cases sans les valider
         if (weatherTypeSelection.getValue().toString() == null) {
             weatherSelec = "null";
