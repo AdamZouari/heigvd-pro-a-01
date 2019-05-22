@@ -102,4 +102,5 @@ public class ServiceMeteo extends Service {
     public boolean isRainy(String city) {
         return getMain(city).contains("Rain");
     }
+    public boolean isSnowy(String city) { return getMain(city).contains("Snow"); }
 }

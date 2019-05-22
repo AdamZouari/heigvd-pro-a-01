@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONObject;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
 
@@ -44,7 +45,13 @@ public class CffRule extends Rule{
 
 
     @Override
+    public JSONObject toJSON() {
+        return null;
+    }
+
+    @Override
     public String execute() {
+
         // To Do
         ServiceCFF cff = new ServiceCFF();
         cff.connect();

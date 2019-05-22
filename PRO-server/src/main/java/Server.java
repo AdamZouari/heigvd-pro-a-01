@@ -96,7 +96,7 @@ public class Server {
 
                 try {
                     LOG.info("Reading until client sends BYE or closes the connection...");
-                    //TODO CHANGER COMPORTEMENT, RENVOIE SEULEMENT CE QUE LE CLIENT LUI ENVOI
+                    //TODO check items
                     while ((shouldRun) && (line = in.readLine()) != null) {
                         LOG.info(clientSocket.getRemoteSocketAddress().toString().substring(1) + " > " + line);
                         String[] items = line.split(" ");
@@ -164,9 +164,10 @@ public class Server {
                 try {
                     String[] creds = item.split(":");
                     String username =  creds[0], telegramUsername =  creds[1], hashPassword = creds[2];
+                    int idTelegram = Integer.parseInt(creds[3]);
                     JSONObject json = new JSONObject();
                     json.put("rules",new JSONArray());
-                    db.addUser(username, telegramUsername, hashPassword, json.toString(), User.LANGUE.EN);
+                    db.addUser(username, telegramUsername, idTelegram ,hashPassword, json.toString(), User.LANGUE.EN);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
                 } catch (ProtocolException e) {
@@ -261,9 +262,10 @@ public class Server {
                     case "METEO":
                         //  parse all infos for meteo
                         rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
-                                (String)json.get("time"), (String)json.get("location"),(String)json.get("weatherType"),
+                                (String)json.get("location"),(String)json.get("weatherType"),
                                 (String)json.get("temperature"),
-                                (String)json.get("temperatureSelection"),(String)json.get("noteText"));
+                                (String)json.get("temperatureSelection"));
+
                         break;
                     case "CFF":
                         //  parse all infos for meteo

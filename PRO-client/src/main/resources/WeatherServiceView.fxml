@@ -67,8 +67,7 @@
                   <ChoiceBox fx:id="temperatureSelection" prefWidth="150.0">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
-                           <String fx:value="Less" />
-                           <String fx:value="More" />
+
                         </FXCollections>
                      </items>
                   </ChoiceBox>
@@ -87,12 +86,8 @@
                </FlowPane.margin>
             </FlowPane>
             <FlowPane hgap="10.0">
-               <children>
-                  <Label minWidth="100.0" text="%additionalNote" />
-                  <CheckBox fx:id="addNoteCheckBox" mnemonicParsing="false" onMouseClicked="#onAdditionalNoteClick" />
-               </children>
+
             </FlowPane>
-            <TextArea fx:id="noteTextArea" editable="false" maxHeight="150.0" maxWidth="350.0" />
             <Button fx:id="addRuleButton" mnemonicParsing="false" onMouseClicked="#onAddRuleClick" text="%addTheRule">
                <FlowPane.margin>
                   <Insets left="250.0" />
