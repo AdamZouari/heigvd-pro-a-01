@@ -7,26 +7,27 @@ public class User {
 
     private String username;
     private String telegramUsername;
-    private int id;
+    private int id, idTelegram;
     private String hashPassword;
     private String rules; //Json
-    private LANGUE langue = LANGUE.EN; // anglais pas defaut
+    private LANGUE langue = LANGUE.EN; // anglais pas defaut //TODO Pas besoin deja traiter dans DB
 
     public User() {
 
     }
 
-    public User(int id, String username, String telegramUsername,String hashPassword,String rules, LANGUE langue){
-        this(id,username, telegramUsername,hashPassword,rules);
+    public User(int id, String username, String telegramUsername, int idTelegram, String hashPassword,String rules, LANGUE langue){
+        this(id,username, telegramUsername, idTelegram,hashPassword,rules);
         this.langue = langue;
 
     }
 
-    public User(int id, String username,  String telegramUsername, String hashPassword,String rules){
+    public User(int id, String username,  String telegramUsername, int idTelegram ,String hashPassword,String rules){
 
         this.id = id;
         this.username = username;
         this.telegramUsername = telegramUsername;
+        this.idTelegram = idTelegram;
         this.hashPassword = hashPassword;
         this.rules = rules;
 
