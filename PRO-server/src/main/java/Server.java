@@ -1,5 +1,3 @@
-package server;
-
 import database.DatabaseController;
 import entities.*;
 import exceptions.CustomException;
