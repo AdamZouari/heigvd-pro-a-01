@@ -68,7 +68,7 @@ public class MeteoRule extends Rule {
 
         JSONObject result = new JSONObject();
         ServiceMeteo service = new ServiceMeteo();
-        String temps = service.getMain();
+        String temps = service.getMain(location);
         boolean sendTelegram = false;
 
         // Resultat de l'execution de la règle --> donner la meteo
@@ -86,7 +86,7 @@ public class MeteoRule extends Rule {
         int temp = service.getTemperature(location);
         int tmp = Integer.parseInt(temperature);
 
-        result.put("Temperature", temp);
+        result.put("temperature", temp);
 
         // Si l'utilisateur a defini une regle concernant la temperature
         if (!temperatureSelection.equals("null")) {
