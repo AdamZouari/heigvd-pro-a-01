@@ -4,6 +4,7 @@ import connection.ClientRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
@@ -117,6 +118,9 @@ public class WeatherServiceController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Close Window
+        ((Stage) this.temperatureSelection.getScene().getWindow()).close();
     }
 
     @Override

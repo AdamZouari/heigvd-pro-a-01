@@ -65,50 +65,72 @@ public class MeteoRule extends Rule {
     @Override
     public String execute() {
 
-        StringBuilder result = new StringBuilder();
-
+        JSONObject result = new JSONObject();
         ServiceMeteo service = new ServiceMeteo();
+        String temps = service.getMain();
+        boolean sendTelegram = false;
+
+        // Resultat de l'execution de la règle --> donner la meteo
+        switch (temps) {
+            case ("Clear") :
+                result.put("meteo","Ensoleillé");
+            case ("Rain") :
+                result.put("meteo","Pluvieuse");
+            case("Cloud"):
+                result.put("meteo", "Nuageuse");
+            case("Snow"):
+                result.put("meteo", "Chutes de neige");
+        }
 
         int temp = service.getTemperature(location);
         int tmp = Integer.parseInt(temperature);
+
+        result.put("Temperature", temp);
 
         // Si l'utilisateur a defini une regle concernant la temperature
         if (!temperatureSelection.equals("null")) {
             if (temperatureSelection.equals("<")) {
                 if (temp <= tmp) {
-                    result.append("La temperature est inférieure à :");
-                    result.append(tmp);
+                    sendTelegram = true;
                 }
             } else {
                 if (temp >= tmp) {
-                    result.append("La temperature est superieur à :");
-                    result.append(tmp);
+                    sendTelegram = true;
                 }
             }
         }
 
         // Si l'utilisateur a defini une regle concernant le temps
         if (!weatherType.equals("null")) {
-            if(weatherType.equals("sunny")) {
+            if(weatherType.equals("Ensoleillé")) {
                 if (service.isSunny(location)) {
-                    result.append("Le temps est ensoleillé");
+                    sendTelegram = true;
                 }
-            } else if (weatherType.equals("rainy")) {
+            } else if (weatherType.equals("Pluvieux")) {
                 if (service.isRainy(location)) {
-                    result.append("Le temps est pluvieux");
+                    sendTelegram = true;
                 }
-            } else if (weatherType.equals("snowy")) {
+            } else if (weatherType.equals("Neigeux")) {
                 if (service.isSnowy(location)) {
-                    result.append("Des chutes de neiges sont présentes");
+                    sendTelegram = true;
                 }
-            } else if (weatherType.equals("cloudy")) {
+            } else if (weatherType.equals("Nuageux")) {
                 if (service.isCloudy(location)) {
-                    result.append("Le temps est nuageux");
+                    sendTelegram = true;
                 }
             }
         }
 
-        return result.toString();
+        // Si l'utilisateur veut des notifications Telegram et que les conditions sont réunis on les envoies
+        if (telegramNotif && sendTelegram) {
+            // envoye notif to Telegram si les conditions du dessus sont présentes
+        }
 
+        if (menuNotif) {
+            return result.toString();
+
+        } else {
+            return "";
+        }
     }
 }
