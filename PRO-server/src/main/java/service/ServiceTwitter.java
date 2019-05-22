@@ -4,6 +4,7 @@ import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 public class ServiceTwitter extends Service {
 
@@ -135,5 +136,21 @@ public class ServiceTwitter extends Service {
         }
 
         return tweet;
+    }
+
+    public ArrayList<String> getLast10Tweets(String user) {
+
+        ArrayList<String> tweets = new ArrayList<>();
+
+        // Recuperer la timeline et prendre les 10 derniers tweets.
+        try {
+            ResponseList<Status> timeline = twitter.getUserTimeline(user);
+            for (int i = 9; i >= 0; --i) {
+                tweets.add(timeline.get(i).getText());
+            }
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+        return tweets;
     }
 }
