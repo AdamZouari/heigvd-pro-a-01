@@ -333,4 +333,27 @@ public class DatabaseController {
         // TODO return it in JSON
 
     }
+
+    public String getTelegramIdByUsername(String username) {
+
+        PreparedStatement preparedStatement = null;
+        ResultSet result = null;
+        String sql = "SELECT idTelegram FROM User WHERE username=?";
+        String idTelegram = null;
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1,username);
+            result = preparedStatement.executeQuery();
+
+            idTelegram = result.getString(1);
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return idTelegram;
+
+    }
 }

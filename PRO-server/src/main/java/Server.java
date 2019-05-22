@@ -1,3 +1,5 @@
+package server;
+
 import database.DatabaseController;
 import entities.*;
 import exceptions.CustomException;
@@ -228,6 +230,10 @@ public class Server {
             }
 
 
+            private String getUserTegramId(String username){
+                String telegramId = db.getTelegramIdByUsername(username);
+                return telegramId;
+            }
 
             private void getRules(String username) throws SQLException {
 
