@@ -1,5 +1,7 @@
 package entities;
 
+import org.json.JSONObject;
+
 public class TwitterRule extends Rule {
 
     private static final String TAG = "TWITTER";
@@ -14,6 +16,11 @@ public class TwitterRule extends Rule {
         this.twitterId= twitterId;
         this.pin=pin;
 
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        return null;
     }
 
     @Override

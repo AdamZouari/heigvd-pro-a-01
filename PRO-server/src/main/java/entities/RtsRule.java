@@ -1,5 +1,7 @@
 package entities;
 
+import org.json.JSONObject;
+
 public class RtsRule extends Rule {
 
     private static final String TAG = "RTS";
@@ -15,6 +17,11 @@ public class RtsRule extends Rule {
         this.requestTime=requestTime;
     }
 
+
+    @Override
+    public JSONObject toJSON() {
+        return null;
+    }
 
     @Override
     public String execute() {
