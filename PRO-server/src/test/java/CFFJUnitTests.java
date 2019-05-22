@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 import service.ServiceCFF;
+import service.ServiceMeteo;
 import utils.JsonParserCFF;
 import utils.TelegramNotification;
 
@@ -39,8 +40,8 @@ public class CFFJUnitTests {
 
     @Test
     public void testIfCffNotifIsSendToUserTelegram(){
-        String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
+        //String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
         TelegramNotification t = new TelegramNotification();
-        t.sendRuleResult("142772696",JsonParserCFF.parseCFF(cff,"Lausanne","Geneve"));
+        t.sendRuleResult("142772696",  Integer.toString(new ServiceMeteo().getTemperature("Lausanne")));
     }
 }

@@ -112,7 +112,7 @@ public class MeteoRule extends Rule {
             // TODO HELP ANTOINE
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
             TelegramNotification telegram = new TelegramNotification();
-            telegram.sendRuleResult(telegramId, toString());
+            telegram.sendRuleResult(telegramId, Integer.toString(new ServiceMeteo().getTemperature("Lausanne")));
 
         }
 
