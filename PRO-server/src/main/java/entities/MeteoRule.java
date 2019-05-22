@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONObject;
 import service.ServiceMeteo;
 
 public class MeteoRule extends Rule {
@@ -19,6 +20,40 @@ public class MeteoRule extends Rule {
         this.temperatureSelection = temperatureSelection;
         this.noteText = noteText;
     }
+
+    public MeteoRule(JSONObject json) {
+        super(json);
+        location = json.get("location").toString();
+        weatherType = json.get("weatherType").toString();
+        temperature = json.get("temperature").toString();
+        temperatureSelection = json.get("temperatureSelection").toString();
+        noteText = json.get("noteText").toString();
+    }
+
+    @Override
+    public JSONObject toJSON() {
+
+        JSONObject json = new JSONObject();
+
+        json.put("id", id);
+        json.put("tag", tag);
+        json.put("date_debut", startDate);
+        json.put("location", location);
+        json.put("weather_type", weatherType);
+        json.put("temperature", temperature);
+        json.put("temperatureSelection", temperatureSelection);
+        json.put("noteText", noteText);
+        json.put("menuNotif", menuNotif);
+        json.put("telegram_notif", telegramNotif);
+
+        return json;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJSON().toString(3);
+    }
+
 
     public String getStartDate() {
         return this.startDate;

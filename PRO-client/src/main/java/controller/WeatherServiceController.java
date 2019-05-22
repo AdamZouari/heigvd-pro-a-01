@@ -1,10 +1,13 @@
 package controller;
 
+import connection.ClientRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
+import utils.JsonParserRules;
 import utils.Regexp;
 
 import java.net.URL;
@@ -99,6 +102,16 @@ public class WeatherServiceController implements Initializable {
         }
 
         FormUtils.hideErrorMessage(error);
+
+        JSONObject json = JsonParserRules.createMeteoRuleJson(telegram, menu, time, location, weatherTypeSelection.getValue().toString(),
+                                            temperateurValue, temperatureSelection.getValue().toString(), noteTextArea.getText());
+
+        // Send Rules to server;
+        try {
+            new ClientRequest().addRule(json.toString(3));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
