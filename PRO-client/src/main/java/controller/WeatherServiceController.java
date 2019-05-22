@@ -91,7 +91,6 @@ public class WeatherServiceController implements Initializable {
 
         FormUtils.hideErrorMessage(error);
 
-
         String tempSelec;
         String weatherSelec;
 
@@ -102,7 +101,7 @@ public class WeatherServiceController implements Initializable {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
-        if (temperatureSelection.getValue().toString() == null) {
+        if (temperatureSelection.getValue().toString() == null || temperatureSelection.getValue().toString().equals("")) {
             tempSelec = "null";
         } else {
             tempSelec = temperatureSelection.getValue().toString();
@@ -122,6 +121,6 @@ public class WeatherServiceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        temperatureSelection.getItems().addAll("<",">");
+        temperatureSelection.getItems().addAll("<",">","");
     }
 }
