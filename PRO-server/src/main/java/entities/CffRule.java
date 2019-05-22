@@ -9,9 +9,9 @@ public class CffRule extends Rule{
     private static final String TAG = "CFF";
 
 
-    public CffRule(int id, String startDate, String from, String to, String departureTime, String arrivalTime, boolean telegramNotif, boolean menuNotif,
+    public CffRule(int id,String username, String startDate, String from, String to, String departureTime, String arrivalTime, boolean telegramNotif, boolean menuNotif,
                    boolean disruptionNotif) {
-        super(id, TAG, startDate, menuNotif,telegramNotif);
+        super(id,username, TAG, startDate, menuNotif,telegramNotif);
         this.from = from;
         this.to = to;
         this.departureTime = departureTime;

@@ -260,25 +260,25 @@ public class Server {
                 switch((String)json.get("tag")){
                     case "METEO":
                         //  parse all infos for meteo
-                        rule = new MeteoRule(id,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
+                        rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
                                 (String)json.get("time"), (String)json.get("location"),(String)json.get("weatherType"),
                                 (String)json.get("temperature"),
                                 (String)json.get("temperatureSelection"),(String)json.get("noteText"));
                         break;
                     case "CFF":
                         //  parse all infos for meteo
-                        rule = new CffRule(id,starting_date,(String)json.get("from"),(String)json.get("to"),
+                        rule = new CffRule(id,username,starting_date,(String)json.get("from"),(String)json.get("to"),
                                 (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
                                 (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
                         break;
                     case "RTS":
                         //  parse all infos for meteo
-                        rule = new RtsRule(id,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
+                        rule = new RtsRule(id,username,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
                                 (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
                         break;
                     case "TWITTER":
                         //  parse all infos for meteo
-                        rule = new TwitterRule(id,starting_date,(String)json.get("twitterId"),(String)json.get("pin"),
+                        rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),(String)json.get("pin"),
                                 (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
                         break;
                     default:
