@@ -66,7 +66,7 @@ public class ServiceCFF extends Service {
             toCity = toCity.toLowerCase();
 
             int statusCode = connection.getResponseCode();
-            System.out.println(statusCode);
+           // System.out.println(statusCode);
             switch (statusCode) {
                 case 200:
                 case 201:

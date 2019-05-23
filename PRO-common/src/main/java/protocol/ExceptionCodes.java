@@ -21,7 +21,8 @@ public enum ExceptionCodes {
     LOCATION_IS_NOT_A_CITY("Location city hasn't a valid name !"),
     NOT_A_NUMBER("The temperature isn't a number !"),
     NAME_MISSING("The name is missing !"),
-    SOME_PASS_ARE_MISSING("All the password fields are mandatory !");
+    SOME_PASS_ARE_MISSING("All the password fields are mandatory !"),
+    USER_DIDNT_ADD_TELEGRAM_BOT("The bot telegram haven't been added !");
 
     String message;
 

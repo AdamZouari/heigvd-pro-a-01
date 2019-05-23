@@ -9,7 +9,6 @@ public abstract class Rule {
     protected String startDate;
     protected boolean telegramNotif, menuNotif;
     private String username;
-
     /**
      *
      * {
@@ -28,6 +27,7 @@ public abstract class Rule {
         this.menuNotif= menuNotif;
         this.telegramNotif = telegramNotif;
         this.username=username;
+
     }
 
     public Rule(JSONObject rule) {
@@ -36,6 +36,10 @@ public abstract class Rule {
         startDate = rule.get("date_debut").toString();
         menuNotif = (boolean)rule.get("menuNotif");
         telegramNotif = (boolean)rule.get("telegram_notif");
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     /**

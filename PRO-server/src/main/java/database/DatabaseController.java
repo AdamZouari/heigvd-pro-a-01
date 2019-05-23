@@ -140,7 +140,6 @@ public class DatabaseController {
                 password = result.getString(5);
                 rules = result.getString(6);
                 langue = User.LANGUE.valueOf(result.getString(7));
-                LOG.log(Level.SEVERE," User created : ", new User(id, usernameId,telegramUsername, idTelegram, password, rules, langue).toString());
                 return new User(id, usernameId, telegramUsername, idTelegram, password, rules, langue);
 
             }
@@ -331,6 +330,30 @@ public class DatabaseController {
         //JSONWriter object = jsonReader.readObject();
 
         // TODO return it in JSON
+
+    }
+
+    public String getTelegramIdByUsername(String username) {
+
+        PreparedStatement preparedStatement = null;
+        ResultSet result = null;
+        String sql = "SELECT idTelegram FROM User WHERE username=?";
+        int idTelegram = -1;
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1,username);
+            result = preparedStatement.executeQuery();
+
+            if(result.next())
+                idTelegram = result.getInt(1);
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return "" + idTelegram;
 
     }
 }

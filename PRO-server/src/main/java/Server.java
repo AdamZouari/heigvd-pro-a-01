@@ -228,6 +228,10 @@ public class Server {
             }
 
 
+            private String getUserTegramId(String username){
+                String telegramId = db.getTelegramIdByUsername(username);
+                return telegramId;
+            }
 
             private void getRules(String username) throws SQLException {
 
@@ -308,7 +312,8 @@ public class Server {
 
                 // update or store new rules
                 db.updateRule(username, fin.toString());
-                //TODO christoph ? need of a rule
+
+                // TODO christoph ? need of a rule
                 //Rule ruleToAdd = new CffRule();
                 //allRUles.add(ruleToAdd);
 

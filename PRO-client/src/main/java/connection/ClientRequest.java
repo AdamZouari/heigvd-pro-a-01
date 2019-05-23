@@ -116,12 +116,12 @@ public class ClientRequest {
     }
 
     // the rules result for
-    public void getRulesResult(String username) throws IOException, CustomException, ProtocolException {
+    public String getRulesResult() throws IOException, CustomException, ProtocolException {
         //
         sendToServer(Protocol.CMD_GET_RES_RULES + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
-        //TODO fetch result
+        return response;
     }
 
     // the rules content
@@ -129,7 +129,6 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_GET_RULES + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
-        // checker
         return response;
 
     }
@@ -137,8 +136,6 @@ public class ClientRequest {
 
 
     public void addRule(String ruleToSend) throws IOException, CustomException, ProtocolException {
-        // TODO est ce que swtich sur le type de classe (RuleCff ou RTS...) pour choisir quoi envoyer,
-        // TODO  ou bien envoyer tel quel et c'est le serveur qui decide comment le parser
         sendToServer(Protocol.CMD_ADD_RULE + " " + loggedUser +" " + ruleToSend);
         String response = reader.readLine();
         checkIfSuccess(response);
@@ -234,12 +231,16 @@ public class ClientRequest {
         }
     }
 
-    public int getIdFromTelegramPseudo(String json) {
+    // get id for the last user that added
+    public int getIdFromTelegramPseudo(String json) throws ProtocolException {
 
         String[] from = json.split("from");
 
         int id = Integer.parseInt(from[from.length - 1].split("\"id\":")[1].split(",")[0]);
         String user = from[from.length - 1].split("\"username\":\"")[1].split("\"")[0];
+
+        if(!user.equals(loggedUser))
+            throw new ProtocolException(ExceptionCodes.USER_DIDNT_ADD_TELEGRAM_BOT.getMessage());
 
         return id;
     }

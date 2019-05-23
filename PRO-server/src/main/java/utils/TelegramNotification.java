@@ -14,8 +14,10 @@ import service.ServiceCFF;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Super site expliquant comment envoyer des notifications telegram
@@ -32,10 +34,9 @@ public class TelegramNotification extends TelegramLongPollingBot {
 
     HttpURLConnection connection;
 
-    public String sendHelloWorld(String chatID){
+    public String sendRuleResult(String chatID,String result){
 
-        String rqst = "https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6j" +
-                "FEepAGRMITfhv2ok/sendMessage?chat_id=" + chatID + "&text=Hello%20World%20bis";
+        String rqst = "https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6jFEepAGRMITfhv2ok/sendMessage?chat_id=" + chatID + "&text=" + result;
         try {
 
             URL url = new URL(rqst);
@@ -99,6 +100,21 @@ public class TelegramNotification extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     *
+     * Encode message to send via telegram so that it is accepted as an URL safe message
+     * **/
+
+    public String encodeMessageForURL(String message)  {
+        String encodedMessage = null;
+        try {
+            encodedMessage = URLEncoder.encode(message,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encodedMessage;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class ServiceMeteo extends Service {
             connection.setRequestMethod("GET");
 
             int statusCode = connection.getResponseCode();
-            System.out.println(statusCode);
+            //System.out.println(statusCode);
             switch (statusCode) {
                 case 200:
                 case 201:
@@ -62,7 +62,7 @@ public class ServiceMeteo extends Service {
             connection.setRequestMethod("GET");
 
             int statusCode = connection.getResponseCode();
-            System.out.println(statusCode);
+            //System.out.println(statusCode);
             switch (statusCode) {
                 case 200:
                 case 201:

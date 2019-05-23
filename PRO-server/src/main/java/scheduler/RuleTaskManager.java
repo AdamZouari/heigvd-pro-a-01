@@ -6,7 +6,6 @@ import entities.Rule;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -61,27 +60,27 @@ public class RuleTaskManager {
         }
     }
 
-    public void addRule(String userId, RuleTask task) {
-        if (taskMap.containsKey(userId)) {
-            taskMap.get(userId).put(task, schedule(task));
+    public void addRule(String username, RuleTask task) {
+        if (taskMap.containsKey(username)) {
+            taskMap.get(username).put(task, schedule(task));
         } else {
             Map<RuleTask, ScheduledFuture<?>> map = new HashMap<>();
             map.put(task, schedule(task));
-            taskMap.put(userId, map);
+            taskMap.put(username, map);
         }
     }
 
-    public String getUserTasks(String userId) {
+    public String getUserTasks(String username) {
 
         // TODO return rules result depending on tags ordered
         // TODO and separed by new line between same tag and ----- if tags changes
-        //return taskMap.get(userId).keySet();
+        //return taskMap.get(username).keySet();
         return "";
     }
 
-    public void deleteRule(String userId, int ruleId) {
-        if (taskMap.containsKey(userId)) {
-            Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(userId);
+    public void deleteRule(String username, int ruleId) {
+        if (taskMap.containsKey(username)) {
+            Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
             for (RuleTask ruleTask : userRulesMap.keySet()) {
                 if (ruleTask.getRuleID() == ruleId) {
                     userRulesMap.get(ruleTask).cancel(true);

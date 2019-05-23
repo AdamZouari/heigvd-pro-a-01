@@ -1,8 +1,12 @@
 package entities;
 
+import database.DatabaseController;
 import org.json.JSONObject;
 import service.ServiceCFF;
 import utils.JsonParserCFF;
+import utils.TelegramNotification;
+
+import java.net.URLEncoder;
 
 public class CffRule extends Rule{
     String from, to, departureTime, arrivalTime;
@@ -57,6 +61,7 @@ public class CffRule extends Rule{
         cff.connect();
 
         String connections = cff.getTrainsForPath(from,to,departureTime,arrivalTime);
+        String result = JsonParserCFF.parseCFForDelay(connections,from,to);
 
         // Here we parse the response from the server to show
 
@@ -65,8 +70,16 @@ public class CffRule extends Rule{
         if(telegramNotif){
             // TODO choper le telegram id et envoyer via le bot
             // retard
+
+            // TODO HELP ANTOINE
+            String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
+
+            //TODO WTF PK CA ENVOIE PAS DE NOTIF TELEGRAM EXACTEMENT PAREIL QUE POUR METEO....
+            //System.out.println("TELEGRAM ID = " + telegramId + "\n CONNECTIONS : " + connections);
+            TelegramNotification telegram = new TelegramNotification();
+            telegram.sendRuleResult(telegramId, telegram.encodeMessageForURL(result));
         }
-        return JsonParserCFF.parseCFF(connections,from,to);
+        return result;
 
 
     }

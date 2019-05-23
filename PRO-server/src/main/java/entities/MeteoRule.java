@@ -1,7 +1,10 @@
 package entities;
 
+import database.DatabaseController;
 import org.json.JSONObject;
 import service.ServiceMeteo;
+import sun.rmi.runtime.Log;
+import utils.TelegramNotification;
 
 public class MeteoRule extends Rule {
 
@@ -44,7 +47,7 @@ public class MeteoRule extends Rule {
         json.put("temperature", temperature);
         json.put("temperatureSelection", temperatureSelection);
         json.put("menuNotif", menuNotif);
-        json.put("telegram_notif", telegramNotif);
+        json.put("telegramNotif", telegramNotif);
 
         return json;
     }
@@ -75,12 +78,16 @@ public class MeteoRule extends Rule {
         switch (temps) {
             case ("Clear") :
                 result.put("meteo","Ensoleillé");
+                break;
             case ("Rain") :
                 result.put("meteo","Pluvieuse");
+                break;
             case("Cloud"):
                 result.put("meteo", "Nuageuse");
+                break;
             case("Snow"):
                 result.put("meteo", "Chutes de neige");
+                break;
         }
 
         int temp = service.getTemperature(location);
@@ -121,12 +128,15 @@ public class MeteoRule extends Rule {
                 }
             }
         }
-
         // Si l'utilisateur veut des notifications Telegram et que les conditions sont réunis on les envoies
-        if (telegramNotif && sendTelegram) {
+        if (telegramNotif&& sendTelegram) {
             // envoye notif to Telegram si les conditions du dessus sont présentes
-        }
 
+            String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
+            TelegramNotification telegram = new TelegramNotification();
+            telegram.sendRuleResult(telegramId,result.toString());
+
+        }
         if (menuNotif) {
             return result.toString();
 
