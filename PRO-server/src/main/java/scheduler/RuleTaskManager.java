@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class RuleTaskManager {
 
     private static RuleTaskManager rtm;
-    final static Logger LOG = Logger.getLogger(RuleTaskManager.class.getName());
+    private final static Logger LOG = Logger.getLogger(RuleTaskManager.class.getName());
 
     private boolean running;
 
@@ -34,6 +34,7 @@ public class RuleTaskManager {
 
     public void loadRules(Map<String, List<Rule>> ruleLists) {
         if (!running) {
+            LOG.info("Loading rules from database...");
             for (String user : ruleLists.keySet()) {
                 Map<RuleTask, ScheduledFuture<?>> userRulesMap = new HashMap<>();
                 for (Rule r : ruleLists.get(user)) {
@@ -46,6 +47,7 @@ public class RuleTaskManager {
 
     public void startScheduling() {
         if (!running) {
+            LOG.info("Starting scheduler...");
             executor = new ScheduledThreadPoolExecutor(1);
             executor.setRemoveOnCancelPolicy(true);
             running = true;
@@ -58,6 +60,7 @@ public class RuleTaskManager {
     }
 
     public void addRule(String username, RuleTask task) {
+        LOG.info("Adding rule " + task.getRuleID() + "to user : " + username);
         if (taskMap.containsKey(username)) {
             taskMap.get(username).put(task, schedule(task));
         } else {
@@ -68,7 +71,7 @@ public class RuleTaskManager {
     }
 
     public String getUserTasksResults(String username) {
-
+        LOG.info("Fetching rules from user : " + username);
         JSONObject json = new JSONObject();
         if(taskMap.containsKey(username)) {
             Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
@@ -78,11 +81,11 @@ public class RuleTaskManager {
             json.put("TWITTER", getResultsByTag(userRulesMap.keySet(), "TWITTER"));
             // json.put("RTS", getResultsByTag(userRulesMap.keySet(), "RTS"));
         }
-
         return json.toString();
     }
 
     public void deleteRule(String username, int ruleId) {
+        LOG.info("Deleting rule " + ruleId + " from user : " + username);
         if (taskMap.containsKey(username)) {
             Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
             for (RuleTask ruleTask : userRulesMap.keySet()) {
@@ -111,7 +114,7 @@ public class RuleTaskManager {
         String result;
 
         for (RuleTask ruleTask : ruleTasks) {
-            if(ruleTask.getRuleTag() == tag) {
+            if(ruleTask.getRuleTag().equals(tag)) {
                 result = ruleTask.getRuleResult();
                 if(result != null && !result.isEmpty()) {
                     sb.append(result);
