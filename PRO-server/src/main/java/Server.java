@@ -294,7 +294,7 @@ public class Server {
                         break;
                     case "TWITTER":
                         //  parse all infos for meteo
-                        rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),(String)json.get("pin"),
+                        rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),
                                 (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
                         break;
                     default:

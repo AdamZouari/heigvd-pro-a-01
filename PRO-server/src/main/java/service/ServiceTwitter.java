@@ -80,7 +80,7 @@ public class ServiceTwitter extends Service {
         }
     }
     public String getLastTweet(String user) {
-        String tweet = "";
+        String tweet = new String();
         try {
             ResponseList<Status> timeline = twitter.getUserTimeline(user);
             tweet = timeline.get(0).getText();
