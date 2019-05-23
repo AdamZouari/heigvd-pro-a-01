@@ -98,13 +98,13 @@ public class WeatherServiceController implements Initializable {
 
         //TODO Checker car retourne NullPointerException ..
         // Permettre de laisser des cases sans les valider
-        if (weatherTypeSelection.getValue().toString() == null) {
+        if (weatherTypeSelection.getSelectionModel().isEmpty()) {
             weatherSelec = "null";
         } else {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
-        if (temperatureSelection.getValue().toString() == null && temperatureValue == null) {
+        if (temperature) {
             tempSelec = "null";
             temperatureValue = "null";
         } else {
