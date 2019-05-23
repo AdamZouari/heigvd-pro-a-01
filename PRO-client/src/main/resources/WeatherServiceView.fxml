@@ -47,12 +47,8 @@
                   <Label minWidth="150.0" text="%ifWeatherIs" />
                   <ChoiceBox fx:id="weatherTypeSelection" prefWidth="150.0">
                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                           <String fx:value="Ensoleillé" />
-                           <String fx:value="Pluvieux" />
-                           <String fx:value="Neigeux" />
-                           <String fx:value="Nuageux" />
-                        </FXCollections>
+                        <FXCollections fx:factory="observableArrayList"/>
+
                      </items>
                   </ChoiceBox>
                </children>
