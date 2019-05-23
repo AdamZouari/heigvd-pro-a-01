@@ -251,13 +251,13 @@ public class DatabaseController {
         }
     }
 
-    public void updateLanguage(String username, User.LANGUE language) throws CustomException {
+    public void updateLanguage(String username, String language) throws CustomException {
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET langue = ?  WHERE username = ? ";
 
         try {
             preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setObject(1, language);
+            preparedStatement.setObject(1, User.LANGUE.valueOf(language));
             preparedStatement.setString(2, username);
 
             preparedStatement.executeUpdate();

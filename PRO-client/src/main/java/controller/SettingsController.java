@@ -129,7 +129,8 @@ public class SettingsController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        String currentLanguage = I18N.getLocale().getLanguage();
+        // TODO : Change language in DB for user
+        String currentLanguage =  I18N.getLocale().getLanguage();
 
         if(currentLanguage.equals("en"))
             languageSelection.getSelectionModel().select("English");
@@ -142,6 +143,8 @@ public class SettingsController implements Initializable {
     private void changeLanguage() {
         if (languageSelection.getSelectionModel().getSelectedItem().equals("English"))
             I18N.setLocale(I18N.EN);
+        //TODO
+
         else
             I18N.setLocale(I18N.FR);
 
