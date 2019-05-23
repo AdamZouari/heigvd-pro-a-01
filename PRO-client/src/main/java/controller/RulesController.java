@@ -5,6 +5,7 @@ import exceptions.CustomException;
 import exceptions.ProtocolException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.IOException;
@@ -18,7 +19,9 @@ public class RulesController implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         ClientRequest cr = new ClientRequest();
+        int ruleid = 42;
         try {
+            cr.deleteUserRule(ruleid);
             rulesContent.setText(cr.getRulesContent());
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,11 +2,14 @@ package database;
 
 import entities.User;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import exceptions.*;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -305,6 +308,7 @@ public class DatabaseController {
 
     public void updateRule(String username, String rule) {
 
+
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
 
@@ -325,12 +329,76 @@ public class DatabaseController {
         }
     }
 
-    public void specifyRules(int id, String rules) {
-        //JSONWriter jsonReader = Json.createReader(...);
-        //JSONWriter object = jsonReader.readObject();
+    public void deleteRuleById(String username, int ruleToDeleteId) throws CustomException {
 
-        // TODO return it in JSON
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE rules FROM User WHERE username = ?";
 
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, username);
+
+            // Here we parse the rule to delete so we can get its id
+
+
+            // Get all rules
+            JSONObject json = new JSONObject(sql);
+            JSONArray userRules = ((JSONArray)json.get("rules"));
+
+            // user rule
+            Iterator<Object> userRuleIt = userRules.iterator();
+            int i = 0;
+            while (userRuleIt.hasNext()) {
+
+                JSONObject nthRule = (JSONObject) userRuleIt.next();
+                // if rule is the rule to delete then we dont add it to the new array of rules for the user
+                if(nthRule.get("id").equals(ruleToDeleteId)){
+                    // remove the correspondant rule
+                    userRules.remove(i);
+                }
+                i++;
+            }
+
+            preparedStatement.executeUpdate();
+            System.out.println("Rule deleted !");
+
+            /** replace all the old rules with the new ones minus the deleted rule
+                here we have no other choice than to do that because we are dealing with JSONObjects
+            **/
+             JSONObject updatedRules = new JSONObject();
+             updatedRules.put("rules", updatedRules);
+
+             // update old rules with new rules
+             updateRule(username, updatedRules.toString());
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            // throw custom exception
+        }
+    }
+
+    public void deleteAllRuleByUsername(String username, String rule) {
+
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
+
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, rule);
+            preparedStatement.setString(2, username);
+
+            preparedStatement.executeUpdate();
+            System.out.println("Rule of updated !");
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public String getTelegramIdByUsername(String username) {

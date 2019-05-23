@@ -143,6 +143,10 @@ public class ClientRequest {
 
     }
 
+    public void deleteRule(String ruleToDelete) throws  IOException, CustomException, ProtocolException {
+
+    }
+
     public void welcome() throws IOException {
         sendToServer("Welcome");
         LOG.info("Got : " + reader.readLine());
@@ -243,5 +247,12 @@ public class ClientRequest {
             throw new ProtocolException(ExceptionCodes.USER_DIDNT_ADD_TELEGRAM_BOT.getMessage());
 
         return id;
+    }
+
+    public void deleteUserRule(int ruleId) throws IOException, CustomException, ProtocolException {
+        sendToServer(Protocol.CMD_DELETE_RULE + " " + loggedUser +":" + ruleId);
+        String response = reader.readLine();
+        checkIfSuccess(response);
+
     }
 }

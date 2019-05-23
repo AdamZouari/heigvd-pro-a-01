@@ -125,6 +125,8 @@ public class Server {
                             case Protocol.CMD_GET_RES_RULES:
                                 getRulesResult(items[1]);
                                 break;
+                            case Protocol.CMD_DELETE_RULE:
+                                deleteRule(items[1]);
                         }
 
                     }
@@ -247,6 +249,15 @@ public class Server {
 
             }
 
+            private void deleteRule(String items) throws SQLException{
+
+                String username = items.split(":")[0];
+                int ruleToDeleteId = Integer.parseInt(items.split(":")[1]);
+
+                db.deleteRuleById(username,ruleToDeleteId);
+                ruleTaskManager.deleteRule(username,ruleToDeleteId);
+                sendToClient(Protocol.RESPONSE_SUCCESS);
+            }
 
             private void addRule(String username,String rules) throws SQLException {
 
