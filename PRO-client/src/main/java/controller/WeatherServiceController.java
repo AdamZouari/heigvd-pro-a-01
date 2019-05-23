@@ -1,6 +1,7 @@
 package controller;
 
 import connection.ClientRequest;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -95,15 +96,14 @@ public class WeatherServiceController implements Initializable {
         String tempSelec;
         String weatherSelec;
 
-        //TODO Checker car retourne NullPointerException ..
         // Permettre de laisser des cases sans les valider
-        if (weatherTypeSelection.getValue().toString() == null) {
+        if (weatherTypeSelection.getSelectionModel().isEmpty()) {
             weatherSelec = "null";
         } else {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
-        if (temperatureSelection.getValue().toString() == null && temperatureValue == null) {
+        if (temperature) {
             tempSelec = "null";
             temperatureValue = "null";
         } else {
@@ -124,9 +124,13 @@ public class WeatherServiceController implements Initializable {
         ((Stage) this.temperatureSelection.getScene().getWindow()).close();
     }
 
+    @FXML
+    private void onEnter() {
+        onAddRuleClick();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        temperatureSelection.getItems().addAll("<",">","");
+        temperatureSelection.getItems().addAll("<",">");
     }
 }

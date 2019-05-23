@@ -19,7 +19,7 @@
                                 <Insets />
                             </FlowPane.margin>
                         </Label>
-                        <TextField fx:id="username">
+                        <TextField fx:id="username" onAction="#onRegisterClick">
                             <FlowPane.margin>
                                 <Insets />
                             </FlowPane.margin>
@@ -33,7 +33,7 @@
                                 <Insets />
                             </FlowPane.margin>
                         </Label>
-                        <PasswordField fx:id="password">
+                        <PasswordField fx:id="password" onAction="#onRegisterClick">
                             <FlowPane.margin>
                                 <Insets />
                             </FlowPane.margin>
@@ -47,7 +47,7 @@
                                 <Insets />
                             </FlowPane.margin>
                         </Label>
-                        <PasswordField fx:id="passwordConfirmed">
+                        <PasswordField fx:id="passwordConfirmed" onAction="#onRegisterClick">
                             <FlowPane.margin>
                                 <Insets />
                             </FlowPane.margin>
@@ -61,7 +61,7 @@
                                 <Insets />
                             </FlowPane.margin>
                         </Label>
-                        <TextField fx:id="telegramUsername">
+                        <TextField fx:id="telegramUsername" onAction="#onRegisterClick">
                             <FlowPane.margin>
                                 <Insets />
                             </FlowPane.margin>

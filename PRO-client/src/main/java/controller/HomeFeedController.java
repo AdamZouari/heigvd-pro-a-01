@@ -14,16 +14,15 @@ import java.util.ResourceBundle;
 public class HomeFeedController implements Initializable{
 
     @FXML
-    private TextArea rules;
+    private TextArea rulesResult;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         ClientRequest cr = new ClientRequest();
 
-
         try {
-            rules.setText(cr.getRulesContent());
+            rulesResult.setText(cr.getRulesResult());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (CustomException e) {
@@ -31,7 +30,6 @@ public class HomeFeedController implements Initializable{
         } catch (ProtocolException e) {
             e.printStackTrace();
         }
-
 
     }
 }

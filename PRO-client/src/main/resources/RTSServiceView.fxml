@@ -49,7 +49,7 @@
                                 <Insets right="10.0" />
                             </FlowPane.margin>
                         </Label>
-                        <TextField fx:id="requestTime" promptText="HH:MM">
+                        <TextField fx:id="requestTime" promptText="HH:MM" onAction="#onAddRuleClick">
                             <FlowPane.margin>
                                 <Insets />
                             </FlowPane.margin></TextField>

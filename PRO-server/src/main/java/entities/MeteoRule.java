@@ -132,7 +132,6 @@ public class MeteoRule extends Rule {
         if (telegramNotif&& sendTelegram) {
             // envoye notif to Telegram si les conditions du dessus sont présentes
 
-            // TODO HELP ANTOINE
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
             TelegramNotification telegram = new TelegramNotification();
             telegram.sendRuleResult(telegramId,result.toString());
