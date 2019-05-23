@@ -1,6 +1,7 @@
 package controller;
 
 import connection.ClientRequest;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -124,9 +125,13 @@ public class WeatherServiceController implements Initializable {
         ((Stage) this.temperatureSelection.getScene().getWindow()).close();
     }
 
+    @FXML
+    private void onEnter() {
+        onAddRuleClick();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        temperatureSelection.getItems().addAll("<",">","");
+        temperatureSelection.getItems().addAll("<",">");
     }
 }

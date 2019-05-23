@@ -82,41 +82,6 @@ public class LoginController implements Initializable {
 
    @FXML
    private void onLoginButtonClick() {
-      login();
-   }
-
-   @FXML
-   private void onEnter(ActionEvent event) {
-      login();
-   }
-
-   @FXML
-   private void changeLanguage() {
-      if (languageChoice.getSelectionModel().getSelectedItem().equals("English"))
-         I18N.setLocale(I18N.EN);
-      else
-         I18N.setLocale(I18N.FR);
-
-      changeDisplayedLanguage();
-   }
-
-   @Override
-   public void initialize(URL location, ResourceBundle resources) {
-      languageChoice.getSelectionModel().selectFirst();
-   }
-
-   private void changeDisplayedLanguage() {
-      ResourceBundle resource = ResourceBundle.getBundle("Internationalization", I18N.getLocale());
-
-      usernameLabel.setText(resource.getString("username"));
-      passwordLabel.setText(resource.getString("password"));
-      login.setText(resource.getString("connexion"));
-      needAccount.setText(resource.getString("needAccount"));
-      signUp.setText(resource.getString("createAccount"));
-      language.setText(resource.getString("language"));
-   }
-
-   private void login() {
       String user = username.getText();
       String pass = password.getText();
 
@@ -147,5 +112,31 @@ public class LoginController implements Initializable {
       } catch (IOException | ProtocolException | CustomException e) {
          FormUtils.displayErrorMessage(error, e.getMessage());
       }
+   }
+
+   @FXML
+   private void changeLanguage() {
+      if (languageChoice.getSelectionModel().getSelectedItem().equals("English"))
+         I18N.setLocale(I18N.EN);
+      else
+         I18N.setLocale(I18N.FR);
+
+      changeDisplayedLanguage();
+   }
+
+   @Override
+   public void initialize(URL location, ResourceBundle resources) {
+      languageChoice.getSelectionModel().selectFirst();
+   }
+
+   private void changeDisplayedLanguage() {
+      ResourceBundle resource = ResourceBundle.getBundle("Internationalization", I18N.getLocale());
+
+      usernameLabel.setText(resource.getString("username"));
+      passwordLabel.setText(resource.getString("password"));
+      login.setText(resource.getString("connexion"));
+      needAccount.setText(resource.getString("needAccount"));
+      signUp.setText(resource.getString("createAccount"));
+      language.setText(resource.getString("language"));
    }
 }
