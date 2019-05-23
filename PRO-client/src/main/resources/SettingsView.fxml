@@ -19,7 +19,7 @@
              <FlowPane>
                  <children>
                      <Label fx:id="usernameLabel" minWidth="150.0" text="%username" />
-                     <TextField fx:id="nameTextField" editable="false" />
+                     <TextField fx:id="nameTextField" editable="false" onAction="#onSaveNameButtonClick" />
                      <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick" text="%edit">
                          <FlowPane.margin>
                              <Insets left="8.0" />
@@ -35,7 +35,7 @@
              <FlowPane>
                  <children>
                      <Label fx:id="telegramUsername" minWidth="150.0" text="%telegramUsername" />
-                     <TextField fx:id="telegramTextField" editable="false" />
+                     <TextField fx:id="telegramTextField" editable="false" onAction="#onSaveTelegramButtonClick" />
                      <Button fx:id="editTelegramButton" mnemonicParsing="false" onMouseClicked="#onEditTelegramButtonClick" text="%edit">
                          <FlowPane.margin>
                              <Insets left="8.0" />
@@ -74,7 +74,7 @@
                   <FlowPane>
                      <children>
                         <Label fx:id="oldPasswordLabel" minWidth="160.0" text="%oldPassword" />
-                        <PasswordField fx:id="oldPassword">
+                        <PasswordField fx:id="oldPassword" onAction="#onSavePasswordClick">
                            <FlowPane.margin>
                               <Insets />
                            </FlowPane.margin>
@@ -84,7 +84,7 @@
                   <FlowPane>
                      <children>
                         <Label fx:id="newPasswordLabel" minWidth="160.0" text="%newPassword" />
-                        <PasswordField fx:id="newPassword">
+                        <PasswordField fx:id="newPassword" onAction="#onSavePasswordClick">
                            <FlowPane.margin>
                               <Insets />
                            </FlowPane.margin>
@@ -94,7 +94,7 @@
                   <FlowPane minWidth="500.0">
                      <children>
                         <Label fx:id="confirmPass" minWidth="160.0" text="%confirmation" />
-                        <PasswordField fx:id="confirmedPassword">
+                        <PasswordField fx:id="confirmedPassword" onAction="#onSavePasswordClick">
                            <FlowPane.margin>
                               <Insets />
                            </FlowPane.margin>

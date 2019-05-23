@@ -1,6 +1,7 @@
 package controller;
 
 import connection.ClientRequest;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -100,15 +101,17 @@ public class WeatherServiceController implements Initializable {
         String tempSelec;
         String weatherSelec;
 
-        //TODO Checker car retourne NullPointerException ..
         // Permettre de laisser des cases sans les valider
+
         if (weatherTypeSelection.getValue() == null) {
+
             weatherSelec = "null";
         } else {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
         if (temperatureValue == null || temperatureSelection.getValue() == null) {
+
             tempSelec = "null";
             temperatureValue = "null";
         } else {
@@ -127,6 +130,11 @@ public class WeatherServiceController implements Initializable {
 
         // Close Window
         ((Stage)this.time.getScene().getWindow()).close();
+    }
+
+    @FXML
+    private void onEnter() {
+        onAddRuleClick();
     }
 
     @Override

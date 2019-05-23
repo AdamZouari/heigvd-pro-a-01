@@ -2,6 +2,7 @@ package controller;
 
 import exceptions.CustomException;
 import exceptions.ProtocolException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -126,10 +127,6 @@ public class LoginController implements Initializable {
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       languageChoice.getSelectionModel().selectFirst();
-   }
-  
-   private void enableWindow() {
-      pane.setDisable(false);
    }
 
    private void changeDisplayedLanguage() {
