@@ -5,6 +5,8 @@ import utils.JsonParserCFF;
 import utils.TelegramNotification;
 
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class CFFJUnitTests {
 
@@ -39,9 +41,11 @@ public class CFFJUnitTests {
 
 
     @Test
-    public void testIfCffNotifIsSendToUserTelegram(){
-        //String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
+    public void testIfCffNotifIsSendToUserTelegram() throws UnsupportedEncodingException {
+        String cff = new ServiceCFF().getTrainsForPath("Lausanne","Geneve","2019-05-09","17:30");
+        String result = JsonParserCFF.parseCFF(cff,"Lausanne","Geneve");
+        System.out.println(result);
         TelegramNotification t = new TelegramNotification();
-        t.sendRuleResult("142772696",  Integer.toString(new ServiceMeteo().getTemperature("Lausanne")));
+        t.sendRuleResult("142772696", URLEncoder.encode(result, "UTF-8" ));
     }
 }
