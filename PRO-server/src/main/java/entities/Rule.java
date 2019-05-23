@@ -42,6 +42,10 @@ public abstract class Rule {
         return username;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
     /**
      *
      * @return un JSON representant la rule

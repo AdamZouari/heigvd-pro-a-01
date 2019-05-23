@@ -3,9 +3,7 @@ package scheduler;
 
 import entities.Rule;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -70,12 +68,27 @@ public class RuleTaskManager {
         }
     }
 
-    public String getUserTasks(String username) {
+    public String getUserTasksResults(String username) {
 
-        // TODO return rules result depending on tags ordered
-        // TODO and separed by new line between same tag and ----- if tags changes
-        //return taskMap.get(username).keySet();
-        return "";
+        StringBuilder sb = new StringBuilder();
+
+        if(taskMap.containsKey(username)) {
+            Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
+            // TODO FIX problem with new lines
+            sb.append("----- CFF");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "CFF"));
+            sb.append("----- METEO");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "METEO"));
+            sb.append("----- TWITTER");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "TWITTER"));
+            /*
+            sb.append("----- RTS");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "RTS"));
+            */
+        }
+
+        System.out.println(sb.toString());
+        return sb.toString();
     }
 
     public void deleteRule(String username, int ruleId) {
@@ -102,4 +115,19 @@ public class RuleTaskManager {
                 TimeUnit.MINUTES);
     }
 
+    private String getResultsByTag(Set<RuleTask> ruleTasks, String tag) {
+        StringBuilder sb = new StringBuilder();
+        String result;
+
+        for (RuleTask ruleTask : ruleTasks) {
+            if(ruleTask.getRuleTag() == tag) {
+                result = ruleTask.getRuleResult();
+                if(result != null && !result.isEmpty()) {
+                    sb.append(result);
+                    sb.append(" ");
+                }
+            }
+        }
+        return sb.toString();
+    }
 }

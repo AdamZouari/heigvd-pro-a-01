@@ -1,15 +1,12 @@
 import database.DatabaseController;
 import entities.*;
 import exceptions.CustomException;
-import exceptions.ProtocolException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import protocol.Protocol;
 import scheduler.RuleTask;
 import scheduler.RuleTaskManager;
-import service.ServiceCFF;
-import utils.JsonParserCFF;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,7 +14,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -202,7 +198,7 @@ public class Server {
 
             // TODO CHECK IF EXCEPTION POSSIBLE
             private void getRulesResult(String username) {
-                String rules = ruleTaskManager.getUserTasks(username);
+                String rules = ruleTaskManager.getUserTasksResults(username);
                 sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
             }
 
