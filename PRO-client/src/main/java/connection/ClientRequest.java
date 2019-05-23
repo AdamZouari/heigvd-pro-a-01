@@ -40,7 +40,7 @@ public class ClientRequest {
                 clientSocket = new Socket(server, Protocol.DEFAULT_PORT);
             } catch (ConnectException c) {
                 clientSocket = null;
-                return;
+                throw c;
             }
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             writer = new PrintWriter(clientSocket.getOutputStream());

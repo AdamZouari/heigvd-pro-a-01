@@ -95,7 +95,7 @@ public class JsonParserRules {
      * it in the database
      * **/
 
-    public static JSONObject createTwitterRuleJson( String twitterId,String pin, boolean menuNotif,boolean telegramNotif) {
+    public static JSONObject createTwitterRuleJson( String twitterId, boolean menuNotif, boolean telegramNotif) {
 
         JSONObject newRule = new JSONObject();
 
@@ -105,8 +105,6 @@ public class JsonParserRules {
         // take the actual dateTime, so once the rule is created
         newRule.put("date_debut",System.currentTimeMillis());
         newRule.put("twitterId",twitterId);
-
-        newRule.put("pin",pin);
 
         newRule.put("menuNotif",menuNotif);
         newRule.put("telegramNotif",telegramNotif);

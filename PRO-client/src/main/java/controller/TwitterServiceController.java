@@ -1,13 +1,16 @@
 package controller;
 
+import connection.ClientRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
+import utils.JsonParserRules;
 import utils.Regexp;
 
 import java.net.URL;
@@ -28,9 +31,6 @@ public class TwitterServiceController implements Initializable {
     private Label error;
 
     @FXML
-    private TextField pin;
-
-    @FXML
     private void onAddRuleClick() {
         boolean menu = menuCheckBox.isSelected();
         boolean telegram = telegramCheckBox.isSelected();
@@ -47,12 +47,14 @@ public class TwitterServiceController implements Initializable {
             return;
         }
 
-        ((Stage) this.twitterId.getScene().getWindow()).close();
-    }
+        JSONObject json = JsonParserRules.createTwitterRuleJson(twitter, menu, telegram);
+        try {
+            new ClientRequest().addRule(json.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    @FXML
-    private void onTwitterConnectionClick() {
-        // TODO
+        ((Stage) this.twitterId.getScene().getWindow()).close();
     }
 
     @Override
