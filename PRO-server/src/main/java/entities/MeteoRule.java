@@ -3,7 +3,6 @@ package entities;
 import database.DatabaseController;
 import org.json.JSONObject;
 import service.ServiceMeteo;
-import sun.rmi.runtime.Log;
 import utils.TelegramNotification;
 
 public class MeteoRule extends Rule {
@@ -77,23 +76,23 @@ public class MeteoRule extends Rule {
         // Resultat de l'execution de la règle --> donner la meteo
         switch (temps) {
             case ("Clear") :
-                result.put("meteo","Ensoleillé");
+                result.put("meteo","Le temps est ensoleillé");
                 break;
             case ("Rain") :
-                result.put("meteo","Pluvieuse");
+                result.put("meteo","Le temps est pluvieux");
                 break;
             case("Cloud"):
-                result.put("meteo", "Nuageuse");
+                result.put("meteo", "Le temps est couvert");
                 break;
             case("Snow"):
-                result.put("meteo", "Chutes de neige");
+                result.put("meteo", "Il y a des chutes de neiges");
                 break;
         }
 
         int temp = service.getTemperature(location);
         int tmp = Integer.parseInt(temperature);
 
-        result.put("temperature", temp);
+        result.put("temperature", "La temperature est de :" + Integer.toString(temp));
 
         // Si l'utilisateur a defini une regle concernant la temperature
         if (!temperatureSelection.equals("null")) {
