@@ -1,10 +1,13 @@
 package service;
 
 import okhttp3.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +21,7 @@ public class ServiceRTS extends Service {
     /**
      * Set accessToken to access to the RTS API content
      */
-    public void setToken() {
+    private void setToken() {
 
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         String token   = new String();
@@ -55,15 +58,15 @@ public class ServiceRTS extends Service {
     }
 
     /**
-     * Get The TV program
+     * Get The TV program for RTS1 and RTS2
      * @return the json program in a string
      */
-    public String getProgram() {
+    public ArrayList<String> getProgram() {
 
-        String program = new String();
+        ArrayList<String> program = new ArrayList<>();
 
         try {
-            URL url = new URL("https://api.srgssr.ch/epg/v1/api/schedules/day");
+            URL url = new URL("https://api.srgssr.ch/epg/v1/api/schedules/day?channel=RTS1&channel=RTS2");
 
             // Get API request
             String tokenHeader = "Bearer " + accessToken;
@@ -78,8 +81,28 @@ public class ServiceRTS extends Service {
             // Read the response
             try (Response response = client.newCall(request).execute()) {
                 JSONObject json = new JSONObject(response.body().string());
-                program = json.toString();
+                JSONArray schedules = json.getJSONArray("schedules");
+
+                Iterator<Object> schedulesIt = schedules.iterator();
+                while (schedulesIt.hasNext()) {
+
+                    JSONObject nthSchedule = (JSONObject) schedulesIt.next();
+
+                    JSONArray broadcasts = ((JSONArray) nthSchedule.get("broadcasts"));
+                    Iterator<Object> broadcastIt = broadcasts.iterator();
+
+                    while (broadcastIt.hasNext()) {
+
+                        // Parsing the JSON
+                        JSONObject broadcast = (JSONObject) broadcastIt.next();
+                        String channel = (String) broadcast.get("channel");
+                        JSONObject vps = (JSONObject) broadcast.get("vps");
+
+                        program.add(channel + broadcast.get("titles").toString() + vps.get("hour") + ":" + vps.get("minute"));
+                    }
+                }
             }
+
         } catch (IOException ex) {
             Logger.getLogger(ServiceRTS.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,17 +112,10 @@ public class ServiceRTS extends Service {
 
     @Override
     public void connect() {
-
+        setToken();
     }
-
-
 
     @Override
-    public void disconnect() {
-
-    }
-
-
-
+    public void disconnect() {}
 }
 
