@@ -16,6 +16,14 @@ public class RuleTask implements Runnable {
         return ruleResult;
     }
 
+    public int getPeriod() {
+        return rule.getPeriod();
+    }
+
+    public String getRuleTag() {
+        return this.rule.getTag();
+    }
+
     public int getRuleID() {
         return 0; // rule.getId();
     }

@@ -313,6 +313,27 @@ public class DatabaseController {
         return allRules;
     }
 
+    public User.LANGUE getLangue (String username) throws CustomException {
+        PreparedStatement preparedStatement = null;
+        ResultSet result = null;
+        String sql = "SELECT langue FROM User WHERE username=?";
+        User.LANGUE langue = null;
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1,username);
+
+            result = preparedStatement.executeQuery();
+            if (result.next()) {
+                langue = User.LANGUE.valueOf(result.getString(1));
+            }
+        }catch(SQLException e){
+            throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_LANGUAGE_FROM_DB.ordinal());
+        }
+        return langue;
+    }
+
     public void updateRule(String username, String rule) throws CustomException {
 
 

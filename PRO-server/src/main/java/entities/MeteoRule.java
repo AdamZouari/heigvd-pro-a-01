@@ -34,6 +34,11 @@ public class MeteoRule extends Rule {
     }
 
     @Override
+    public int getPeriod() {
+        return 24*60;
+    }
+
+    @Override
     public JSONObject toJSON() {
 
         JSONObject json = new JSONObject();

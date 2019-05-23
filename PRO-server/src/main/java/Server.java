@@ -204,7 +204,7 @@ public class Server {
 
             // TODO CHECK IF EXCEPTION POSSIBLE
             private void getRulesResult(String username) {
-                String rules = ruleTaskManager.getUserTasks(username);
+                String rules = ruleTaskManager.getUserTasksResults(username);
                 sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
             }
 
