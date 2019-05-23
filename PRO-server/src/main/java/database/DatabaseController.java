@@ -288,12 +288,14 @@ public class DatabaseController {
         return userRules;
     }
 
-    // return all rules for each user as a Map<Username,JSONArray
-    public Map<String, String> getAllRules() throws CustomException {
+
+    public Map<String, JSONArray> getAllRules() throws CustomException {
+
+        // return all rules for each user as a Map<Username,JSONArray>
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT username,rules FROM User";
-        Map<String,String> allRules = null;
+        Map<String, JSONArray> allRules = null;
 
         try {
             allRules = new HashMap<>();
@@ -304,7 +306,9 @@ public class DatabaseController {
                 String userRules;
                 username = result.getString(1);
                 userRules = result.getString(2);
-                allRules.put(username,userRules);
+                JSONObject json = new JSONObject(userRules);
+                JSONArray userRulesJson = (JSONArray) json.get("rules");
+                allRules.put(username, userRulesJson);
             }
         }catch(SQLException e){
             throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_RULES_FROM_DB.ordinal());

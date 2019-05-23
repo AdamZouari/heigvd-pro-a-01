@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,17 +27,35 @@ public class Server {
     private static DatabaseController db = DatabaseController.getController();
 
     private Server() {
-        LOG.info("Starting the RuleTaskManager...");
         ruleTaskManager = RuleTaskManager.getInstance();
     }
 
     private void fetchDataBaseRules() {
-        LOG.info("Fetching rules from database...");
-        // ruleTaskManager.loadRules(???);
+
+        Map<String, List<Rule>> userRulesMap = new HashMap<>();
+
+        try {
+            Map<String, JSONArray> userRulesStringMap = db.getAllRules();
+            List<Rule> rules;
+
+            for (String username : userRulesStringMap.keySet()) {
+                JSONArray jsa = userRulesStringMap.get(username);
+                rules = new ArrayList<>();
+
+                for (Object obj : jsa) {
+                    rules.add(jsonToRuleObject(username, (JSONObject) obj));
+                }
+
+                userRulesMap.put(username, rules);
+            }
+
+            ruleTaskManager.loadRules(userRulesMap);
+        } catch (CustomException ce) {
+            ce.printStackTrace();
+        }
     }
 
     private void startScheduler() {
-        LOG.info("Starting Scheduler from task manager...");
         ruleTaskManager.startScheduling();
     }
 
@@ -241,41 +260,7 @@ public class Server {
                 JSONArray userRules = (JSONArray) userRulesToJson.get("rules");
 
                 // Here we create the rule for the rule task manager
-                Rule rule = null;
-                int id = (int) json.get("id");
-                String starting_date  = "" + (json.get("date_debut"));
-
-                switch((String)json.get("tag")){
-                    case "METEO":
-                        rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
-                                (String)json.get("location"),(String)json.get("weatherType"),
-                                (String)json.get("temperature"),
-                                (String)json.get("temperatureSelection"));
-
-                        break;
-
-                    case "CFF":
-                        rule = new CffRule(id,username,starting_date,(String)json.get("from"),(String)json.get("to"),
-                                (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
-                                (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
-                        break;
-
-                    case "RTS":
-                        rule = new RtsRule(id,username,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
-                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
-                        break;
-
-                    case "TWITTER":
-                        //  parse all infos for meteo
-                        rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),
-                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
-                        break;
-
-                    default:
-                        break;
-                }
-
-                ruleTaskManager.addRule(username, new RuleTask(rule));
+                ruleTaskManager.addRule(username, new RuleTask(jsonToRuleObject(username, json)));
 
                 // Here we add the rule for the database
                 userRules.put(json);
@@ -322,10 +307,48 @@ public class Server {
 
     }
 
+    private Rule jsonToRuleObject(String username, JSONObject json) {
+        Rule rule = null;
+
+        int id = (int) json.get("id");
+        String starting_date  = "" + (json.get("date_debut"));
+
+        switch((String)json.get("tag")){
+            case "METEO":
+                rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
+                        (String)json.get("location"),(String)json.get("weatherType"),
+                        (String)json.get("temperature"),
+                        (String)json.get("temperatureSelection"));
+
+                break;
+
+            case "CFF":
+                rule = new CffRule(id,username,starting_date,(String)json.get("from"),(String)json.get("to"),
+                        (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
+                        (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
+                break;
+
+            case "RTS":
+                rule = new RtsRule(id,username,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
+                        (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                break;
+
+            case "TWITTER":
+                rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),
+                        (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                break;
+
+            default:
+                break;
+        }
+
+        return rule;
+    }
+
 
     public static void main(String[] args) {
         Server server = new Server();
-        server.fetchDataBaseRules(); // does nothing right now
+        // server.fetchDataBaseRules(); // TODO uncomment
         server.startScheduler();
         server.serveClients();
     }
