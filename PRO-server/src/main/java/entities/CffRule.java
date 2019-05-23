@@ -61,6 +61,7 @@ public class CffRule extends Rule{
         cff.connect();
 
         String connections = cff.getTrainsForPath(from,to,departureTime,arrivalTime);
+        String result = JsonParserCFF.parseCFForDelay(connections,from,to);
 
         // Here we parse the response from the server to show
 
@@ -76,9 +77,9 @@ public class CffRule extends Rule{
             //TODO WTF PK CA ENVOIE PAS DE NOTIF TELEGRAM EXACTEMENT PAREIL QUE POUR METEO....
             //System.out.println("TELEGRAM ID = " + telegramId + "\n CONNECTIONS : " + connections);
             TelegramNotification telegram = new TelegramNotification();
-            telegram.sendRuleResult(telegramId, telegram.encodeMessageForURL(connections));
+            telegram.sendRuleResult(telegramId, telegram.encodeMessageForURL(result));
         }
-        return JsonParserCFF.parseCFF(connections,from,to);
+        return result;
 
 
     }
