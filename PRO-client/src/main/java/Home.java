@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import locale.I18N;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ResourceBundle;
 
 
@@ -38,9 +39,9 @@ public class Home extends Application {
 
             try{
                 cr.connect("127.0.0.1");
-                cr.welcome();
+                //cr.welcome();
 
-            }catch (Exception e){
+            }catch (ConnectException e){
                 System.out.println("Server down");
                 //TODO afficher l'interface graphique
             }

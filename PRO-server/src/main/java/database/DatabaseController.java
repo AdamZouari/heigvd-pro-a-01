@@ -4,6 +4,7 @@ import entities.User;
 
 import protocol.ExceptionCodes;
 import exceptions.*;
+import sun.rmi.runtime.Log;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class DatabaseController {
 
     }
 
-    public static void printResult(ResultSet result) throws SQLException {
+    /*public static void printResult(ResultSet result) throws SQLException {
 
         ResultSetMetaData rsmd = result.getMetaData();
 
@@ -58,31 +59,29 @@ public class DatabaseController {
             }
             System.out.println("");
         }
-    }
+    }*/
 
-    public ResultSet search() {
+    /*public ResultSet search() {
 
         Statement statement = null;
         ResultSet result = null;
         String sql = " SELECT * FROM User ;";
 
         try {
-
             result = statement.executeQuery(sql);
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return result;
-    }
+    }*/
 
 
-    public User getUserById(int id) throws SQLException {
+    public User getUserById(int id) throws CustomException {
 
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT * FROM User WHERE id = ?";
-
+        User user = null;
 
         try {
 
@@ -102,23 +101,22 @@ public class DatabaseController {
                 password = result.getString(5);
                 rules = result.getString(6);
                 langue = User.LANGUE.valueOf(result.getString(7));
-                return new User(id, username, telegramUsername, idTelegram,password, rules, langue);
-
+                user = new User(id, username, telegramUsername, idTelegram,password, rules, langue);
             }
 
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_USER_FROM_DB.ordinal());
         }
-        return null;
 
+        return user;
     }
 
-    public User getUserByUsername(String username) throws SQLException {
+    public User getUserByUsername(String username) throws CustomException {
 
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT * FROM User WHERE username = ?";
+        User user = null;
 
 
         try {
@@ -140,14 +138,13 @@ public class DatabaseController {
                 password = result.getString(5);
                 rules = result.getString(6);
                 langue = User.LANGUE.valueOf(result.getString(7));
-                return new User(id, usernameId, telegramUsername, idTelegram, password, rules, langue);
-
+                user = new User(id, usernameId, telegramUsername, idTelegram, password, rules, langue);
             }
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_USER_FROM_DB.ordinal());
         }
-        return null;
+        return user;
 
     }
 
@@ -183,17 +180,17 @@ public class DatabaseController {
     }
 
 
-    public void addUser(String username, String telegramUsername, int idTelegram ,String password, String rules, User.LANGUE langue) throws ProtocolException, CustomException {
+    public void addUser(String username, String telegramUsername, int idTelegram ,String password, String rules, User.LANGUE langue) throws CustomException {
         PreparedStatement preparedStatement = null;
         String sql = " INSERT INTO User( username, telegramUsername,idTelegram,password, rules, langue) VALUES (?,?,?,?,?,?) ;";
 
         try {
             if (usernameExist(username)) {
-                throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.getMessage());
+                throw new CustomException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.ordinal());
             }
 
             if(usernameTelegramExist(telegramUsername)){
-                throw new ProtocolException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.getMessage());
+                throw new CustomException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.ordinal());
             }
 
             preparedStatement = mConnection.prepareStatement(sql);
@@ -201,19 +198,17 @@ public class DatabaseController {
             preparedStatement.setString(2, telegramUsername);
             preparedStatement.setInt(3, idTelegram);
             preparedStatement.setString(4, password);
-            preparedStatement.setString(5, String.valueOf(rules));                 // TODO think of a method to pass a JSON
+            preparedStatement.setString(5, String.valueOf(rules));
             preparedStatement.setString(6, langue.name());
 
             preparedStatement.executeUpdate();
-            System.out.println("User " + username + " added !");
+            LOG.log(Level.INFO,"User "+username+ " added.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new CustomException(ExceptionCodes.REGISTRATION_FAILED.ordinal());
         }
     }
 
-    // TODO check idTelegram
-    public void updateUser(int id, String username, String password, String rules, User.LANGUE langue) {
+    public void updateUser(int id, String username, String password, String rules, User.LANGUE langue) throws CustomException {
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET username = ? , password = ? , rules = ? , langue = ? " +
                 " WHERE id = ? ";
@@ -226,16 +221,14 @@ public class DatabaseController {
             preparedStatement.setString(4, langue.name());
             preparedStatement.setInt(5, id);
 
-
             preparedStatement.executeUpdate();
-            System.out.println("User " + username + " updated !");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            LOG.log(Level.INFO,"User "+username+ " updated.");
+        } catch (SQLException e) {
+            throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
         }
     }
 
-
-    public String getUserRulesByUsername(String username) throws SQLException {
+    public String getUserRulesByUsername(String username) throws CustomException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = "SELECT rules FROM User WHERE username=?";
@@ -245,18 +238,18 @@ public class DatabaseController {
 
             preparedStatement = mConnection.prepareStatement(sql);
             preparedStatement.setString(1,username);
+
             result = preparedStatement.executeQuery();
             while (result.next()) {
                 userRules = result.getString(1);
             }
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+        }catch(SQLException e){
+            throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_USER_FROM_DB.ordinal());
         }
-
         return userRules;
     }
 
-    public Map<String, String> getAllRules() throws SQLException {
+    public Map<String, String> getAllRules() throws CustomException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT username,rules FROM User";
@@ -273,64 +266,31 @@ public class DatabaseController {
                 userRules = result.getString(2);
                 allRules.put(username,userRules);
             }
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+        }catch(SQLException e){
+            throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_RULES_FROM_DB.ordinal());
         }
 
         return allRules;
     }
 
-    public void updatePassword(int id, String password) {
 
-        PreparedStatement preparedStatement = null;
-        String sql = "UPDATE User SET password = ?  WHERE id = ? ";
-
-
-        try {
-            preparedStatement = mConnection.prepareStatement(sql);
-
-            preparedStatement.setString(1, password);
-            preparedStatement.setInt(2, id);
-
-            preparedStatement.executeUpdate();
-            System.out.println("Password of updated !");
-
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-
-    }
-
-    public void updateRule(String username, String rule) {
+    public void updateRule(String username, String rule) throws CustomException {
 
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
 
-
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
-
             preparedStatement.setString(1, rule);
             preparedStatement.setString(2, username);
 
             preparedStatement.executeUpdate();
-            System.out.println("Rule of updated !");
+            LOG.log(Level.INFO,"Rule of  "+username+ " updated.");
 
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            throw new CustomException(ExceptionCodes.UPDATE_OF_RULE_FAILED.ordinal());
         }
-    }
-
-    public void specifyRules(int id, String rules) {
-        //JSONWriter jsonReader = Json.createReader(...);
-        //JSONWriter object = jsonReader.readObject();
-
-        // TODO return it in JSON
-
     }
 
     public String getTelegramIdByUsername(String username) {

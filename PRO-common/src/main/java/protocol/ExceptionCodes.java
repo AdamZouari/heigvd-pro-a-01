@@ -22,7 +22,13 @@ public enum ExceptionCodes {
     NOT_A_NUMBER("The temperature isn't a number !"),
     NAME_MISSING("The name is missing !"),
     SOME_PASS_ARE_MISSING("All the password fields are mandatory !"),
-    USER_DIDNT_ADD_TELEGRAM_BOT("The bot telegram haven't been added !");
+    USER_DIDNT_ADD_TELEGRAM_BOT("The bot telegram haven't been added !"),
+    UPDATE_OF_USER_FAILED("Update of user failed."),
+    UPDATE_OF_RULE_FAILED("Update of user failed."),
+    FAIL_TO_FETCH_USER_FROM_DB("Fetch user failed."),
+    FAIL_TO_FETCH_RULES_FROM_DB("Fetch rules failed.");
+
+
 
     String message;
 
