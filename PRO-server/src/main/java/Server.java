@@ -135,6 +135,12 @@ public class Server {
                             case Protocol.CMD_GET_RES_RULES:
                                 getRulesResult(items[1]);
                                 break;
+                            case Protocol.CMD_DELETE_RULE:
+                                deleteRule(items[1]);
+                                break;
+                            case Protocol.CMD_DELETE_USER_RULES:
+                                deleteUserRules(items[1]);
+                                break;
                         }
 
                     }
@@ -221,7 +227,22 @@ public class Server {
                 sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
             }
 
+            private void deleteRule(String items){
+
+                String username = items.split(":")[0];
+                int ruleToDeleteId = Integer.parseInt(items.split(":")[1]);
+
+                try {
+                    db.deleteRuleById(username,ruleToDeleteId);
+                    ruleTaskManager.deleteRule(username,ruleToDeleteId);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+
+            }
             private void addRule(String username,String rules) {
+
 
                 // we extracted the rules to add to the database
                 JSONObject json = new JSONObject(rules);
@@ -249,8 +270,23 @@ public class Server {
                 fin.put("rules", userRules);
 
                 // update or store new rules
+
                 try {
                     db.updateRule(username, fin.toString());
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+            }
+
+            private void deleteUserRules(String username) {
+                try {
+                    // delete from Database
+                    db.deleteAllRuleByUsername(username);
+
+                    //delete from taskmanager
+                    ruleTaskManager.deleteAllRule(username);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
                 } catch (CustomException e) {
@@ -267,6 +303,8 @@ public class Server {
                 sendToClient(Protocol.RESPONSE_FAILURE + " " + i);
             }
         }
+
+
     }
 
     private Rule jsonToRuleObject(String username, JSONObject json) {

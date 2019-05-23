@@ -127,7 +127,11 @@ public class ClientRequest {
     // the rules content
     public String getRulesContent() throws IOException, CustomException, ProtocolException {
         sendToServer(Protocol.CMD_GET_RULES + " " + loggedUser);
-        String response = reader.readLine();
+        String str;
+        String response ="";
+        while( (str = reader.readLine())!=null) {
+            response += str;
+        }
         checkIfSuccess(response);
         return response;
 
@@ -140,6 +144,10 @@ public class ClientRequest {
         String response = reader.readLine();
         checkIfSuccess(response);
         //LOG.info("Got : " + reader.readLine());
+
+    }
+
+    public void deleteRule(String ruleToDelete) throws  IOException, CustomException, ProtocolException {
 
     }
 
@@ -243,5 +251,19 @@ public class ClientRequest {
             throw new ProtocolException(ExceptionCodes.USER_DIDNT_ADD_TELEGRAM_BOT.getMessage());
 
         return id;
+    }
+
+    public void deleteUserRuleById(int ruleId) throws IOException, CustomException, ProtocolException {
+        sendToServer(Protocol.CMD_DELETE_RULE + " " + loggedUser +":" + ruleId);
+        String response = reader.readLine();
+        checkIfSuccess(response);
+
+    }
+
+    public void deleteUserRules() throws IOException, CustomException, ProtocolException {
+        sendToServer(Protocol.CMD_DELETE_RULE + " " + loggedUser);
+        String response = reader.readLine();
+        checkIfSuccess(response);
+
     }
 }
