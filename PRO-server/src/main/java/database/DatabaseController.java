@@ -1,10 +1,8 @@
 package database;
 
 import entities.User;
-
+import exceptions.CustomException;
 import protocol.ExceptionCodes;
-import exceptions.*;
-import sun.rmi.runtime.Log;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -331,7 +329,7 @@ public class DatabaseController {
     }
 
 
-    public String getTelegramIdByUsername(String username) throws CustomException {
+    public String getTelegramIdByUsername(String username) {
 
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -347,8 +345,8 @@ public class DatabaseController {
             if(result.next())
                 idTelegram = result.getInt(1);
 
-        }catch(SQLException e){
-            throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_TELEGRAM_ID_FROM_DB.ordinal());
+        }catch(Exception e){
+            ExceptionCodes.FAIL_TO_FETCH_TELEGRAM_ID_FROM_DB.ordinal();
         }
 
         return "" + idTelegram;
