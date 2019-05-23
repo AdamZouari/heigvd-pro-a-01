@@ -72,10 +72,27 @@ public class RuleTaskManager {
 
     public String getUserTasks(String username) {
 
+        StringBuilder sb = new StringBuilder();
+        String result;
+
+        if(taskMap.containsKey(username)) {
+
+            Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
+
+            for (RuleTask ruleTask : userRulesMap.keySet()) {
+                result = ruleTask.getRuleResult();
+                if(!result.isEmpty()) {
+                    sb.append(" ");
+                    sb.append(result);
+                }
+            }
+        }
+
         // TODO return rules result depending on tags ordered
         // TODO and separed by new line between same tag and ----- if tags changes
-        //return taskMap.get(username).keySet();
-        return "";
+
+        System.out.println(sb.toString());
+        return sb.toString();
     }
 
     public void deleteRule(String username, int ruleId) {
