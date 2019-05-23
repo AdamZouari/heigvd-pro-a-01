@@ -266,4 +266,16 @@ public class ClientRequest {
         checkIfSuccess(response);
 
     }
+
+    public void updateLanguage(){
+
+    }
+
+    public String getLanguage() throws IOException, CustomException, ProtocolException {
+
+        sendToServer(Protocol.CMD_GET_LANGUAGE + " " + loggedUser);
+        String response = reader.readLine();
+        checkIfSuccess(response);
+        return response;
+    }
 }

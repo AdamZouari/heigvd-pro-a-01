@@ -5,11 +5,7 @@ import exceptions.CustomException;
 import exceptions.ProtocolException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-<<<<<<< HEAD
-import org.json.JSONObject;
-=======
 import javafx.scene.control.TextArea;
->>>>>>> master
 
 import java.io.IOException;
 import java.net.URL;
