@@ -23,6 +23,11 @@ public class TwitterRule extends Rule {
     }
 
     @Override
+    public int getPeriod() {
+        return 1; // TODO set to real value
+    }
+
+    @Override
     public JSONObject toJSON() {
         return null;
     }

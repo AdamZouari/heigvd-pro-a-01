@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 public class RuleTaskManager {
 
     private static RuleTaskManager rtm;
-    private int period;
     final static Logger LOG = Logger.getLogger(RuleTaskManager.class.getName());
 
     private boolean running;
@@ -29,7 +28,6 @@ public class RuleTaskManager {
 
     private RuleTaskManager() {
         running = false;
-        period = 1;//24 * 60; // 1 day in minutes
         taskMap = new HashMap<>();
     }
 
@@ -111,7 +109,7 @@ public class RuleTaskManager {
         return executor.scheduleAtFixedRate(
                 task,
                 task.getInitialDelay(),
-                period,
+                task.getPeriod(),
                 TimeUnit.MINUTES);
     }
 

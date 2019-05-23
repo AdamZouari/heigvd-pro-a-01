@@ -42,6 +42,8 @@ public abstract class Rule {
         return username;
     }
 
+    public abstract int getPeriod();
+
     public String getTag() {
         return tag;
     }
