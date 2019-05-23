@@ -2,6 +2,7 @@ package scheduler;
 
 
 import entities.Rule;
+import org.json.JSONObject;
 
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
@@ -68,25 +69,17 @@ public class RuleTaskManager {
 
     public String getUserTasksResults(String username) {
 
-        StringBuilder sb = new StringBuilder();
-
+        JSONObject json = new JSONObject();
         if(taskMap.containsKey(username)) {
             Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
-            // TODO FIX problem with new lines
-            sb.append("----- CFF");
-            sb.append(getResultsByTag(userRulesMap.keySet(), "CFF"));
-            sb.append("----- METEO");
-            sb.append(getResultsByTag(userRulesMap.keySet(), "METEO"));
-            sb.append("----- TWITTER");
-            sb.append(getResultsByTag(userRulesMap.keySet(), "TWITTER"));
-            /*
-            sb.append("----- RTS");
-            sb.append(getResultsByTag(userRulesMap.keySet(), "RTS"));
-            */
+
+            json.put("CFF", getResultsByTag(userRulesMap.keySet(), "CFF"));
+            json.put("METEO", getResultsByTag(userRulesMap.keySet(), "METEO"));
+            json.put("TWITTER", getResultsByTag(userRulesMap.keySet(), "TWITTER"));
+            // json.put("RTS", getResultsByTag(userRulesMap.keySet(), "RTS"));
         }
 
-        System.out.println(sb.toString());
-        return sb.toString();
+        return json.toString();
     }
 
     public void deleteRule(String username, int ruleId) {
