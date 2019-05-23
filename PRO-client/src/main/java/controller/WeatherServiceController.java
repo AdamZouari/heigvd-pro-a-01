@@ -126,6 +126,7 @@ public class WeatherServiceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        weatherTypeSelection.getItems().addAll("Ensoleillé", "Pluvieux", "Nuageux", "Neigeux", "");
         temperatureSelection.getItems().addAll("<",">","");
     }
 }

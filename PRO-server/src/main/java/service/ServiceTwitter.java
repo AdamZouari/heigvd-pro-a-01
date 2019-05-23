@@ -35,54 +35,7 @@ public class ServiceTwitter extends Service {
      */
     @Override
     public void connect() {
-        /*
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        twitter = tf.getInstance();
-        try {
-            RequestToken requestToken = twitter.getOAuthRequestToken();
-
-            System.out.println("Request token: " + requestToken.getToken());
-            System.out.println("Request token secret: " + requestToken.getTokenSecret());
-            accessToken = null;
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-            // Recuperer un accessToken si on en a pas
-            while (accessToken == null) {
-                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                    Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
-                }
-                System.out.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
-
-                // IOException : a enlever car on passe sur l'UI
-                String pin = br.readLine();
-
-                try {
-                    if (pin.length() > 0) {
-                        accessToken = twitter.getOAuthAccessToken(requestToken, pin);
-                    } else {
-                        accessToken = twitter.getOAuthAccessToken();
-                    }
-                } catch (TwitterException te) {
-                    if (401 == te.getStatusCode()) {
-                        System.out.println("Unable to get the access token.");
-                    } else {
-                        te.printStackTrace();
-                    }
-                }
-            }
-            // Stocker l'AT Quelque part pour eviter de se reconnecter a chaque fois
-            // storeAccessToken(twitter.verifyCredentials().getId(), accessToken);
-
-        } catch (TwitterException | IllegalStateException | URISyntaxException ie) {
-
-            if (!twitter.getAuthorization().isEnabled()) {
-                System.out.println("OAuth consumer key/secret is not set");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
+        
         try {
             twitter.getOAuthAccessToken(accessToken);
         } catch (TwitterException e) {

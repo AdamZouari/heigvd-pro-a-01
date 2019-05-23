@@ -25,8 +25,9 @@ public class TwitterRule extends Rule {
 
     @Override
     public String execute() {
-        // TO DO
-        return "";
+        JSONObject json = new JSONObject();
+
+        return json.toString();
     }
     public static String getTAG() {
         return TAG;
