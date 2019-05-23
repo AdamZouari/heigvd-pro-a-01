@@ -30,4 +30,6 @@ public class Protocol {
     public static final String CMD_DELETE_RULE = "DELETE_RULE";
     public static final String CMD_DELETE_USER_RULES = "DELETE_USER_RULES";
 
+    public static final String CMD_GET_LANGUAGE = "GET_LANGUAGE";
+
 }

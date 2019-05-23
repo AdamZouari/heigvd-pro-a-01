@@ -122,6 +122,10 @@ public class Server {
                             case Protocol.CMD_DELETE_USER_RULES:
                                 deleteUserRules(items[1]);
                                 break;
+                            case Protocol.CMD_GET_LANGUAGE:
+                                getLanguage(items[1]);
+                                break;
+
                         }
 
                     }
@@ -307,6 +311,16 @@ public class Server {
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
                 }
+            }
+
+            private void getLanguage(String username){
+                try {
+                    db.getLangue(username);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+
             }
 
             /**
