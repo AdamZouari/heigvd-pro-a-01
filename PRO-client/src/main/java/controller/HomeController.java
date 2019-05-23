@@ -42,12 +42,7 @@ public class HomeController implements Initializable {
     @FXML
     private void onRulesListButtonClick() {
         setContentTitle("activeRules");
-        changeContent("RulesView.fxml");
-    }
-
-    @FXML
-    private void onThemeToggleClick() {
-        // TODO implement
+        changeContent("APIRuleView.fxml", "Rules");
     }
 
     @FXML
