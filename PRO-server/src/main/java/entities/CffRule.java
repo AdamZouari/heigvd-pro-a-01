@@ -6,8 +6,6 @@ import service.ServiceCFF;
 import utils.JsonParserCFF;
 import utils.TelegramNotification;
 
-import java.net.URLEncoder;
-
 public class CffRule extends Rule{
     String from, to, departureTime, arrivalTime;
     private boolean disruptionNotif;
@@ -67,15 +65,10 @@ public class CffRule extends Rule{
 
         cff.disconnect();
 
-        if(telegramNotif){
-            // TODO choper le telegram id et envoyer via le bot
-            // retard
+        if (telegramNotif) {
 
-            // TODO HELP ANTOINE
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
 
-            //TODO WTF PK CA ENVOIE PAS DE NOTIF TELEGRAM EXACTEMENT PAREIL QUE POUR METEO....
-            //System.out.println("TELEGRAM ID = " + telegramId + "\n CONNECTIONS : " + connections);
             TelegramNotification telegram = new TelegramNotification();
             telegram.sendRuleResult(telegramId, telegram.encodeMessageForURL(result));
         }

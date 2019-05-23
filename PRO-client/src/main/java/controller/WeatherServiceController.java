@@ -3,7 +3,10 @@ package controller;
 import connection.ClientRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
@@ -43,8 +46,11 @@ public class WeatherServiceController implements Initializable {
 
     @FXML
     private void onAddRuleClick() {
+
         boolean menu = menuCheckBox.isSelected();
         boolean telegram = telegramCheckBox.isSelected();
+        boolean isTempSelected = !(temperatureSelection.getSelectionModel().isEmpty());
+        boolean isWeatherSelected = !(weatherTypeSelection.getSelectionModel().isEmpty());
 
         if(!menu && !telegram) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
@@ -64,16 +70,15 @@ public class WeatherServiceController implements Initializable {
             return;
         }
 
-        boolean temperature = temperatureSelection.getSelectionModel().isEmpty();
 
-        if(temperature && weatherTypeSelection.getSelectionModel().isEmpty()) {
+        if(!isTempSelected && !isWeatherSelected ) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.WEATHER_TYPE_OR_TEMPERATURE_CONDITION.getMessage());
             return;
         }
 
         String temperatureValue = this.temperature.getText();
 
-        if(!temperature) {
+        if(isTempSelected && temperatureSelection.getValue()!= null) {
             if(temperatureValue.isEmpty()){
                 FormUtils.displayErrorMessage(error, ExceptionCodes.TEMPERATURE_MISSING.getMessage());
                 return;
@@ -95,15 +100,17 @@ public class WeatherServiceController implements Initializable {
         String tempSelec;
         String weatherSelec;
 
-        //TODO Checker car retourne NullPointerException ..
         // Permettre de laisser des cases sans les valider
-        if (weatherTypeSelection.getValue().toString() == null) {
+
+        if (weatherTypeSelection.getValue() == null || !isWeatherSelected) {
+
             weatherSelec = "null";
         } else {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
-        if (temperatureSelection.getValue().toString() == null && temperatureValue == null) {
+        if (temperatureValue == null || temperatureSelection.getValue() == null || !isTempSelected) {
+
             tempSelec = "null";
             temperatureValue = "null";
         } else {
@@ -121,12 +128,18 @@ public class WeatherServiceController implements Initializable {
         }
 
         // Close Window
-        ((Stage) this.temperatureSelection.getScene().getWindow()).close();
+        ((Stage)this.time.getScene().getWindow()).close();
+    }
+
+    @FXML
+    private void onEnter() {
+        onAddRuleClick();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        temperatureSelection.getItems().addAll("<",">","");
+        weatherTypeSelection.getItems().addAll(null,"Ensoleillé", "Pluvieux", "Nuageux", "Neigeux");
+        temperatureSelection.getItems().addAll(null,"<",">");
     }
 }
