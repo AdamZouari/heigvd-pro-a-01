@@ -19,6 +19,11 @@ public class RtsRule extends Rule {
 
 
     @Override
+    public int getPeriod() {
+        return 24*60;
+    }
+
+    @Override
     public JSONObject toJSON() {
         return null;
     }
