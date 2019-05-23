@@ -1,7 +1,6 @@
 package controller;
 
 import connection.ClientRequest;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -79,7 +78,7 @@ public class WeatherServiceController implements Initializable {
 
         String temperatureValue = this.temperature.getText();
 
-        if(isTempSelected) {
+        if(isTempSelected && temperatureSelection.getValue()!= null) {
             if(temperatureValue.isEmpty()){
                 FormUtils.displayErrorMessage(error, ExceptionCodes.TEMPERATURE_MISSING.getMessage());
                 return;
@@ -103,14 +102,14 @@ public class WeatherServiceController implements Initializable {
 
         // Permettre de laisser des cases sans les valider
 
-        if (weatherTypeSelection.getValue() == null) {
+        if (weatherTypeSelection.getValue() == null || !isWeatherSelected) {
 
             weatherSelec = "null";
         } else {
             weatherSelec = weatherTypeSelection.getValue().toString();
         }
 
-        if (temperatureValue == null || temperatureSelection.getValue() == null) {
+        if (temperatureValue == null || temperatureSelection.getValue() == null || !isTempSelected) {
 
             tempSelec = "null";
             temperatureValue = "null";
@@ -140,7 +139,7 @@ public class WeatherServiceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        weatherTypeSelection.getItems().addAll("Ensoleillé", "Pluvieux", "Nuageux", "Neigeux");
-        temperatureSelection.getItems().addAll("<",">");
+        weatherTypeSelection.getItems().addAll(null,"Ensoleillé", "Pluvieux", "Nuageux", "Neigeux");
+        temperatureSelection.getItems().addAll(null,"<",">");
     }
 }
