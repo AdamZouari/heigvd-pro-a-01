@@ -32,4 +32,5 @@ public class Protocol {
 
     public static final String CMD_GET_LANGUAGE = "GET_LANGUAGE";
 
+    public static final String CMD_SET_LANGUAGE = "SET_LANGUAGE";
 }

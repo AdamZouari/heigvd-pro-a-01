@@ -267,7 +267,10 @@ public class ClientRequest {
 
     }
 
-    public void updateLanguage(){
+    public void updateLanguage(String language) throws IOException,CustomException, ProtocolException  {
+        sendToServer(Protocol.CMD_SET_LANGUAGE + " " + loggedUser +":" + language);
+        String response = reader.readLine();
+        checkIfSuccess(response);
 
     }
 

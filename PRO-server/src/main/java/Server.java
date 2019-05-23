@@ -144,7 +144,9 @@ public class Server {
                             case Protocol.CMD_GET_LANGUAGE:
                                 getLanguage(items[1]);
                                 break;
-
+                            case Protocol.CMD_SET_LANGUAGE:
+                                updateLanguage(items[1]);
+                                break;
                         }
 
                     }
@@ -305,7 +307,18 @@ public class Server {
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
                 }
+            }
 
+            private void updateLanguage(String items){
+                try {
+                    String username = items.split(":")[0];
+                    String language = items.split(":")[1];
+
+                    db.updateLanguage(username,language);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
             }
 
             /**

@@ -1,5 +1,8 @@
 package controller;
 
+import connection.ClientRequest;
+import exceptions.CustomException;
+import exceptions.ProtocolException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +13,7 @@ import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Regexp;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.Normalizer;
 import java.util.ResourceBundle;
@@ -87,7 +91,7 @@ public class SettingsController implements Initializable {
 
     @FXML
     private void onSaveTelegramButtonClick() {
-        if(!FormUtils.isValid(telegramTextField.getText(), Regexp.PSEUDO_TELEGRAM)){
+        if (!FormUtils.isValid(telegramTextField.getText(), Regexp.PSEUDO_TELEGRAM)) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
             return;
         }
@@ -106,7 +110,7 @@ public class SettingsController implements Initializable {
 
     @FXML
     private void onSaveNameButtonClick() {
-        if(nameTextField.getText().isEmpty()) {
+        if (nameTextField.getText().isEmpty()) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.NAME_MISSING.getMessage());
             return;
         }
@@ -129,26 +133,42 @@ public class SettingsController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO : Change language in DB for user
-        String currentLanguage =  I18N.getLocale().getLanguage();
 
-        if(currentLanguage.equals("en"))
-            languageSelection.getSelectionModel().select("English");
-        else
-            languageSelection.getSelectionModel().select("Français");
+        ClientRequest cr = new ClientRequest();
+        try {
+            String currentLanguage = cr.getLanguage();
+
+            // sets up the langue as defined in the database
+            if (currentLanguage.equals("EN"))
+                languageSelection.getSelectionModel().select("English");
+            else
+                languageSelection.getSelectionModel().select("Français");
+
+        } catch (IOException | ProtocolException | CustomException e) {
+            FormUtils.displayErrorMessage(error, e.getMessage());
+        }
     }
 
-    // TODO : Change language in DB for user
     @FXML
     private void changeLanguage() {
-        if (languageSelection.getSelectionModel().getSelectedItem().equals("English"))
-            I18N.setLocale(I18N.EN);
-        //TODO
+        try {
 
-        else
-            I18N.setLocale(I18N.FR);
+            //  Change language in actual window
+            if (languageSelection.getSelectionModel().getSelectedItem().equals("English")) {
+                I18N.setLocale(I18N.EN);
+            } else{
+                I18N.setLocale(I18N.FR);
+            }
 
-        changeDisplayedLanguage();
+            //  Change language in DB for user
+            ClientRequest cr = new ClientRequest();
+            cr.updateLanguage("EN");
+
+            changeDisplayedLanguage();
+
+        } catch (IOException | ProtocolException | CustomException e) {
+            FormUtils.displayErrorMessage(error, e.getMessage());
+        }
     }
 
     @FXML
@@ -157,17 +177,17 @@ public class SettingsController implements Initializable {
         String newPass = newPassword.getText();
         String confirmedPass = confirmedPassword.getText();
 
-        if(!FormUtils.isAllFilled(oldPass, newPass, confirmedPass)){
+        if (!FormUtils.isAllFilled(oldPass, newPass, confirmedPass)) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.SOME_PASS_ARE_MISSING.getMessage());
             return;
         }
 
-        if(!newPass.equals(confirmedPass)){
+        if (!newPass.equals(confirmedPass)) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORDS_DID_NOT_MATCH.getMessage());
             return;
         }
 
-        if(!FormUtils.isValid(newPass, Regexp.PASSWORD)){
+        if (!FormUtils.isValid(newPass, Regexp.PASSWORD)) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORD_INVALID.getMessage());
             return;
         }
@@ -183,7 +203,7 @@ public class SettingsController implements Initializable {
     }
 
     private void changePasswordsFormVisibility() {
-        if(passwordChangePane.isVisible()) {
+        if (passwordChangePane.isVisible()) {
             passwordChangePane.setVisible(false);
             cleanPasswordsInputs();
         } else {
