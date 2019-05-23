@@ -1,6 +1,5 @@
 package controller;
 
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -11,12 +10,7 @@ import javafx.stage.Stage;
 import protocol.ExceptionCodes;
 import utils.FormUtils;
 import utils.Crypto;
-
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import utils.Regexp;
 
@@ -38,11 +32,8 @@ public class RegisterController {
     @FXML
     private Label error;
 
-
-
     @FXML
     public void onRegisterClick() throws CustomException, IOException, ProtocolException {
-
         ClientRequest cr = new ClientRequest();
 
         String username = this.username.getText();
@@ -81,9 +72,7 @@ public class RegisterController {
             // retourne le json des personnes qui ont ajouté le bot dans les dernieres 24h
             String json = cr.getJsonTelegram();
 
-
             int idTelegram = cr.getIdFromTelegramPseudo(json);
-
 
             cr.register(username, Crypto.sha512(password, SALT), telegramUsername, idTelegram);
 
