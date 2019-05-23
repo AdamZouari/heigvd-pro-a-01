@@ -259,6 +259,7 @@ public class DatabaseController {
         return userRules;
     }
 
+    // return all rules for each user as a Map<Username,JSONArray
     public Map<String, String> getAllRules() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -379,26 +380,14 @@ public class DatabaseController {
         }
     }
 
-    public void deleteAllRuleByUsername(String username, String rule) {
+    public void deleteAllRuleByUsername(String username) {
 
-        PreparedStatement preparedStatement = null;
-        String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
+            JSONObject emptyRules = new JSONObject();
+            // create empty rules
+            emptyRules.put("rules", new JSONArray());
 
+            updateRule(username, emptyRules.toString());
 
-        try {
-
-            preparedStatement = mConnection.prepareStatement(sql);
-
-            preparedStatement.setString(1, rule);
-            preparedStatement.setString(2, username);
-
-            preparedStatement.executeUpdate();
-            System.out.println("Rule of updated !");
-
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public String getTelegramIdByUsername(String username) {

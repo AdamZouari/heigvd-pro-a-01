@@ -127,6 +127,10 @@ public class Server {
                                 break;
                             case Protocol.CMD_DELETE_RULE:
                                 deleteRule(items[1]);
+                                break;
+                            case Protocol.CMD_DELETE_USER_RULES:
+                                deleteUserRules(items[1]);
+                                break;
                         }
 
                     }
@@ -245,7 +249,7 @@ public class Server {
 
             private void getRulesResult(String username) {
                 String rules = ruleTaskManager.getUserTasks(username);
-                sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+                sendToClient(Protocol.RESPONSE_SUCCESS + " d" + rules);
 
             }
 
@@ -254,7 +258,11 @@ public class Server {
                 String username = items.split(":")[0];
                 int ruleToDeleteId = Integer.parseInt(items.split(":")[1]);
 
-                db.deleteRuleById(username,ruleToDeleteId);
+                try {
+                    db.deleteRuleById(username,ruleToDeleteId);
+                } catch (CustomException e) {
+                    e.printStackTrace();
+                }
                 ruleTaskManager.deleteRule(username,ruleToDeleteId);
                 sendToClient(Protocol.RESPONSE_SUCCESS);
             }
@@ -324,12 +332,21 @@ public class Server {
                 // update or store new rules
                 db.updateRule(username, fin.toString());
 
-                // TODO christoph ? need of a rule
                 //Rule ruleToAdd = new CffRule();
                 //allRUles.add(ruleToAdd);
 
                 sendToClient(Protocol.RESPONSE_SUCCESS);
 
+            }
+
+            private void deleteUserRules(String username) {
+
+                // delete from Database
+                db.deleteAllRuleByUsername(username);
+
+                //delete from taskmanager
+                ruleTaskManager.deleteAllRule(username);
+                sendToClient(Protocol.RESPONSE_SUCCESS);
             }
 
             /**
@@ -341,6 +358,8 @@ public class Server {
                 sendToClient(Protocol.RESPONSE_FAILURE + " " + i);
             }
         }
+
+
     }
 
 

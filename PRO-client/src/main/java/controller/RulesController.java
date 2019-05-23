@@ -21,7 +21,7 @@ public class RulesController implements Initializable {
         ClientRequest cr = new ClientRequest();
         int ruleid = 42;
         try {
-            cr.deleteUserRule(ruleid);
+            cr.deleteUserRuleById(ruleid);
             rulesContent.setText(cr.getRulesContent());
         } catch (IOException e) {
             e.printStackTrace();

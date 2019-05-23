@@ -90,6 +90,16 @@ public class RuleTaskManager {
         }
     }
 
+    public void deleteAllRule(String username) {
+        if (taskMap.containsKey(username)) {
+            Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
+            for (RuleTask ruleTask : userRulesMap.keySet()) {
+                userRulesMap.get(ruleTask).cancel(true);
+                userRulesMap.remove(ruleTask);
+            }
+        }
+    }
+
     public boolean isRunning() {
         return running;
     }
