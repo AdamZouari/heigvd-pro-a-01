@@ -26,7 +26,10 @@ public enum ExceptionCodes {
     UPDATE_OF_USER_FAILED("Update of user failed."),
     UPDATE_OF_RULE_FAILED("Update of user failed."),
     FAIL_TO_FETCH_USER_FROM_DB("Fetch user failed."),
-    FAIL_TO_FETCH_RULES_FROM_DB("Fetch rules failed.");
+    FAIL_TO_FETCH_RULES_FROM_DB("Fetch rules failed."),
+    FAIL_TO_FETCH_TELEGRAM_ID_FROM_DB("Fetch telegram id failed"),
+    CHECK_UNIQUENESS_FAILED("Check uniqueness of username or telegram failed");
+
 
 
 

@@ -148,34 +148,40 @@ public class DatabaseController {
 
     }
 
-    public boolean usernameExist(String username) throws SQLException {
+    public boolean usernameExist(String username) throws CustomException {
 
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT * FROM User WHERE username = ?";
 
-        preparedStatement = mConnection.prepareStatement(sql);
+        try{
+            preparedStatement = mConnection.prepareStatement(sql);
 
-        preparedStatement.setString(1, username);
-        result = preparedStatement.executeQuery();
+            preparedStatement.setString(1, username);
+            result = preparedStatement.executeQuery();
+            return result.next();
 
-        return result.next();
-
-
+        }catch (SQLException e){
+            throw new CustomException(ExceptionCodes.CHECK_UNIQUENESS_FAILED.ordinal());
+        }
     }
 
-    public boolean usernameTelegramExist(String usernameTelegram) throws SQLException {
+    public boolean usernameTelegramExist(String usernameTelegram) throws CustomException {
 
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT * FROM User WHERE telegramUsername = ?";
 
-        preparedStatement = mConnection.prepareStatement(sql);
+        try{
+            preparedStatement = mConnection.prepareStatement(sql);
 
-        preparedStatement.setString(1, usernameTelegram);
-        result = preparedStatement.executeQuery();
+            preparedStatement.setString(1, usernameTelegram);
+            result = preparedStatement.executeQuery();
+            return result.next();
 
-        return result.next();
+        }catch (SQLException e){
+            throw new CustomException(ExceptionCodes.CHECK_UNIQUENESS_FAILED.ordinal());
+        }
 
     }
 
@@ -228,6 +234,38 @@ public class DatabaseController {
         }
     }
 
+    public void updatePassword(String username, String password) throws CustomException {
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE User SET password = ?  WHERE username = ? ";
+
+        try {
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+
+            preparedStatement.executeUpdate();
+            LOG.log(Level.INFO,"Password of  "+username+ " updated.");
+        } catch (SQLException e) {
+            throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
+        }
+    }
+
+    public void updateLanguage(String username, User.LANGUE language) throws CustomException {
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE User SET langue = ?  WHERE username = ? ";
+
+        try {
+            preparedStatement = mConnection.prepareStatement(sql);
+            preparedStatement.setObject(1, language);
+            preparedStatement.setString(2, username);
+
+            preparedStatement.executeUpdate();
+            LOG.log(Level.INFO,"Language of  "+username+ " updated.");
+        } catch (SQLException e) {
+            throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
+        }
+    }
+
     public String getUserRulesByUsername(String username) throws CustomException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -273,7 +311,6 @@ public class DatabaseController {
         return allRules;
     }
 
-
     public void updateRule(String username, String rule) throws CustomException {
 
         PreparedStatement preparedStatement = null;
@@ -293,7 +330,8 @@ public class DatabaseController {
         }
     }
 
-    public String getTelegramIdByUsername(String username) {
+
+    public String getTelegramIdByUsername(String username) throws CustomException {
 
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -309,8 +347,8 @@ public class DatabaseController {
             if(result.next())
                 idTelegram = result.getInt(1);
 
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+        }catch(SQLException e){
+            throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_TELEGRAM_ID_FROM_DB.ordinal());
         }
 
         return "" + idTelegram;
