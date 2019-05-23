@@ -70,8 +70,11 @@ public class CffRule extends Rule{
 
             // TODO HELP ANTOINE
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
+
+            //TODO WTF PK CA ENVOIE PAS DE NOTIF TELEGRAM EXACTEMENT PAREIL QUE POUR METEO....
+            //System.out.println("TELEGRAM ID = " + telegramId + "\n CONNECTIONS : " + connections);
             TelegramNotification telegram = new TelegramNotification();
-            telegram.sendRuleResult(telegramId,connections);
+            telegram.sendRuleResult(telegramId, connections);
         }
         return JsonParserCFF.parseCFF(connections,from,to);
 

@@ -98,6 +98,7 @@ public class CFFServiceController implements Initializable {
         //
         JSONObject jsonToSend = null; // parse to create a json
 
+        //TODO seems to inverse times ..
         jsonToSend = JsonParserRules.createCffRuleJson( from,  to,  departureTime,  arrivalTime,  telegramNotif, menuNotif,
          disruptionNotif);
 
@@ -106,10 +107,11 @@ public class CFFServiceController implements Initializable {
 
 
         // TODO once json as string stored in DB, then transform from string (then JsonObject then finally to rule)
-        ((Stage) this.from.getScene().getWindow()).close();
 //        } catch (CustomException | ProtocolException e) {
 //            FormUtils.displayErrorMessage(error, e.getMessage());
 //        }
+        ((Stage) this.from.getScene().getWindow()).close();
+
     }
 
     @Override
