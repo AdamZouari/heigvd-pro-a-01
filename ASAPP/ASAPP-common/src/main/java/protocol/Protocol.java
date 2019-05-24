@@ -3,8 +3,9 @@ package protocol;
 public class Protocol {
 
     public final static int DEFAULT_PORT = 2222;
-    //public static final String HOST = "ec2-35-181-66-105.eu-west-3.compute.amazonaws.com";
-    public static final String HOST = "localhost";
+    public static final String HOST = "asapp-env.25vc3m4pxv.eu-west-3.elasticbeanstalk.com";
+    public static final String HOST_DEV = "ASAPP-dev.eu-west-3.elasticbeanstalk.com";
+    public static final String LOCALHOST = "localhost";
 
     public final static char EOL = '\n';
 

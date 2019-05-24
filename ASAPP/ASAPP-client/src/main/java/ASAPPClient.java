@@ -37,7 +37,7 @@ public class ASAPPClient extends Application {
             stage.setOnCloseRequest(event -> Platform.exit());
 
             try{
-                cr.connect(Protocol.HOST);
+                cr.connect(Protocol.HOST_DEV);
 
             }catch (Exception e){
                 System.out.println("Server down");
