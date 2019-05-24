@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import locale.I18N;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import utils.FormUtils;
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +36,7 @@ public class APIRuleController implements Initializable {
 
    private ResourceBundle resource;
 
-   private String rules;
+   private JSONArray rulesArray;
 
    public void onNewRuleClick() {
       String serviceName = getServiceName();
@@ -58,11 +60,13 @@ public class APIRuleController implements Initializable {
 
       ClientRequest cr = new ClientRequest();
 
-//      try {
-//         rules = cr.getRulesContent();
-//      } catch (IOException | CustomException | ProtocolException e) {
-//         e.printStackTrace();
-//      }
+      try {
+         String rules = cr.getRulesContent();
+         JSONObject json = new JSONObject(rules);
+         rulesArray = json.getJSONArray("rules");
+      } catch (IOException | CustomException | ProtocolException e) {
+         e.printStackTrace();
+      }
    }
 
    void setServiceName(String serviceName) {
@@ -107,8 +111,7 @@ public class APIRuleController implements Initializable {
             Tab rts = new Tab("RTS");
             rts.setClosable(false);
             rts.setContent(generateRTSAccordion());
-
-            tabs.setPrefHeight(150);
+            tabs.minHeight(600);
             tabs.getTabs().addAll(cff, twitter, weather, rts);
 
             pane.getChildren().add(tabs);
@@ -121,13 +124,11 @@ public class APIRuleController implements Initializable {
    }
 
    private void deleteRule(int id, TitledPane titled, Accordion accordion) {
-      // TODO : Remove from DB rule with the id
       ClientRequest cr = new ClientRequest();
 
       try {
          cr.deleteUserRuleById(id);
          accordion.getPanes().remove(titled);
-
       } catch (IOException | CustomException | ProtocolException e) {
          FormUtils.displayErrorMessage(error, e.getMessage());
       }
@@ -136,42 +137,52 @@ public class APIRuleController implements Initializable {
    private Accordion generateCFFAccordion() {
       Accordion accordion = new Accordion();
 
-      TitledPane titledPane = new TitledPane();
-      titledPane.setText("CFF 01");
+      int i = 0;
+      for (Object o : rulesArray) {
+         JSONObject json = (JSONObject) o;
 
-      Label cities = new Label(resource.getString("from") + " ville1 " + resource.getString("to") + " ville2 ");
-      FlowPane citiesPane = new FlowPane();
-      citiesPane.getChildren().add(cities);
+         if(!json.getString("tag").equals("CFF"))
+            continue;
 
-      Label hours = new Label(resource.getString("departureTime") + ": " + "heure, " + resource.getString("arrivalTime") + ": " + "heure");
-      FlowPane hoursPane = new FlowPane();
-      hoursPane.getChildren().add(hours);
+         TitledPane titledPane = new TitledPane();
+         titledPane.setText("CFF " + ++i);
 
-      CheckBox menu = new CheckBox(resource.getString("inMenu"));
-      menu.setSelected(true);
-      menu.setDisable(true);
+         Label cities = new Label(resource.getString("from") + " " +
+                                  json.getString("from") + " " + resource.getString("to") + " " +
+                                  json.getString("to"));
+         FlowPane citiesPane = new FlowPane();
+         citiesPane.getChildren().add(cities);
 
-      CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
-      telegram.setSelected(false);
-      telegram.setDisable(true);
+         Label hours = new Label(resource.getString("departureTime") + ": " + json.getString("departureTime") + ", " + resource.getString("arrivalTime") + ": " + json.getString("arrivalTime"));
+         FlowPane hoursPane = new FlowPane();
+         hoursPane.getChildren().add(hours);
 
-      CheckBox disruption = new CheckBox(resource.getString("disruptionNotif"));
-      disruption.setSelected(true);
-      disruption.setDisable(true);
+         CheckBox menu = new CheckBox(resource.getString("inMenu"));
+         menu.setSelected(json.getBoolean("menuNotif"));
+         menu.setDisable(true);
 
-      FlowPane checkBoxes = new FlowPane();
-      checkBoxes.getChildren().addAll(menu, telegram, disruption);
+         CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
+         telegram.setSelected(json.getBoolean("telegramNotif"));
+         telegram.setDisable(true);
 
-      Button delete = new Button(resource.getString("delete"));
-      delete.setId(String.valueOf(1));
-      delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+         CheckBox disruption = new CheckBox(resource.getString("disruptionNotif"));
+         disruption.setSelected(json.getBoolean("disruptionNotif"));
+         disruption.setDisable(true);
+
+         FlowPane checkBoxes = new FlowPane();
+         checkBoxes.getChildren().addAll(menu, telegram, disruption);
+
+         Button delete = new Button(resource.getString("delete"));
+         delete.setId(String.valueOf(json.getInt("id")));
+         delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
 
 
-      FlowPane fp = new FlowPane();
-      fp.getChildren().addAll(citiesPane, hoursPane, checkBoxes, delete);
-      titledPane.setContent(fp);
+         FlowPane fp = new FlowPane();
+         fp.getChildren().addAll(citiesPane, hoursPane, checkBoxes, delete);
+         titledPane.setContent(fp);
 
-      accordion.getPanes().add(titledPane);
+         accordion.getPanes().add(titledPane);
+      }
 
       return accordion;
    }
@@ -179,33 +190,41 @@ public class APIRuleController implements Initializable {
    private Accordion generateTwitterAccordion() {
       Accordion accordion = new Accordion();
 
-      TitledPane titledPane = new TitledPane();
-      titledPane.setText("Twitter 01");
+      int i = 0;
+      for (Object o : rulesArray) {
+         JSONObject json = (JSONObject) o;
 
-      Label user = new Label(resource.getString("username") + ": " + "le super user twitter");
-      FlowPane userPane = new FlowPane();
-      userPane.getChildren().add(user);
+         if (!json.getString("tag").equals("TWITTER"))
+            continue;
 
-      CheckBox menu = new CheckBox(resource.getString("inMenu"));
-      menu.setSelected(true);
-      menu.setDisable(true);
+         TitledPane titledPane = new TitledPane();
+         titledPane.setText("Twitter " + ++i);
 
-      CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
-      telegram.setSelected(false);
-      telegram.setDisable(true);
+         Label user = new Label(resource.getString("username") + ": " + json.getString("twitterId"));
+         FlowPane userPane = new FlowPane();
+         userPane.getChildren().add(user);
 
-      FlowPane checkBoxes = new FlowPane();
-      checkBoxes.getChildren().addAll(menu, telegram);
+         CheckBox menu = new CheckBox(resource.getString("inMenu"));
+         menu.setSelected(json.getBoolean("menuNotif"));
+         menu.setDisable(true);
 
-      Button delete = new Button(resource.getString("delete"));
-      delete.setId(String.valueOf(1));
-      delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+         CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
+         telegram.setSelected(json.getBoolean("telegramNotif"));
+         telegram.setDisable(true);
 
-      FlowPane fp = new FlowPane();
-      fp.getChildren().addAll(userPane, checkBoxes, delete);
-      titledPane.setContent(fp);
+         FlowPane checkBoxes = new FlowPane();
+         checkBoxes.getChildren().addAll(menu, telegram);
 
-      accordion.getPanes().add(titledPane);
+         Button delete = new Button(resource.getString("delete"));
+         delete.setId(String.valueOf(json.getInt("id")));
+         delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+
+         FlowPane fp = new FlowPane();
+         fp.getChildren().addAll(userPane, checkBoxes, delete);
+         titledPane.setContent(fp);
+
+         accordion.getPanes().add(titledPane);
+      }
 
       return accordion;
    }
@@ -213,41 +232,50 @@ public class APIRuleController implements Initializable {
    private Accordion generateWeatherAccordion() {
       Accordion accordion = new Accordion();
 
-      TitledPane titledPane = new TitledPane();
-      titledPane.setText("Weather 01");
+      int i = 0;
+      for (Object o : rulesArray) {
+         JSONObject json = (JSONObject) o;
 
-      Label weather = new Label(resource.getString("ifWeatherIs") + " avec du soleil");
-      FlowPane weatherPane = new FlowPane();
-      weatherPane.getChildren().add(weather);
+         if (!json.getString("tag").equals("METEO"))
+            continue;
 
-      Label temperature = new Label(resource.getString("ifTempIs") + " condition " + "XX" + "°C");
-      FlowPane tempPane = new FlowPane();
-      tempPane.getChildren().add(temperature);
+         TitledPane titledPane = new TitledPane();
+         titledPane.setText("Weather " + ++i);
 
-      Label city = new Label(resource.getString("location") + ", " + "HH:MM");
-      FlowPane cityPane = new FlowPane();
-      cityPane.getChildren().add(city);
+         Label weather = new Label(resource.getString("ifWeatherIs") + " " + json.getString("weatherType"));
+         FlowPane weatherPane = new FlowPane();
+         weatherPane.getChildren().add(weather);
 
-      CheckBox menu = new CheckBox(resource.getString("inMenu"));
-      menu.setSelected(true);
-      menu.setDisable(true);
+         Label temperature = new Label(resource.getString("ifTempIs") + " " + json.getString("temperatureSelection") + " " +
+                                       json.getString("temperature") + " °C");
+         FlowPane tempPane = new FlowPane();
+         tempPane.getChildren().add(temperature);
 
-      CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
-      telegram.setSelected(false);
-      telegram.setDisable(true);
+         Label city = new Label(json.getString("location") + ", " + json.getString("time"));
+         FlowPane cityPane = new FlowPane();
+         cityPane.getChildren().add(city);
 
-      FlowPane checkBoxes = new FlowPane();
-      checkBoxes.getChildren().addAll(menu, telegram);
+         CheckBox menu = new CheckBox(resource.getString("inMenu"));
+         menu.setSelected(json.getBoolean("menuNotif"));
+         menu.setDisable(true);
 
-      Button delete = new Button(resource.getString("delete"));
-      delete.setId(String.valueOf(1));
-      delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+         CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
+         telegram.setSelected(json.getBoolean("telegramNotif"));
+         telegram.setDisable(true);
 
-      FlowPane fp = new FlowPane();
-      fp.getChildren().addAll(weatherPane, tempPane, cityPane, checkBoxes, delete);
-      titledPane.setContent(fp);
+         FlowPane checkBoxes = new FlowPane();
+         checkBoxes.getChildren().addAll(menu, telegram);
 
-      accordion.getPanes().add(titledPane);
+         Button delete = new Button(resource.getString("delete"));
+         delete.setId(String.valueOf(json.getInt("id")));
+         delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+
+         FlowPane fp = new FlowPane();
+         fp.getChildren().addAll(weatherPane, tempPane, cityPane, checkBoxes, delete);
+         titledPane.setContent(fp);
+
+         accordion.getPanes().add(titledPane);
+      }
 
       return accordion;
    }
@@ -255,33 +283,42 @@ public class APIRuleController implements Initializable {
    private Accordion generateRTSAccordion() {
       Accordion accordion = new Accordion();
 
-      TitledPane titledPane = new TitledPane();
-      titledPane.setText("RTS 01");
+      int i = 0;
+      for (Object o : rulesArray) {
+         JSONObject json = (JSONObject) o;
 
-      Label channel = new Label(resource.getString("tvProgram") + ", " + "HH:MM");
-      FlowPane channelPane = new FlowPane();
-      channelPane.getChildren().add(channel);
+         if (!json.getString("tag").equals("RTS"))
+            continue;
 
-      CheckBox menu = new CheckBox(resource.getString("inMenu"));
-      menu.setSelected(true);
-      menu.setDisable(true);
+         TitledPane titledPane = new TitledPane();
+         titledPane.setText("RTS " + ++i);
 
-      CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
-      telegram.setSelected(false);
-      telegram.setDisable(true);
+         Label channel = new Label(resource.getString("tvProgram") + " " +
+                                    json.getString("channel") + ", " + json.getString("requestTime"));
+         FlowPane channelPane = new FlowPane();
+         channelPane.getChildren().add(channel);
 
-      FlowPane checkBoxes = new FlowPane();
-      checkBoxes.getChildren().addAll(menu, telegram);
+         CheckBox menu = new CheckBox(resource.getString("inMenu"));
+         menu.setSelected(json.getBoolean("menuNotif"));
+         menu.setDisable(true);
 
-      Button delete = new Button(resource.getString("delete"));
-      delete.setId(String.valueOf(1));
-      delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+         CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
+         telegram.setSelected(json.getBoolean("telegramNotif"));
+         telegram.setDisable(true);
 
-      FlowPane fp = new FlowPane();
-      fp.getChildren().addAll(channelPane, checkBoxes, delete);
-      titledPane.setContent(fp);
+         FlowPane checkBoxes = new FlowPane();
+         checkBoxes.getChildren().addAll(menu, telegram);
 
-      accordion.getPanes().add(titledPane);
+         Button delete = new Button(resource.getString("delete"));
+         delete.setId(String.valueOf(json.getInt("id")));
+         delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+
+         FlowPane fp = new FlowPane();
+         fp.getChildren().addAll(channelPane, checkBoxes, delete);
+         titledPane.setContent(fp);
+
+         accordion.getPanes().add(titledPane);
+      }
 
       return accordion;
    }

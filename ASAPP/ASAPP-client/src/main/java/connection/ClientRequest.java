@@ -127,14 +127,9 @@ public class ClientRequest {
     // the rules content
     public String getRulesContent() throws IOException, CustomException, ProtocolException {
         sendToServer(Protocol.CMD_GET_RULES + " " + loggedUser);
-        String str;
-        String response ="";
-        while( (str = reader.readLine())!=null) {
-            response += str;
-        }
+        String response = reader.readLine();
         checkIfSuccess(response);
-        return response;
-
+        return response.substring(response.indexOf(" ") + 1);
     }
 
 

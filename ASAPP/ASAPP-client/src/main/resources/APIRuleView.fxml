@@ -8,7 +8,7 @@
 <?import javafx.scene.control.Label?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.APIRuleController">
    <children>
-       <FlowPane fx:id="pane" orientation="VERTICAL" prefHeight="200.0" prefWidth="600.0" vgap="10.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <FlowPane fx:id="pane" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" vgap="10.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <FlowPane fx:id="buttonsPane" layoutX="20.0" layoutY="218.0" minWidth="550.0">
                     <children>
