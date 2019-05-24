@@ -1,26 +1,23 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import locale.I18N;
+import javafx.event.EventHandler;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class APIRuleController implements Initializable {
    @FXML
-   private AnchorPane anchor;
-
-   @FXML
-   private FlowPane tablesPane;
+   private FlowPane pane;
 
    @FXML
    private FlowPane buttonsPane;
@@ -58,19 +55,16 @@ public class APIRuleController implements Initializable {
 
       switch(serviceName) {
          case "CFF":
-            addCFFTable();
+            pane.getChildren().add(generateCFFAccordion());
             break;
 
          case "Twitter":
-            addTwitterTable();
             break;
 
          case "Weather":
-            addWeatherTable();
             break;
 
          case "RTS":
-            addRTSTable();
             break;
 
          default:
@@ -79,12 +73,24 @@ public class APIRuleController implements Initializable {
             buttonsPane.getChildren().remove(newRule);
             buttonsPane.getChildren().add(deleteAll);
 
-            anchor.setPrefHeight(4*420 + 50);
+            TabPane tabs = new TabPane();
+            Tab cff = new Tab("CFF");
+            cff.setClosable(false);
+            cff.setContent(generateCFFAccordion());
 
-            addCFFTable();
-            addRTSTable();
-            addTwitterTable();
-            addWeatherTable();
+            Tab twitter = new Tab("Twitter");
+            twitter.setClosable(false);
+
+            Tab weather = new Tab(resource.getString("Weather"));
+            weather.setClosable(false);
+
+            Tab rts = new Tab("RTS");
+            rts.setClosable(false);
+
+            tabs.setPrefHeight(150);
+            tabs.getTabs().addAll(cff, twitter, weather, rts);
+
+            pane.getChildren().add(tabs);
             break;
       }
    }
@@ -93,102 +99,70 @@ public class APIRuleController implements Initializable {
       return serviceName;
    }
 
-   private void addCFFTable() {
-      TableView table = new TableView();
+   private void deleteRule(int id, TitledPane titled, Accordion accordion) {
+      accordion.getPanes().remove(titled);
 
-      TableColumn from = new TableColumn("De");
-      TableColumn to = new TableColumn("A");
-      TableColumn at = new TableColumn("Dép.");
-      TableColumn arrived = new TableColumn("Arr.");
-      TableColumn menu = new TableColumn("Menu");
-      TableColumn telegram = new TableColumn("Telegram");
-      TableColumn delay = new TableColumn("Retard");
-      TableColumn delete = new TableColumn("Supp");
-
-      // width = 550
-      from.setPrefWidth(85);
-      to.setPrefWidth(85);
-      at.setPrefWidth(70);
-      arrived.setPrefWidth(70);
-      menu.setPrefWidth(60);
-      telegram.setPrefWidth(60);
-      delay.setPrefWidth(60);
-      delete.setPrefWidth(60);
-
-      table.getColumns().addAll(from, to, at, arrived, menu, telegram, delay, delete);
-
-      FlowPane flow = new FlowPane();
-      flow.getChildren().add(table);
-      tablesPane.getChildren().add(flow);
+      // TODO : Remove from DB rule with the id
    }
 
-   private void addTwitterTable() {
-      TableView table = new TableView();
+   private Accordion generateCFFAccordion() {
+      Accordion accordion = new Accordion();
 
-      TableColumn twitter = new TableColumn("Twitter");
-      TableColumn menu = new TableColumn("Menu");
-      TableColumn telegram = new TableColumn("Telegram");
-      TableColumn delete = new TableColumn("Supp");
+      TitledPane titledPane = new TitledPane();
+      titledPane.setText("CFF 01");
 
-      twitter.setPrefWidth(370);
-      menu.setPrefWidth(60);
-      telegram.setPrefWidth(60);
-      delete.setPrefWidth(60);
+      Label cities = new Label(resource.getString("from") + " ville1 " + resource.getString("to") + " ville2 ");
+      FlowPane citiesPane = new FlowPane();
+      citiesPane.getChildren().add(cities);
 
-      table.getColumns().addAll(twitter, menu, telegram, delete);
+      Label hours = new Label(resource.getString("departureTime") + ": " + "heure, " + resource.getString("arrivalTime") + ": " + "heure");
+      FlowPane hoursPane = new FlowPane();
+      hoursPane.getChildren().add(hours);
 
-      FlowPane flow = new FlowPane();
-      flow.getChildren().add(table);
-      tablesPane.getChildren().add(flow);
+      CheckBox menu = new CheckBox(resource.getString("inMenu"));
+      menu.setSelected(true);
+      menu.setDisable(false);
+
+      CheckBox telegram = new CheckBox(resource.getString("onTelegram"));
+      telegram.setSelected(false);
+      telegram.setDisable(false);
+
+      CheckBox disruption = new CheckBox(resource.getString("disruptionNotif"));
+      disruption.setSelected(true);
+      disruption.setDisable(false);
+
+      FlowPane checkBoxes = new FlowPane();
+      checkBoxes.getChildren().addAll(menu, telegram, disruption);
+
+      Button delete = new Button(resource.getString("delete"));
+      delete.setId(String.valueOf(1));
+      delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+
+
+      FlowPane fp = new FlowPane();
+      fp.getChildren().addAll(citiesPane, hoursPane, checkBoxes, delete);
+      titledPane.setContent(fp);
+
+      accordion.getPanes().add(titledPane);
+
+      return accordion;
    }
 
-   private void addWeatherTable() {
-      TableView table = new TableView();
+   private Accordion generateTwitterAccordion() {
+      Accordion accordion = new Accordion();
 
-      TableColumn type = new TableColumn("Weather");
-      TableColumn tempSel = new TableColumn("Condition");
-      TableColumn temperature = new TableColumn("Temp.");
-      TableColumn city = new TableColumn("Ville");
-      TableColumn time = new TableColumn("Heure");
-      TableColumn menu = new TableColumn("Menu");
-      TableColumn telegram = new TableColumn("Telegram");
-      TableColumn delete = new TableColumn("Supp");
-
-      type.setPrefWidth(95);
-      tempSel.setPrefWidth(60);
-      temperature.setPrefWidth(50);
-      city.setPrefWidth(105);
-      time.setPrefWidth(60);
-      menu.setPrefWidth(60);
-      telegram.setPrefWidth(60);
-      delete.setPrefWidth(60);
-
-      table.getColumns().addAll(type, tempSel, temperature, city, time, menu, telegram, delete);
-
-      FlowPane flow = new FlowPane();
-      flow.getChildren().add(table);
-      tablesPane.getChildren().add(flow);
+      return accordion;
    }
 
-   private void addRTSTable() {
-      TableView table = new TableView();
+   private Accordion generateWeatherAccordion() {
+      Accordion accordion = new Accordion();
 
-      TableColumn channel = new TableColumn("Chaine");
-      TableColumn time = new TableColumn("Heure");
-      TableColumn menu = new TableColumn("Menu");
-      TableColumn telegram = new TableColumn("Telegram");
-      TableColumn delete = new TableColumn("Supp");
+      return accordion;
+   }
 
-      channel.setPrefWidth(310);
-      time.setPrefWidth(60);
-      menu.setPrefWidth(60);
-      telegram.setPrefWidth(60);
-      delete.setPrefWidth(60);
+   private Accordion generateRTSAccordion() {
+      Accordion accordion = new Accordion();
 
-      table.getColumns().addAll(channel, time, menu, telegram, delete);
-
-      FlowPane flow = new FlowPane();
-      flow.getChildren().add(table);
-      tablesPane.getChildren().add(flow);
+      return accordion;
    }
 }
