@@ -73,7 +73,7 @@ public class MeteoRule extends Rule {
     @Override
     public String execute() {
 
-        JSONObject result = new JSONObject();
+        StringBuilder message = new StringBuilder();
         ServiceMeteo service = new ServiceMeteo();
         String temps = service.getMain(location);
         boolean sendTelegram = false;
@@ -81,23 +81,23 @@ public class MeteoRule extends Rule {
         // Resultat de l'execution de la règle --> donner la meteo
         switch (temps) {
             case ("Clear") :
-                result.put("meteo","Le temps est ensoleillé");
+                message.append("Le temps est ensoleillé \n");
                 break;
             case ("Rain") :
-                result.put("meteo","Le temps est pluvieux");
+                message.append("Le temps est pluvieux \n");
                 break;
             case("Cloud"):
-                result.put("meteo", "Le temps est couvert");
+                message.append("Le temps est couvert \n");
                 break;
             case("Snow"):
-                result.put("meteo", "Il y a des chutes de neiges");
+                message.append("Il y a des chutes de neiges \n");
                 break;
         }
 
         int temp = service.getTemperature(location);
         int tmp = Integer.parseInt(temperature);
 
-        result.put("temperature", "La temperature est de :" + Integer.toString(temp));
+        message.append("La temperature est de :" + Integer.toString(temp) + "\n");
 
         // Si l'utilisateur a defini une regle concernant la temperature
         if (!temperatureSelection.equals("null")) {
@@ -138,14 +138,9 @@ public class MeteoRule extends Rule {
 
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
             TelegramNotification telegram = new TelegramNotification();
-            telegram.sendRuleResult(telegramId,result.toString());
+            telegram.sendRuleResult(telegramId,message.toString());
 
         }
-        if (menuNotif) {
-            return result.toString();
-
-        } else {
-            return "";
-        }
+        return message.toString();
     }
 }
