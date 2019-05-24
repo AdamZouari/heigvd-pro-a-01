@@ -67,8 +67,10 @@ fabric.properties
 
 .idea
 *.iml
-target
-!target/*.jar
+target/classes
+target/generated-sources
+target/maven-archiver
+target/maven-status
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
