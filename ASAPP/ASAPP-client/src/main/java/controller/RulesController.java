@@ -28,7 +28,7 @@ public class RulesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ClientRequest cr = new ClientRequest();
+        /*ClientRequest cr = new ClientRequest();
         int ruleid = 42;
         try {
             cr.deleteUserRuleById(ruleid);
@@ -39,6 +39,6 @@ public class RulesController implements Initializable {
             e.printStackTrace();
         } catch (ProtocolException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
