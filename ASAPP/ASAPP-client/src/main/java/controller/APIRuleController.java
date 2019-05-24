@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import utils.FormUtils;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ResourceBundle;
 
 public class APIRuleController implements Initializable {
@@ -91,6 +92,15 @@ public class APIRuleController implements Initializable {
 
          default:
             Button deleteAll = new Button(resource.getString("deleteAllRules"));
+            deleteAll.setOnAction(e -> {
+               ClientRequest cr = new ClientRequest();
+
+               try {
+                  cr.deleteUserRules();
+               } catch (IOException | CustomException | ProtocolException e1) {
+                  FormUtils.displayErrorMessage(error, e1.getMessage());
+               }
+            });
 
             buttonsPane.getChildren().remove(newRule);
             buttonsPane.getChildren().add(deleteAll);
