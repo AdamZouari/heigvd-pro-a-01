@@ -18,22 +18,6 @@
          <children>
              <FlowPane>
                  <children>
-                     <Label fx:id="usernameLabel" minWidth="150.0" text="%username" />
-                     <TextField fx:id="nameTextField" editable="false" onAction="#onSaveNameButtonClick" />
-                     <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick" text="%edit">
-                         <FlowPane.margin>
-                             <Insets left="8.0" />
-                         </FlowPane.margin>
-                     </Button>
-                     <Button fx:id="saveNameButton" mnemonicParsing="false" onMouseClicked="#onSaveNameButtonClick" text="%save" visible="false">
-                         <FlowPane.margin>
-                             <Insets left="8.0" />
-                         </FlowPane.margin>
-                     </Button>
-                 </children>
-             </FlowPane>
-             <FlowPane>
-                 <children>
                      <Label fx:id="telegramUsername" minWidth="150.0" text="%telegramUsername" />
                      <TextField fx:id="telegramTextField" editable="false" onAction="#onSaveTelegramButtonClick" />
                      <Button fx:id="editTelegramButton" mnemonicParsing="false" onMouseClicked="#onEditTelegramButtonClick" text="%edit">
