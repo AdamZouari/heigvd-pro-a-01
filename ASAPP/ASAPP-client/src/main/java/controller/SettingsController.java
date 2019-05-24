@@ -162,10 +162,10 @@ public class SettingsController implements Initializable {
 
             //  Change language in DB for user
             ClientRequest cr = new ClientRequest();
-            cr.updateLanguage("EN");
+            cr.updateLanguage(I18N.getLocale().getCountry());
 
             changeDisplayedLanguage();
-
+            FormUtils.hideErrorMessage(error);
         } catch (IOException | ProtocolException | CustomException e) {
             FormUtils.displayErrorMessage(error, e.getMessage());
         }

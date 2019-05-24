@@ -6,14 +6,12 @@ import exceptions.ProtocolException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HomeFeedController implements Initializable{
-
     @FXML
     private Label ruleResult;
 
@@ -21,7 +19,6 @@ public class HomeFeedController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
 
         ClientRequest cr = new ClientRequest();
-
         try {
             ruleResult.setText(cr.getRulesResult());
         } catch (IOException e) {
@@ -31,6 +28,5 @@ public class HomeFeedController implements Initializable{
         } catch (ProtocolException e) {
             e.printStackTrace();
         }
-
     }
 }

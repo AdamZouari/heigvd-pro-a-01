@@ -12,7 +12,8 @@
       <Label fx:id="ruleResult" prefWidth="550.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
             <Insets right="5.0" />
-         </padding></Label>
+         </padding>
+      </Label>
    </children>
    <padding>
       <Insets left="25.0" />
