@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 
 public class ServiceRTS extends Service {
 
-    public ServiceRTS() { }
+    public ServiceRTS() {
+    }
 
     private String accessToken;
     final private String urlToken = "https://api.srgssr.ch/oauth/v1/accesstoken?grant_type=client_credentials";
@@ -24,8 +25,8 @@ public class ServiceRTS extends Service {
     private void setToken() {
 
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        String token   = new String();
-        String answer  = new String();
+        String token = new String();
+        String answer = new String();
 
         try {
             // Get Token
@@ -52,21 +53,22 @@ public class ServiceRTS extends Service {
         // Assign Token
         accessToken = token;
     }
-    
+
     public String getAccessToken() {
         return accessToken;
     }
 
     /**
      * Get The TV program for RTS1 and RTS2
+     *
      * @return the json program in a string
      */
-    public ArrayList<String> getProgram() {
+    public ArrayList<String> getProgram(String channel) {
 
         ArrayList<String> program = new ArrayList<>();
 
         try {
-            URL url = new URL("https://api.srgssr.ch/epg/v1/api/schedules/day?channel=RTS1&channel=RTS2");
+            URL url = new URL("https://api.srgssr.ch/epg/v1/api/schedules/day?channel=" + channel);
 
             // Get API request
             String tokenHeader = "Bearer " + accessToken;
@@ -82,6 +84,7 @@ public class ServiceRTS extends Service {
             try (Response response = client.newCall(request).execute()) {
                 JSONObject json = new JSONObject(response.body().string());
                 JSONArray schedules = json.getJSONArray("schedules");
+                String minutes;
 
                 Iterator<Object> schedulesIt = schedules.iterator();
                 while (schedulesIt.hasNext()) {
@@ -90,15 +93,16 @@ public class ServiceRTS extends Service {
 
                     JSONArray broadcasts = ((JSONArray) nthSchedule.get("broadcasts"));
                     Iterator<Object> broadcastIt = broadcasts.iterator();
-
                     while (broadcastIt.hasNext()) {
 
                         // Parsing the JSON
                         JSONObject broadcast = (JSONObject) broadcastIt.next();
-                        String channel = (String) broadcast.get("channel");
                         JSONObject vps = (JSONObject) broadcast.get("vps");
-
-                        program.add(channel + broadcast.get("titles").toString() + vps.get("hour") + ":" + vps.get("minute"));
+                        if (vps.get("minute").toString().length() == 1) {
+                            minutes = "0" + vps.get("minute");
+                        } else
+                            minutes = vps.get("minute").toString();
+                        program.add(" : " + vps.get("hour") + ":" + minutes + " : " + broadcast.get("titles").toString());
                     }
                 }
             }
@@ -109,6 +113,38 @@ public class ServiceRTS extends Service {
         return program;
     }
 
+    public String getDate(String channel) {
+        StringBuilder dateModifier = new StringBuilder();
+        try {
+            URL url = new URL("https://api.srgssr.ch/epg/v1/api/schedules/day?channel=" + channel);
+
+            // Get API request
+            String tokenHeader = "Bearer " + accessToken;
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("Authorization", tokenHeader)
+                    .header("content-type", "application/json")
+                    .get()
+                    .build();
+
+            // Read the response
+            Response response = client.newCall(request).execute();
+            JSONObject json = new JSONObject(response.body().string());
+            JSONArray schedules = json.getJSONArray("schedules");
+            String date = schedules.getJSONObject(0).get("date").toString();
+            dateModifier= new StringBuilder(date);
+            // LA date est au format yyyymmdd donc on veut inserer des separateurs aux positions 6 et 4
+            dateModifier.insert(6, '/');
+            dateModifier.insert(4, '/');
+
+        } catch (IOException ex) {
+            Logger.getLogger(ServiceRTS.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        return dateModifier.toString();
+    }
+
 
     @Override
     public void connect() {
@@ -116,6 +152,7 @@ public class ServiceRTS extends Service {
     }
 
     @Override
-    public void disconnect() {}
+    public void disconnect() {
+    }
 }
 
