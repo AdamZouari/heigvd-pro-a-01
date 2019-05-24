@@ -51,6 +51,7 @@ public class RegisterController {
             return;
         }
 
+
       if(!FormUtils.isValid(password, Regexp.PASSWORD)) {
          FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORD_INVALID.getMessage());
          return;

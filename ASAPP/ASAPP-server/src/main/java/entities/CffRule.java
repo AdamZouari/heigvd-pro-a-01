@@ -52,6 +52,15 @@ public class CffRule extends Rule{
     }
 
     @Override
+    public int getInitialDelay() {
+        String[] timeT = arrivalTime.split(":");
+
+        int requestTime = (Integer.parseInt(timeT[0]) % 24)*60 + Integer.parseInt(timeT[1]);
+
+        return getDelayFromRequestTime(requestTime);
+    }
+
+    @Override
     public JSONObject toJSON() {
         return null;
     }

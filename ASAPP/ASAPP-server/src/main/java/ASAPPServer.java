@@ -225,7 +225,6 @@ public class ASAPPServer {
                 }
             }
 
-            // TODO CHECK IF EXCEPTION POSSIBLE
             private void getRulesResult(String username) {
                 String rules = ruleTaskManager.getUserTasksResults(username);
                 Base64.Encoder encoder = Base64.getEncoder();
@@ -348,7 +347,7 @@ public class ASAPPServer {
                 rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
                         (String)json.get("location"),(String)json.get("weatherType"),
                         (String)json.get("temperature"),
-                        (String)json.get("temperatureSelection"));
+                        (String)json.get("temperatureSelection"), (String)json.get("time"));
 
                 break;
 

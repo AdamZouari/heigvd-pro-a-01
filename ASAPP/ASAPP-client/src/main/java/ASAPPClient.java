@@ -42,7 +42,6 @@ public class ASAPPClient extends Application {
 
             }catch (ConnectException e){
                 System.out.println("Server down");
-                //TODO afficher l'interface graphique
             }
 
 

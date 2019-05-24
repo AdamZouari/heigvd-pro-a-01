@@ -25,11 +25,11 @@ public class RuleTask implements Runnable {
     }
 
     public int getRuleID() {
-        return 0; // rule.getId();
+        return rule.getId();
     }
 
     public int getInitialDelay() {
-        return 1; // rule.getInitialDelay(); // get minutes
+        return rule.getInitialDelay();
     }
 
     @Override

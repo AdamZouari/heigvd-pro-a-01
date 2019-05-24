@@ -21,7 +21,6 @@ public class JsonParserRules {
 
         // take the actual dateTime, so once the rule is created
 
-        // TODO a enlever
         newRule.put("date_debut",System.currentTimeMillis());
 
         newRule.put("from",from);
