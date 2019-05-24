@@ -28,6 +28,15 @@ public class RtsRule extends Rule {
     }
 
     @Override
+    public int getInitialDelay() {
+        String[] timeT = requestTime.split(":");
+
+        int requestTime = Integer.parseInt(timeT[0])*60 + Integer.parseInt(timeT[1]);
+
+        return getDelayFromRequestTime(requestTime);
+    }
+
+    @Override
     public JSONObject toJSON() {
         return null;
     }

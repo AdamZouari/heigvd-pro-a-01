@@ -8,29 +8,22 @@ import utils.TelegramNotification;
 public class MeteoRule extends Rule {
 
     private static final String TAG = "METEO";
-    private String location, weatherType, temperature, temperatureSelection;
+    private String location, weatherType, temperature, temperatureSelection, time;
     /**
      *
      * @param id
      **/
 
     public MeteoRule(int id,String username, String startDate, boolean telegramNotif, boolean menuNotif, String location,
-                     String weatherType, String temperature, String temperatureSelection)
+                     String weatherType, String temperature, String temperatureSelection, String time)
     {
         super(id,username, TAG, startDate, menuNotif,telegramNotif);
         this.location = location;
         this.weatherType = weatherType;
         this.temperature = temperature;
         this.temperatureSelection = temperatureSelection;
+        this.time = time;
 
-    }
-
-    public MeteoRule(JSONObject json) {
-        super(json);
-        location = json.get("location").toString();
-        weatherType = json.get("weatherType").toString();
-        temperature = json.get("temperature").toString();
-        temperatureSelection = json.get("temperatureSelection").toString();
     }
 
     @Override
@@ -68,6 +61,15 @@ public class MeteoRule extends Rule {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public int getInitialDelay() {
+        String[] timeT = time.split(":");
+
+        int requestTime = Integer.parseInt(timeT[0])*60 + Integer.parseInt(timeT[1]);
+
+        return getDelayFromRequestTime(requestTime);
     }
 
     @Override

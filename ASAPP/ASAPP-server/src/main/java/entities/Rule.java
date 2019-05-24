@@ -2,6 +2,8 @@ package entities;
 
 import org.json.JSONObject;
 
+import java.time.ZonedDateTime;
+
 public abstract class Rule {
 
     protected int id;
@@ -46,6 +48,23 @@ public abstract class Rule {
 
     public String getTag() {
         return tag;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public abstract int getInitialDelay();
+
+    protected int getDelayFromRequestTime(int requestTimeMinutes) {
+        // 1 day in minutes
+        int dayInMin = 24 * 60;
+
+        // current time
+        ZonedDateTime now = ZonedDateTime.now();
+
+        // delay before starting the task in the scheduler (minutes)
+        return (requestTimeMinutes - ((now.getHour() * 60) + now.getMinute())+ dayInMin) % (dayInMin);
     }
 
     /**

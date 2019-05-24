@@ -51,7 +51,7 @@ public class RegisterController {
             return;
         }
 
-        // TODO : Uncomment
+
 //      if(!FormUtils.isValid(password, Regexp.PASSWORD)) {
 //         FormUtils.displayErrorMessage(error, ExceptionCodes.PASSWORD_INVALID.getMessage());
 //         return;

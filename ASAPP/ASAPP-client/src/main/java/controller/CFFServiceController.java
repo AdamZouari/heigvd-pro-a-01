@@ -90,23 +90,22 @@ public class CFFServiceController implements Initializable {
 
         ClientRequest cr = new ClientRequest();
 
-        // TODO : Décommenter try & catch en même temps que cr.getCFF
-//        try {
+
+        //try {
         // specify on server looping each day and compare one hour before the departureTime of train
         // and actual date and notify to the user telegram id
         // Entities.Rule rule = new Entities.CffRule("","","","24","");
         //
         JSONObject jsonToSend = null; // parse to create a json
 
-        //TODO seems to inverse times ..
+
         jsonToSend = JsonParserRules.createCffRuleJson( from,  to,  departureTime,  arrivalTime,  telegramNotif, menuNotif,
          disruptionNotif);
 
-        // TODO we need to parse to create a json
+
         cr.addRule(jsonToSend.toString());
 
 
-        // TODO once json as string stored in DB, then transform from string (then JsonObject then finally to rule)
 //        } catch (CustomException | ProtocolException e) {
 //            FormUtils.displayErrorMessage(error, e.getMessage());
 //        }

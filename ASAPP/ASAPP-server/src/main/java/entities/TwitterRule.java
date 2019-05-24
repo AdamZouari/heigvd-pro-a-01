@@ -24,7 +24,12 @@ public class TwitterRule extends Rule {
 
     @Override
     public int getPeriod() {
-        return 1; // TODO set to real value
+        return 1;
+    }
+
+    @Override
+    public int getInitialDelay() {
+        return 0;
     }
 
     @Override
