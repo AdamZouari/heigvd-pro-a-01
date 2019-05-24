@@ -8,10 +8,7 @@ import protocol.Protocol;
 import scheduler.RuleTask;
 import scheduler.RuleTaskManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -222,7 +219,13 @@ public class ASAPPServer {
                 String rules = null;
                 try {
                     rules = db.getUserRulesByUsername(username);
-                    sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+                    Base64.Encoder encoder = Base64.getEncoder();
+                    try {
+                        sendToClient(Protocol.RESPONSE_SUCCESS + " " + encoder.encodeToString(rules.getBytes("UTF-8")));
+                    } catch (UnsupportedEncodingException uee) {
+                        throw new CustomException(ExceptionCodes.FAIL_ENCODING.ordinal());
+                    }
+
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
                 }

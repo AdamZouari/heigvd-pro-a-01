@@ -10,6 +10,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import static java.util.Base64.getEncoder;
+
 public class RuleTaskManager {
 
     private static RuleTaskManager rtm;
@@ -81,6 +83,7 @@ public class RuleTaskManager {
             json.put("TWITTER", getResultsByTag(userRulesMap.keySet(), "TWITTER"));
             // json.put("RTS", getResultsByTag(userRulesMap.keySet(), "RTS"));
         }
+
         return json.toString();
     }
 
