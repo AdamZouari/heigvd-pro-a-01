@@ -18,6 +18,7 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
+import java.util.Base64;
 import java.util.logging.Level;
 
 import static protocol.Protocol.RESPONSE_FAILURE;
@@ -121,7 +122,15 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_GET_RES_RULES + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
-        return response;
+        System.out.println(response);
+        Base64.Decoder decoder = Base64.getDecoder();
+        String[] s = response.split(" ");
+
+        if(s.length == 1) {
+            return "";
+        }
+
+        return new String(decoder.decode((s[1]).getBytes("utf-8")));
     }
 
     // the rules content

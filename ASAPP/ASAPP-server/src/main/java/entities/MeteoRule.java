@@ -73,31 +73,36 @@ public class MeteoRule extends Rule {
     @Override
     public String execute() {
 
-        JSONObject result = new JSONObject();
+        StringBuilder message = new StringBuilder();
         ServiceMeteo service = new ServiceMeteo();
         String temps = service.getMain(location);
         boolean sendTelegram = false;
 
+        if (temps == null || temps.length() == 0) {
+            return "An error has occured, maybe the location hasn't been written correctly, please try by adding another rule";
+        }
         // Resultat de l'execution de la règle --> donner la meteo
+
+        message.append("Voici la météo pour la ville de " + location + "\n\n");
         switch (temps) {
             case ("Clear") :
-                result.put("meteo","Le temps est ensoleillé");
+                message.append("Le temps est ensoleillé \n");
                 break;
             case ("Rain") :
-                result.put("meteo","Le temps est pluvieux");
+                message.append("Le temps est pluvieux \n");
                 break;
-            case("Cloud"):
-                result.put("meteo", "Le temps est couvert");
+            case("Clouds"):
+                message.append("Le temps est couvert \n");
                 break;
             case("Snow"):
-                result.put("meteo", "Il y a des chutes de neiges");
+                message.append("Il y a des chutes de neiges \n");
                 break;
         }
 
         int temp = service.getTemperature(location);
         int tmp = Integer.parseInt(temperature);
 
-        result.put("temperature", "La temperature est de :" + Integer.toString(temp));
+        message.append("La temperature est de " + Integer.toString(temp) + " degrés Celsius. \n");
 
         // Si l'utilisateur a defini une regle concernant la temperature
         if (!temperatureSelection.equals("null")) {
@@ -138,14 +143,9 @@ public class MeteoRule extends Rule {
 
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
             TelegramNotification telegram = new TelegramNotification();
-            telegram.sendRuleResult(telegramId,result.toString());
+            telegram.sendRuleResult(telegramId,telegram.encodeMessageForURL(message.toString()));
 
         }
-        if (menuNotif) {
-            return result.toString();
-
-        } else {
-            return "";
-        }
+        return message.toString();
     }
 }

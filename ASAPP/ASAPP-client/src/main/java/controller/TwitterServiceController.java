@@ -37,6 +37,11 @@ public class TwitterServiceController implements Initializable {
 
         String twitter = twitterId.getText();
 
+        if (twitter.contains("@")){
+            // Suppression du @ car on en a pas besoin
+            twitter = twitter.substring(1);
+        }
+
         if(!menu && !telegram) {
             FormUtils.displayErrorMessage(error, ExceptionCodes.REQUEST_APPEARS_NOWHERE.getMessage());
             return;

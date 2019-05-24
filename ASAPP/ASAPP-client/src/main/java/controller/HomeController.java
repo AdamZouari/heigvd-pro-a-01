@@ -75,8 +75,6 @@ public class HomeController implements Initializable {
         changeContent("APIRuleView.fxml", "Weather");
     }
 
-
-    // TODO make it less messy
     private Parent loadFXML(String name) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.scene.layout.FlowPane?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeFeedController">
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
    <children>
-       <FlowPane fx:id="pane" orientation="VERTICAL" prefHeight="200.0" prefWidth="600.0" vgap="10.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-       </FlowPane>
+      <Label fx:id="ruleResult" prefWidth="550.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets right="5.0" />
+         </padding>
+      </Label>
    </children>
+   <padding>
+      <Insets left="25.0" />
+   </padding>
 </AnchorPane>

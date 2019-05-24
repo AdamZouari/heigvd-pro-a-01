@@ -30,6 +30,7 @@ public enum ExceptionCodes {
     FAIL_TO_FETCH_TELEGRAM_ID_FROM_DB("Fetch telegram id failed."),
     FAIL_TO_FETCH_LANGUAGE_FROM_DB("Fetch language failed."),
     FAIL_TO_REMOVE_RULE_FROM_DB("Remove rule failed."),
+    FAIL_ENCODING("Encoding failed."),
     CHECK_UNIQUENESS_FAILED("Check uniqueness of username or telegram failed."),
     INVALID_TWITTER("Pseudo Twitter is not valid !");
     String message;

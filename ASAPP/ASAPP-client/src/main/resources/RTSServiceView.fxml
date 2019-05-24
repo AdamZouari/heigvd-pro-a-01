@@ -34,9 +34,8 @@
                         <ChoiceBox fx:id="channel">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="RTS Un" />
-                                    <String fx:value="RTS Deux" />
-                                    <String fx:value="RTS Play" />
+                                    <String fx:value="RTS1" />
+                                    <String fx:value="RTS2" />
                                 </FXCollections>
                             </items>
                         </ChoiceBox>
