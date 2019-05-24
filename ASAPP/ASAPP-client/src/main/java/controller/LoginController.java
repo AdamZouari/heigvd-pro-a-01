@@ -111,7 +111,7 @@ public class LoginController implements Initializable {
          }
 
          stage.setScene(new Scene(root));
-         stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("home"));
+         stage.setTitle("ASAPP");
          stage.show();
 
          // Close current window

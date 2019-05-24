@@ -379,7 +379,7 @@ public class ASAPPServer {
 
     public static void main(String[] args) {
         ASAPPServer server = new ASAPPServer();
-        // server.fetchDataBaseRules(); // TODO uncomment
+        server.fetchDataBaseRules();
         server.startScheduler();
         server.serveClients();
     }
