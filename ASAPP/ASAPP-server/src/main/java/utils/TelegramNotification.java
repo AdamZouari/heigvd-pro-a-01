@@ -86,7 +86,7 @@ public class TelegramNotification extends TelegramLongPollingBot {
             // arrival city
             String arg2 = command[2];
 
-            sendMessage.setText(getCffConnectionsDelays(arg1,arg2));
+            sendMessage.setText(getCffConnections(arg1,arg2));
         }
         else {
             sendMessage.setText("Wrong");
@@ -145,9 +145,9 @@ public class TelegramNotification extends TelegramLongPollingBot {
         ServiceCFF cff = new ServiceCFF();
         cff.connect();
         String trains = cff.getTrainsForPath(arg1,arg2,"2019-05-11","19:37");
-        String result = "";
 
-        result = JsonParserCFF.parseCFForDelay(trains,arg1,arg2);
+
+        String result = JsonParserCFF.parseCFForDelay(trains, arg1, arg2);
 
         return result;
     }

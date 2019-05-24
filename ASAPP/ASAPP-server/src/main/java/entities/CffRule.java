@@ -64,9 +64,19 @@ public class CffRule extends Rule{
         cff.connect();
 
         String connections = cff.getTrainsForPath(from,to,departureTime,arrivalTime);
-        String result = JsonParserCFF.parseCFForDelay(connections,from,to);
+        String result = JsonParserCFF.parseCFF(connections,from,to);
+
+        int minDelay = cff.getDelay(from,to,departureTime,arrivalTime);
 
         // Here we parse the response from the server to show
+        if (disruptionNotif &&  (minDelay > 0)) {
+
+            String message = "Les connexions entre " + from + " et " + to + " ont un retard minimum de " + minDelay + " minutes minimum.";
+            String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
+
+            TelegramNotification telegram = new TelegramNotification();
+            telegram.sendRuleResult(telegramId, telegram.encodeMessageForURL(message));
+        }
 
         cff.disconnect();
 
@@ -78,7 +88,5 @@ public class CffRule extends Rule{
             telegram.sendRuleResult(telegramId, telegram.encodeMessageForURL(result));
         }
         return result;
-
-
     }
 }

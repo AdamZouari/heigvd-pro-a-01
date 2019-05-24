@@ -1,10 +1,14 @@
 package service;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
 
 
 // Here we do not need an API key nor a OAuth token, the CFF API is public
@@ -82,6 +86,48 @@ public class ServiceCFF extends Service {
         return null;
 
     }
+
+    public int getDelay(String fromCity, String toCity, String date, String time) {
+
+        JSONObject json  = new JSONObject(getTrainsForPath(fromCity, toCity, date, time));
+        // getting connections
+        JSONArray connections = ((JSONArray)json.get("connections"));
+
+        // iterating on connections
+        Iterator<Object> connectionIt = connections.iterator();
+
+        int i = 0;
+
+        // initialize delays tab for both connections.
+        int delays[] = {-1,-1};
+
+        while (connectionIt.hasNext()) {
+
+            int tmpDelay;
+
+            JSONObject nthConnection = (JSONObject) connectionIt.next();
+
+            // we get the departure connection
+            JSONObject from = (JSONObject) nthConnection.get("from");
+            System.out.println(from.toString(3));
+            // we get the destination connection
+            JSONObject to = (JSONObject) nthConnection.get("to");
+
+            // we get the delay if the train is retarded
+            Object delay = from.get("delay");
+            // A null value can't be cast in int
+            if (delay == JSONObject.NULL){
+                System.out.println(json.get("to").toString());
+                tmpDelay = 0;
+            } else {
+                tmpDelay = (int)(delay);
+            }
+            delays[i++] = tmpDelay;
+        }
+
+        return Math.min(delays[0], delays[1]);
+    }
+
 
     public void NotifyToTelegram(){
 
