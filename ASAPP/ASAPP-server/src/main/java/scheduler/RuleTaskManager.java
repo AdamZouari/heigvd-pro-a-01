@@ -81,7 +81,7 @@ public class RuleTaskManager {
             json.put("CFF", getResultsByTag(userRulesMap.keySet(), "CFF"));
             json.put("METEO", getResultsByTag(userRulesMap.keySet(), "METEO"));
             json.put("TWITTER", getResultsByTag(userRulesMap.keySet(), "TWITTER"));
-            // json.put("RTS", getResultsByTag(userRulesMap.keySet(), "RTS"));
+            json.put("RTS", getResultsByTag(userRulesMap.keySet(), "RTS"));
         }
 
         return json.toString();

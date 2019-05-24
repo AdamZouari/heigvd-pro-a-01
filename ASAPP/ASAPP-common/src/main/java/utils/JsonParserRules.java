@@ -54,11 +54,10 @@ public class JsonParserRules {
         // take the actual dateTime, so once the rule is created
         newRule.put("date_debut",System.currentTimeMillis());
 
-        newRule.put("channel",channel);
-        newRule.put("requestTime",requestTime);
-
-        newRule.put("menuNotif",menuNotif);
-        newRule.put("telegramNotif",telegramNotif);
+        newRule.put("channel", channel);
+        newRule.put("requestTime", requestTime);
+        newRule.put("menuNotif", menuNotif);
+        newRule.put("telegramNotif", telegramNotif);
 
         return newRule;
     }
@@ -145,7 +144,7 @@ public class JsonParserRules {
         int id = Integer.parseInt((String)json.get("id"));
         String tag = (String) json.get("tag");
         Long date_debut = (Long) json.get("date_debut");
-        String channel = (String) json.get("channel");
+        String channel = json.get("channel").toString();
         String requestTime = (String) json.get("requestTime");
         boolean telegramNotif = Boolean.parseBoolean((String)json.get("telegramNotif"));
         boolean menuNotif = Boolean.parseBoolean((String)json.get("menuNotif"));
