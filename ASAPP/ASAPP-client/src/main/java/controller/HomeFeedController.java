@@ -5,6 +5,7 @@ import exceptions.CustomException;
 import exceptions.ProtocolException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.ResourceBundle;
 public class HomeFeedController implements Initializable{
 
     @FXML
-    private TextArea rulesResult;
+    private Label ruleResult;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -22,7 +23,7 @@ public class HomeFeedController implements Initializable{
         ClientRequest cr = new ClientRequest();
 
         try {
-            rulesResult.setText(cr.getRulesResult());
+            ruleResult.setText(cr.getRulesResult());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (CustomException e) {
