@@ -74,17 +74,20 @@ public class RuleTaskManager {
 
     public String getUserTasksResults(String username) {
         LOG.info("Fetching rules from user : " + username);
-        JSONObject json = new JSONObject();
+        StringBuilder sb = new StringBuilder();
         if(taskMap.containsKey(username)) {
             Map<RuleTask, ScheduledFuture<?>> userRulesMap = taskMap.get(username);
-
-            json.put("CFF", getResultsByTag(userRulesMap.keySet(), "CFF"));
-            json.put("METEO", getResultsByTag(userRulesMap.keySet(), "METEO"));
-            json.put("TWITTER", getResultsByTag(userRulesMap.keySet(), "TWITTER"));
-            json.put("RTS", getResultsByTag(userRulesMap.keySet(), "RTS"));
+            sb.append("CFF\n\n");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "CFF"));
+            sb.append("\nMETEO\n\n");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "METEO"));
+            sb.append("\nTWITTER\n\n");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "TWITTER"));
+            sb.append("\nRTS\n\n");
+            sb.append(getResultsByTag(userRulesMap.keySet(), "RTS"));
         }
-
-        return json.toString();
+        System.out.println(sb.toString());
+        return sb.toString();
     }
 
     public void deleteRule(String username, int ruleId) {
@@ -131,7 +134,7 @@ public class RuleTaskManager {
                 result = ruleTask.getRuleResult();
                 if(result != null && !result.isEmpty()) {
                     sb.append(result);
-                    sb.append(" ");
+                    sb.append("\n\n");
                 }
             }
         }

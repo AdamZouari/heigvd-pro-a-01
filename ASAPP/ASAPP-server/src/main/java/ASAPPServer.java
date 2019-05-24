@@ -1,6 +1,7 @@
 import database.DatabaseController;
 import entities.*;
 import exceptions.CustomException;
+import org.apache.commons.codec.EncoderException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
@@ -219,13 +220,7 @@ public class ASAPPServer {
                 String rules = null;
                 try {
                     rules = db.getUserRulesByUsername(username);
-                    Base64.Encoder encoder = Base64.getEncoder();
-                    try {
-                        sendToClient(Protocol.RESPONSE_SUCCESS + " " + encoder.encodeToString(rules.getBytes("UTF-8")));
-                    } catch (UnsupportedEncodingException uee) {
-                        throw new CustomException(ExceptionCodes.FAIL_ENCODING.ordinal());
-                    }
-
+                    sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
                 }
@@ -234,7 +229,12 @@ public class ASAPPServer {
             // TODO CHECK IF EXCEPTION POSSIBLE
             private void getRulesResult(String username) {
                 String rules = ruleTaskManager.getUserTasksResults(username);
-                sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
+                Base64.Encoder encoder = Base64.getEncoder();
+                try {
+                    sendToClient(Protocol.RESPONSE_SUCCESS + " " + encoder.encodeToString(rules.getBytes("utf-8")));
+                } catch (UnsupportedEncodingException uee) {
+                    sendError(new CustomException(ExceptionCodes.FAIL_ENCODING.ordinal()).getExceptionNumber());
+                }
             }
 
             private void deleteRule(String items){
@@ -379,7 +379,7 @@ public class ASAPPServer {
 
     public static void main(String[] args) {
         ASAPPServer server = new ASAPPServer();
-        // server.fetchDataBaseRules(); // TODO uncomment
+        server.fetchDataBaseRules();
         server.startScheduler();
         server.serveClients();
     }

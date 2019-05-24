@@ -124,7 +124,13 @@ public class ClientRequest {
         checkIfSuccess(response);
         System.out.println(response);
         Base64.Decoder decoder = Base64.getDecoder();
-        return decoder.decode((response.split(" ")[1]).getBytes("UTF-8")).toString();
+        String[] s = response.split(" ");
+
+        if(s.length == 1) {
+            return "---";
+        }
+
+        return new String(decoder.decode((s[1]).getBytes("utf-8")));
     }
 
     // the rules content
@@ -135,7 +141,6 @@ public class ClientRequest {
         while( (str = reader.readLine())!=null) {
             response += str;
         }
-        System.out.println(response); // TODO remove
         checkIfSuccess(response);
         return response;
 
