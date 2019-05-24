@@ -78,7 +78,12 @@ public class MeteoRule extends Rule {
         String temps = service.getMain(location);
         boolean sendTelegram = false;
 
+        if (temps == null || temps.length() == 0) {
+            return "An error has occured, maybe the location hasn't been written correctly, please try by adding another rule";
+        }
         // Resultat de l'execution de la règle --> donner la meteo
+
+        message.append("Voici la météo pour la ville de " + location + "\n\n");
         switch (temps) {
             case ("Clear") :
                 message.append("Le temps est ensoleillé \n");
@@ -86,7 +91,7 @@ public class MeteoRule extends Rule {
             case ("Rain") :
                 message.append("Le temps est pluvieux \n");
                 break;
-            case("Cloud"):
+            case("Clouds"):
                 message.append("Le temps est couvert \n");
                 break;
             case("Snow"):
@@ -97,7 +102,7 @@ public class MeteoRule extends Rule {
         int temp = service.getTemperature(location);
         int tmp = Integer.parseInt(temperature);
 
-        message.append("La temperature est de :" + Integer.toString(temp) + "\n");
+        message.append("La temperature est de " + Integer.toString(temp) + " degrés Celsius. \n");
 
         // Si l'utilisateur a defini une regle concernant la temperature
         if (!temperatureSelection.equals("null")) {
@@ -138,7 +143,7 @@ public class MeteoRule extends Rule {
 
             String telegramId = DatabaseController.getController().getTelegramIdByUsername(getUsername());
             TelegramNotification telegram = new TelegramNotification();
-            telegram.sendRuleResult(telegramId,message.toString());
+            telegram.sendRuleResult(telegramId,telegram.encodeMessageForURL(message.toString()));
 
         }
         return message.toString();

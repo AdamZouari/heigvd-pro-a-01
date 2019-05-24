@@ -42,6 +42,12 @@ public class TwitterRule extends Rule {
         ArrayList<String> tweets = service.getLast10Tweets(twitterId);
         StringBuilder result = new StringBuilder();
 
+        // If the app don't find tweets
+        if (tweets == null || tweets.isEmpty()) {
+            String error = "Tweets aren't available ! Maybe you wrote the wrong username  or the targeted account is protected";
+            return error;
+        }
+
         json.put("user",twitterId);
         result.append("Voici les 10 derniers tweets de l'utilisateur :" + twitterId + "\n");
 
@@ -62,7 +68,7 @@ public class TwitterRule extends Rule {
             telegram.sendRuleResult(telegramId, telegram.encodeMessageForURL(result.toString()));
         }
 
-        return json.toString();
+        return result.toString();
     }
     public static String getTAG() {
         return TAG;

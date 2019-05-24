@@ -35,7 +35,6 @@ public class RtsRule extends Rule {
     @Override
     public String execute() {
 
-        JSONObject json = new JSONObject();
         ServiceRTS service = new ServiceRTS();
         StringBuilder message = new StringBuilder();
 
