@@ -21,19 +21,7 @@ import java.util.ResourceBundle;
 public class SettingsController implements Initializable {
 
     @FXML
-    private Button saveNameButton;
-
-    @FXML
-    private TextField nameTextField;
-
-    @FXML
     private FlowPane passwordChangePane;
-
-    @FXML
-    private TextField telegramTextField;
-
-    @FXML
-    private Button saveTelegramButton;
 
     @FXML
     private PasswordField oldPassword;
@@ -49,18 +37,6 @@ public class SettingsController implements Initializable {
 
     @FXML
     private Label error;
-
-    @FXML
-    private Label usernameLabel;
-
-    @FXML
-    private Button editNameButton;
-
-    @FXML
-    private Label telegramUsername;
-
-    @FXML
-    private Button editTelegramButton;
 
     @FXML
     private Label language;
@@ -82,44 +58,6 @@ public class SettingsController implements Initializable {
 
     @FXML
     private Button cancelPasswordButton;
-
-    @FXML
-    private void onEditTelegramButtonClick() {
-        saveTelegramButton.setVisible(true);
-        telegramTextField.setEditable(true);
-    }
-
-    @FXML
-    private void onSaveTelegramButtonClick() {
-        if (!FormUtils.isValid(telegramTextField.getText(), Regexp.PSEUDO_TELEGRAM)) {
-            FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
-            return;
-        }
-
-        telegramTextField.setEditable(false);
-        saveTelegramButton.setVisible(false);
-
-        FormUtils.hideErrorMessage(error);
-    }
-
-    @FXML
-    private void onEditNameButtonClick() {
-        saveNameButton.setVisible(true);
-        nameTextField.setEditable(true);
-    }
-
-    @FXML
-    private void onSaveNameButtonClick() {
-        if (nameTextField.getText().isEmpty()) {
-            FormUtils.displayErrorMessage(error, ExceptionCodes.NAME_MISSING.getMessage());
-            return;
-        }
-
-        nameTextField.setEditable(false);
-        saveNameButton.setVisible(false);
-
-        FormUtils.hideErrorMessage(error);
-    }
 
     @FXML
     private void onPasswordChangeClick() {
@@ -152,7 +90,6 @@ public class SettingsController implements Initializable {
     @FXML
     private void changeLanguage() {
         try {
-
             //  Change language in actual window
             if (languageSelection.getSelectionModel().getSelectedItem().equals("English")) {
                 I18N.setLocale(I18N.EN);
@@ -213,14 +150,6 @@ public class SettingsController implements Initializable {
 
     private void changeDisplayedLanguage() {
         ResourceBundle resource = ResourceBundle.getBundle("Internationalization", I18N.getLocale());
-
-        usernameLabel.setText(resource.getString("username"));
-        editNameButton.setText(resource.getString("edit"));
-        saveNameButton.setText(resource.getString("save"));
-
-        telegramUsername.setText(resource.getString("telegramUsername"));
-        editTelegramButton.setText(resource.getString("edit"));
-        saveTelegramButton.setText(resource.getString("save"));
 
         language.setText(resource.getString("language"));
 

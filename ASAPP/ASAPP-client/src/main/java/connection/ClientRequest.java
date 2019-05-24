@@ -15,11 +15,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
-import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.util.Base64;
-import java.util.logging.Level;
 
 import static protocol.Protocol.RESPONSE_FAILURE;
 
