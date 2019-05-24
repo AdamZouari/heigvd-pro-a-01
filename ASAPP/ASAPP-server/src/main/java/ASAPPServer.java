@@ -304,8 +304,8 @@ public class ASAPPServer {
 
             private void getLanguage(String username){
                 try {
-                    db.getLangue(username);
-                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                    String language = db.getLangue(username);
+                    sendToClient(Protocol.RESPONSE_SUCCESS + " " +language);
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
                 }

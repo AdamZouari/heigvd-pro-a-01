@@ -55,8 +55,6 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_REG + " " + username+":"+telegramUsername+":"+hashPassword+":"+idTelegram);
         String response = reader.readLine();
         checkIfSuccess(response);
-
-
     }
 
     public void login(String username, String hashPassword) throws IOException, CustomException, ProtocolException {
@@ -120,14 +118,12 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_GET_RES_RULES + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
-        System.out.println(response);
         Base64.Decoder decoder = Base64.getDecoder();
         String[] s = response.split(" ");
 
         if(s.length == 1) {
             return "";
         }
-
         return new String(decoder.decode((s[1]).getBytes("utf-8")));
     }
 
@@ -145,17 +141,9 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_ADD_RULE + " " + loggedUser +" " + ruleToSend);
         String response = reader.readLine();
         checkIfSuccess(response);
-        //LOG.info("Got : " + reader.readLine());
-
     }
 
     public void deleteRule(String ruleToDelete) throws  IOException, CustomException, ProtocolException {
-
-    }
-
-    public void welcome() throws IOException {
-        sendToServer("Welcome");
-        LOG.info("Got : " + reader.readLine());
 
     }
 
@@ -223,7 +211,7 @@ public class ClientRequest {
 
                 // Do a best guess on unix until we get a platform independent way
                 // Build a list of browsers to try, in this order.
-                String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
+                String[] browsers = {"epiphany","chromium" ,"firefox", "mozilla", "konqueror",
                         "netscape","opera","links","lynx"};
 
                 // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
@@ -266,14 +254,12 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_DELETE_RULE + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
-
     }
 
     public void updateLanguage(String language) throws IOException,CustomException, ProtocolException  {
         sendToServer(Protocol.CMD_SET_LANGUAGE + " " + loggedUser +":" + language);
         String response = reader.readLine();
         checkIfSuccess(response);
-
     }
 
     public String getLanguage() throws IOException, CustomException, ProtocolException {
@@ -281,6 +267,7 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_GET_LANGUAGE + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
-        return response;
+        System.out.println("|"+response.split(" ")[1]+"|");
+        return response.split(" ")[1];
     }
 }

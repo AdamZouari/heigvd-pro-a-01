@@ -47,36 +47,6 @@ public class DatabaseController {
 
     }
 
-    /*public static void printResult(ResultSet result) throws SQLException {
-
-        ResultSetMetaData rsmd = result.getMetaData();
-
-        int columnsNumber = rsmd.getColumnCount();
-        while (result.next()) {
-            for (int i = 1; i <= columnsNumber; i++) {
-                if (i > 1) System.out.print(",  ");
-                String columnValue = result.getString(i);
-                System.out.print(columnValue + " " + rsmd.getColumnName(i));
-            }
-            System.out.println("");
-        }
-    }*/
-
-    /*public ResultSet search() {
-
-        Statement statement = null;
-        ResultSet result = null;
-        String sql = " SELECT * FROM User ;";
-
-        try {
-            result = statement.executeQuery(sql);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return result;
-    }*/
-
-
     public User getUserById(int id) throws CustomException {
 
         PreparedStatement preparedStatement = null;
@@ -247,7 +217,8 @@ public class DatabaseController {
             preparedStatement.executeUpdate();
             LOG.log(Level.INFO,"Password of  "+username+ " updated.");
         } catch (SQLException e) {
-            throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
+            System.out.println(e.getMessage());
+            //throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
         }
     }
 
@@ -257,7 +228,7 @@ public class DatabaseController {
 
         try {
             preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setObject(1, User.LANGUE.valueOf(language));
+            preparedStatement.setString(1, language);
             preparedStatement.setString(2, username);
 
             preparedStatement.executeUpdate();

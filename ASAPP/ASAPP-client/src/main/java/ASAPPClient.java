@@ -6,20 +6,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import locale.I18N;
+import protocol.Protocol;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.ResourceBundle;
 
 
 public class ASAPPClient extends Application {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
 
         launch(ASAPPClient.class);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
 
@@ -37,14 +37,11 @@ public class ASAPPClient extends Application {
             stage.setOnCloseRequest(event -> Platform.exit());
 
             try{
-                cr.connect("127.0.0.1");
-                //cr.welcome();
+                cr.connect(Protocol.HOST);
 
-            }catch (ConnectException e){
+            }catch (Exception e){
                 System.out.println("Server down");
             }
-
-
 
         } catch (IOException ex) {
             ex.printStackTrace();

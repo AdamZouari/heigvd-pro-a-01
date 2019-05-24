@@ -41,7 +41,6 @@ public class TelegramNotification extends TelegramLongPollingBot {
 
             URL url = new URL(rqst);
 
-
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
