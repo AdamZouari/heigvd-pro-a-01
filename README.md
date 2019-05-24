@@ -9,7 +9,7 @@ Development team:
 | Name                                 | Email                               | Github      |
 |--------------------------------------|-------------------------------------|-------------|
 | Guillaume Blanco (project lead)      | guillaume.blanco@heig-vd.ch         | guitch94    |
-| David Jacquet                        | david.jaquet@heig-vd.ch             | djaquet5    |
+| David Jaquet                        | david.jaquet@heig-vd.ch             | djaquet5    |
 | Walid Koubaa (deputy project lead)   | walid.koubaa@heig-vd.ch             | zedsdead95  |
 | Antoine Nourazare                    | antoine.nourazare@heig-vd.ch        | Nevan92     |
 | Christoph Rueff                      | christoph.rouffsoitrueff@heig-vd.ch | Jostoph     |
