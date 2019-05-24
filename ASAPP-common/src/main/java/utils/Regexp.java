@@ -10,4 +10,6 @@ public class Regexp {
    public final static String TIME = "^((0|1)[0-9]|2[0-3]):[0-5][0-9]$";
 
    public final static String NUMBER = "^-?\\d+(\\.\\d)?";
+
+   public final static String PSEUDO_TWITTER = "([A-Za-z0-9]|_){1,15}";
 }

@@ -1,11 +1,14 @@
 package database;
 
 import entities.User;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import exceptions.CustomException;
 import protocol.ExceptionCodes;
-
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -248,13 +251,13 @@ public class DatabaseController {
         }
     }
 
-    public void updateLanguage(String username, User.LANGUE language) throws CustomException {
+    public void updateLanguage(String username, String language) throws CustomException {
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET langue = ?  WHERE username = ? ";
 
         try {
             preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setObject(1, language);
+            preparedStatement.setObject(1, User.LANGUE.valueOf(language));
             preparedStatement.setString(2, username);
 
             preparedStatement.executeUpdate();
@@ -285,11 +288,14 @@ public class DatabaseController {
         return userRules;
     }
 
-    public Map<String, String> getAllRules() throws CustomException {
+
+    public Map<String, JSONArray> getAllRules() throws CustomException {
+
+        // return all rules for each user as a Map<Username,JSONArray>
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = " SELECT username,rules FROM User";
-        Map<String,String> allRules = null;
+        Map<String, JSONArray> allRules = null;
 
         try {
             allRules = new HashMap<>();
@@ -300,7 +306,9 @@ public class DatabaseController {
                 String userRules;
                 username = result.getString(1);
                 userRules = result.getString(2);
-                allRules.put(username,userRules);
+                JSONObject json = new JSONObject(userRules);
+                JSONArray userRulesJson = (JSONArray) json.get("rules");
+                allRules.put(username, userRulesJson);
             }
         }catch(SQLException e){
             throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_RULES_FROM_DB.ordinal());
@@ -309,7 +317,7 @@ public class DatabaseController {
         return allRules;
     }
 
-    public User.LANGUE getLangue (String username) throws CustomException {
+    public String getLangue (String username) throws CustomException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = "SELECT langue FROM User WHERE username=?";
@@ -327,10 +335,11 @@ public class DatabaseController {
         }catch(SQLException e){
             throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_LANGUAGE_FROM_DB.ordinal());
         }
-        return langue;
+        return langue.name();
     }
 
     public void updateRule(String username, String rule) throws CustomException {
+
 
         PreparedStatement preparedStatement = null;
         String sql = "UPDATE User SET rules = ?  WHERE username = ? ";
@@ -349,6 +358,64 @@ public class DatabaseController {
         }
     }
 
+    public void deleteRuleById(String username, int ruleToDeleteId) throws CustomException {
+
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE rules FROM User WHERE username = ?";
+
+        try {
+
+            preparedStatement = mConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, username);
+
+            // Here we parse the rule to delete so we can get its id
+
+
+            // Get all rules
+            JSONObject json = new JSONObject(sql);
+            JSONArray userRules = ((JSONArray)json.get("rules"));
+
+            // user rule
+            Iterator<Object> userRuleIt = userRules.iterator();
+            int i = 0;
+            while (userRuleIt.hasNext()) {
+
+                JSONObject nthRule = (JSONObject) userRuleIt.next();
+                // if rule is the rule to delete then we dont add it to the new array of rules for the user
+                if(nthRule.get("id").equals(ruleToDeleteId)){
+                    // remove the correspondant rule
+                    userRules.remove(i);
+                }
+                i++;
+            }
+
+            preparedStatement.executeUpdate();
+            LOG.log(Level.INFO,"Rule of  "+username+ " deleted.");
+
+            /** replace all the old rules with the new ones minus the deleted rule
+                here we have no other choice than to do that because we are dealing with JSONObjects
+            **/
+             JSONObject updatedRules = new JSONObject();
+             updatedRules.put("rules", updatedRules);
+
+             // update old rules with new rules
+             updateRule(username, updatedRules.toString());
+
+        } catch (SQLException e) {
+            throw new CustomException(ExceptionCodes.FAIL_TO_REMOVE_RULE_FROM_DB.ordinal());
+        }
+    }
+
+    public void deleteAllRuleByUsername(String username) throws CustomException {
+
+        JSONObject emptyRules = new JSONObject();
+        // create empty rules
+        emptyRules.put("rules", new JSONArray());
+
+        updateRule(username, emptyRules.toString());
+
+    }
 
     public String getTelegramIdByUsername(String username) {
 

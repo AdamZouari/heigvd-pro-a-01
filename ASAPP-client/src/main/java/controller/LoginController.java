@@ -17,6 +17,7 @@ import utils.FormUtils;
 import locale.I18N;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import connection.ClientRequest;
 import utils.Crypto;
@@ -101,7 +102,14 @@ public class LoginController implements Initializable {
          Parent root = fxmlLoader.load();
          Stage stage = new Stage();
 
-         // TODO : get Language from DB
+         String languageToSet = cr.getLanguage();
+
+         if(languageToSet.equals("EN")){
+            I18N.setLocale(I18N.EN);
+         } else {
+            I18N.setLocale(I18N.FR);
+         }
+
          stage.setScene(new Scene(root));
          stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("home"));
          stage.show();

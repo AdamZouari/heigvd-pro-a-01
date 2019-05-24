@@ -42,8 +42,8 @@ public class TwitterServiceController implements Initializable {
             return;
         }
 
-        if(!FormUtils.isValid(twitter, Regexp.PSEUDO_TELEGRAM)) {
-            FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_PSEUDO_TELEGRAM.getMessage());
+        if(!FormUtils.isValid(twitter, Regexp.PSEUDO_TWITTER)) {
+            FormUtils.displayErrorMessage(error, ExceptionCodes.INVALID_TWITTER.getMessage());
             return;
         }
 
@@ -53,7 +53,6 @@ public class TwitterServiceController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         ((Stage) this.twitterId.getScene().getWindow()).close();
     }
 

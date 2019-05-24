@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,12 +32,31 @@ public class ASAPPServer {
     }
 
     private void fetchDataBaseRules() {
-        LOG.info("Fetching rules from database...");
-        // ruleTaskManager.loadRules(???);
+
+        Map<String, List<Rule>> userRulesMap = new HashMap<>();
+
+        try {
+            Map<String, JSONArray> userRulesStringMap = db.getAllRules();
+            List<Rule> rules;
+
+            for (String username : userRulesStringMap.keySet()) {
+                JSONArray jsa = userRulesStringMap.get(username);
+                rules = new ArrayList<>();
+
+                for (Object obj : jsa) {
+                    rules.add(jsonToRuleObject(username, (JSONObject) obj));
+                }
+
+                userRulesMap.put(username, rules);
+            }
+
+            ruleTaskManager.loadRules(userRulesMap);
+        } catch (CustomException ce) {
+            ce.printStackTrace();
+        }
     }
 
     private void startScheduler() {
-        LOG.info("Starting Scheduler from task manager...");
         ruleTaskManager.startScheduling();
     }
 
@@ -115,6 +135,18 @@ public class ASAPPServer {
                                 break;
                             case Protocol.CMD_GET_RES_RULES:
                                 getRulesResult(items[1]);
+                                break;
+                            case Protocol.CMD_DELETE_RULE:
+                                deleteRule(items[1]);
+                                break;
+                            case Protocol.CMD_DELETE_USER_RULES:
+                                deleteUserRules(items[1]);
+                                break;
+                            case Protocol.CMD_GET_LANGUAGE:
+                                getLanguage(items[1]);
+                                break;
+                            case Protocol.CMD_SET_LANGUAGE:
+                                updateLanguage(items[1]);
                                 break;
                         }
 
@@ -202,7 +234,22 @@ public class ASAPPServer {
                 sendToClient(Protocol.RESPONSE_SUCCESS + " " + rules);
             }
 
+            private void deleteRule(String items){
+
+                String username = items.split(":")[0];
+                int ruleToDeleteId = Integer.parseInt(items.split(":")[1]);
+
+                try {
+                    db.deleteRuleById(username,ruleToDeleteId);
+                    ruleTaskManager.deleteRule(username,ruleToDeleteId);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+
+            }
             private void addRule(String username,String rules) {
+
 
                 // we extracted the rules to add to the database
                 JSONObject json = new JSONObject(rules);
@@ -220,41 +267,7 @@ public class ASAPPServer {
                 JSONArray userRules = (JSONArray) userRulesToJson.get("rules");
 
                 // Here we create the rule for the rule task manager
-                Rule rule = null;
-                int id = (int) json.get("id");
-                String starting_date  = "" + (json.get("date_debut"));
-
-                switch((String)json.get("tag")){
-                    case "METEO":
-                        rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
-                                (String)json.get("location"),(String)json.get("weatherType"),
-                                (String)json.get("temperature"),
-                                (String)json.get("temperatureSelection"));
-
-                        break;
-
-                    case "CFF":
-                        rule = new CffRule(id,username,starting_date,(String)json.get("from"),(String)json.get("to"),
-                                (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
-                                (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
-                        break;
-
-                    case "RTS":
-                        rule = new RtsRule(id,username,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
-                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
-                        break;
-
-                    case "TWITTER":
-                        //  parse all infos for meteo
-                        rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),
-                                (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
-                        break;
-
-                    default:
-                        break;
-                }
-
-                ruleTaskManager.addRule(username, new RuleTask(rule));
+                ruleTaskManager.addRule(username, new RuleTask(jsonToRuleObject(username, json)));
 
                 // Here we add the rule for the database
                 userRules.put(json);
@@ -264,10 +277,46 @@ public class ASAPPServer {
                 fin.put("rules", userRules);
 
                 // update or store new rules
+
                 try {
                     db.updateRule(username, fin.toString());
                     sendToClient(Protocol.RESPONSE_SUCCESS);
 
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+            }
+
+            private void deleteUserRules(String username) {
+                try {
+                    // delete from Database
+                    db.deleteAllRuleByUsername(username);
+
+                    //delete from taskmanager
+                    ruleTaskManager.deleteAllRule(username);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+            }
+
+            private void getLanguage(String username){
+                try {
+                    db.getLangue(username);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+            }
+
+            private void updateLanguage(String items){
+                try {
+                    String username = items.split(":")[0];
+                    String language = items.split(":")[1];
+
+                    db.updateLanguage(username,language);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
                 }
@@ -282,12 +331,52 @@ public class ASAPPServer {
                 sendToClient(Protocol.RESPONSE_FAILURE + " " + i);
             }
         }
+
+
+    }
+
+    private Rule jsonToRuleObject(String username, JSONObject json) {
+        Rule rule = null;
+
+        int id = (int) json.get("id");
+        String starting_date  = "" + (json.get("date_debut"));
+
+        switch((String)json.get("tag")){
+            case "METEO":
+                rule = new MeteoRule(id,username,starting_date,(boolean)json.get("telegramNotif"),(boolean)json.get("menuNotif"),
+                        (String)json.get("location"),(String)json.get("weatherType"),
+                        (String)json.get("temperature"),
+                        (String)json.get("temperatureSelection"));
+
+                break;
+
+            case "CFF":
+                rule = new CffRule(id,username,starting_date,(String)json.get("from"),(String)json.get("to"),
+                        (String)json.get("departureTime"),(String)json.get("arrivalTime"),(boolean)json.get("telegramNotif"),
+                        (boolean)json.get("menuNotif"),(boolean)json.get("disruptionNotif"));
+                break;
+
+            case "RTS":
+                rule = new RtsRule(id,username,starting_date,(String)json.get("channel"),(String)json.get("requestTime"),
+                        (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                break;
+
+            case "TWITTER":
+                rule = new TwitterRule(id,username,starting_date,(String)json.get("twitterId"),
+                        (boolean)json.get("menuNotif"),(boolean)json.get("telegramNotif"));
+                break;
+
+            default:
+                break;
+        }
+
+        return rule;
     }
 
 
     public static void main(String[] args) {
         ASAPPServer server = new ASAPPServer();
-        server.fetchDataBaseRules(); // does nothing right now
+        // server.fetchDataBaseRules(); // TODO uncomment
         server.startScheduler();
         server.serveClients();
     }
