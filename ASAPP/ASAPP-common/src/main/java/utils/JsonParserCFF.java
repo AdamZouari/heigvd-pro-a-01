@@ -2,8 +2,6 @@ package utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.FileNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Iterator;

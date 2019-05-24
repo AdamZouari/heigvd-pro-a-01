@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
@@ -16,22 +15,6 @@
    <children>
       <VBox layoutX="1.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-             <FlowPane>
-                 <children>
-                     <Label fx:id="telegramUsername" minWidth="150.0" text="%telegramUsername" />
-                     <TextField fx:id="telegramTextField" editable="false" onAction="#onSaveTelegramButtonClick" />
-                     <Button fx:id="editTelegramButton" mnemonicParsing="false" onMouseClicked="#onEditTelegramButtonClick" text="%edit">
-                         <FlowPane.margin>
-                             <Insets left="8.0" />
-                         </FlowPane.margin>
-                     </Button>
-                     <Button fx:id="saveTelegramButton" mnemonicParsing="false" onMouseClicked="#onSaveTelegramButtonClick" text="%save" visible="false">
-                         <FlowPane.margin>
-                             <Insets left="8.0" />
-                         </FlowPane.margin>
-                     </Button>
-                 </children>
-             </FlowPane>
             <FlowPane>
                <children>
                   <Label fx:id="language" text="%language" />

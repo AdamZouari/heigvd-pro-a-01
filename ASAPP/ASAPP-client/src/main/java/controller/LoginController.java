@@ -2,7 +2,6 @@ package controller;
 
 import exceptions.CustomException;
 import exceptions.ProtocolException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +16,6 @@ import utils.FormUtils;
 import locale.I18N;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import connection.ClientRequest;
 import utils.Crypto;
@@ -111,7 +109,7 @@ public class LoginController implements Initializable {
          }
 
          stage.setScene(new Scene(root));
-         stage.setTitle("ASAPP - " + ResourceBundle.getBundle("Internationalization", I18N.getLocale()).getString("home"));
+         stage.setTitle("ASAPP");
          stage.show();
 
          // Close current window

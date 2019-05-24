@@ -1,7 +1,6 @@
 import database.DatabaseController;
 import entities.*;
 import exceptions.CustomException;
-import org.apache.commons.codec.EncoderException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import protocol.ExceptionCodes;
