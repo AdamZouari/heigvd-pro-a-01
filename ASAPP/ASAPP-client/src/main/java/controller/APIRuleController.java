@@ -1,5 +1,8 @@
 package controller;
 
+import connection.ClientRequest;
+import exceptions.CustomException;
+import exceptions.ProtocolException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +32,8 @@ public class APIRuleController implements Initializable {
 
    private ResourceBundle resource;
 
+   private String rules;
+
    public void onNewRuleClick() {
       String serviceName = getServiceName();
       try {
@@ -48,6 +53,14 @@ public class APIRuleController implements Initializable {
    @Override
    public void initialize(URL url, ResourceBundle resourceBundle) {
       resource = resourceBundle;
+
+      ClientRequest cr = new ClientRequest();
+
+//      try {
+//         rules = cr.getRulesContent();
+//      } catch (IOException | CustomException | ProtocolException e) {
+//         e.printStackTrace();
+//      }
    }
 
    void setServiceName(String serviceName) {
@@ -150,6 +163,18 @@ public class APIRuleController implements Initializable {
 
    private Accordion generateTwitterAccordion() {
       Accordion accordion = new Accordion();
+
+      TitledPane titledPane = new TitledPane();
+      titledPane.setText("Twitter 01");
+
+      Label user = new Label(resource.getString("username") + ": " + "le super user twitter");
+
+      Button delete = new Button(resource.getString("delete"));
+      delete.setId(String.valueOf(1));
+      delete.setOnAction(e -> deleteRule(Integer.parseInt(delete.getId()), titledPane, accordion));
+
+//      FlowPane f
+
 
       return accordion;
    }
