@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SettingsController">
+   <children>
+      <VBox layoutX="1.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+             <FlowPane>
+                 <children>
+                     <Label fx:id="usernameLabel" minWidth="150.0" text="%username" />
+                     <TextField fx:id="nameTextField" editable="false" onAction="#onSaveNameButtonClick" />
+                     <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick" text="%edit">
+                         <FlowPane.margin>
+                             <Insets left="8.0" />
+                         </FlowPane.margin>
+                     </Button>
+                     <Button fx:id="saveNameButton" mnemonicParsing="false" onMouseClicked="#onSaveNameButtonClick" text="%save" visible="false">
+                         <FlowPane.margin>
+                             <Insets left="8.0" />
+                         </FlowPane.margin>
+                     </Button>
+                 </children>
+             </FlowPane>
+             <FlowPane>
+                 <children>
+                     <Label fx:id="telegramUsername" minWidth="150.0" text="%telegramUsername" />
+                     <TextField fx:id="telegramTextField" editable="false" onAction="#onSaveTelegramButtonClick" />
+                     <Button fx:id="editTelegramButton" mnemonicParsing="false" onMouseClicked="#onEditTelegramButtonClick" text="%edit">
+                         <FlowPane.margin>
+                             <Insets left="8.0" />
+                         </FlowPane.margin>
+                     </Button>
+                     <Button fx:id="saveTelegramButton" mnemonicParsing="false" onMouseClicked="#onSaveTelegramButtonClick" text="%save" visible="false">
+                         <FlowPane.margin>
+                             <Insets left="8.0" />
+                         </FlowPane.margin>
+                     </Button>
+                 </children>
+             </FlowPane>
+            <FlowPane>
+               <children>
+                  <Label fx:id="language" text="%language" />
+                  <ChoiceBox fx:id="languageSelection" prefWidth="150.0" onAction="#changeLanguage">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="English" />
+                              <String fx:value="Français" />
+                          </FXCollections>
+                      </items>
+                      <FlowPane.margin>
+                          <Insets left="7.0" />
+                      </FlowPane.margin>
+                  </ChoiceBox>
+               </children>
+            </FlowPane>
+            <Button fx:id="passwordChangeButton" mnemonicParsing="false" onMouseClicked="#onPasswordChangeClick" text="%changePassword">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <FlowPane fx:id="passwordChangePane" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="10.0" visible="false">
+               <children>
+                  <FlowPane>
+                     <children>
+                        <Label fx:id="oldPasswordLabel" minWidth="160.0" text="%oldPassword" />
+                        <PasswordField fx:id="oldPassword" onAction="#onSavePasswordClick">
+                           <FlowPane.margin>
+                              <Insets />
+                           </FlowPane.margin>
+                        </PasswordField>
+                     </children>
+                  </FlowPane>
+                  <FlowPane>
+                     <children>
+                        <Label fx:id="newPasswordLabel" minWidth="160.0" text="%newPassword" />
+                        <PasswordField fx:id="newPassword" onAction="#onSavePasswordClick">
+                           <FlowPane.margin>
+                              <Insets />
+                           </FlowPane.margin>
+                        </PasswordField>
+                     </children>
+                  </FlowPane>
+                  <FlowPane minWidth="500.0">
+                     <children>
+                        <Label fx:id="confirmPass" minWidth="160.0" text="%confirmation" />
+                        <PasswordField fx:id="confirmedPassword" onAction="#onSavePasswordClick">
+                           <FlowPane.margin>
+                              <Insets />
+                           </FlowPane.margin>
+                        </PasswordField>
+                        <Button fx:id="savePasswordButton" mnemonicParsing="false" onMouseClicked="#onSavePasswordClick" text="%save">
+                           <FlowPane.margin>
+                              <Insets left="8.0" />
+                           </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="cancelPasswordButton" mnemonicParsing="false" onMouseClicked="#onCancelPasswordButtonClick" text="%cancel">
+                           <FlowPane.margin>
+                              <Insets left="8.0" />
+                           </FlowPane.margin>
+                        </Button>
+                     </children>
+                  </FlowPane>
+               </children>
+            </FlowPane>
+             <Label fx:id="error" maxWidth="370" text="error" textFill="RED" visible="false" wrapText="true" />
+         </children>
+         <padding>
+            <Insets left="30.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+   <padding>
+      <Insets left="10.0" top="10.0" />
+   </padding>
+</AnchorPane>
