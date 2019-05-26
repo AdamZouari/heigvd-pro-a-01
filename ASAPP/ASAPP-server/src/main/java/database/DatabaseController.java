@@ -334,9 +334,9 @@ public class DatabaseController {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = "SELECT rules FROM User WHERE username = ?";
-        JSONObject rules_obj = null;
-        JSONArray rules_array = new JSONArray();
-        JSONObject updatedRules = new JSONObject().put("rules", rules_array);
+        JSONObject rulesObj = null;
+        JSONArray rulesArray;
+        JSONObject updatedRules;
 
         try {
 
@@ -345,38 +345,21 @@ public class DatabaseController {
             result = preparedStatement.executeQuery();
 
             if (result.next()) {
-                rules_obj = new JSONObject(result.getString(1));
+                rulesObj = new JSONObject(result.getString(1));
             }
 
 
-            rules_array = (JSONArray) rules_obj.getJSONArray("rules");
+            rulesArray = rulesObj.getJSONArray("rules");
 
-            System.out.println(" rules array : " + rules_array);
+            for(int i = 0; i < rulesArray.length(); ++i) {
+                JSONObject rule = rulesArray.getJSONObject(i);
 
-
-            Iterator<Object> userRuleIt = rules_array.iterator();
-            int index = 0;
-            while (userRuleIt.hasNext()) {
-
-                JSONObject nthRule = (JSONObject) userRuleIt.next();
-                System.out.println("nthRule : " + nthRule);
-
-                // if rule is the rule to delete then we dont add it to the new array of rules for the user
-                if (nthRule.get("id").equals(ruleToDeleteId)) {
-                    // remove the correspondant rule
-                    rules_array = (JSONArray) rules_array.remove();
-
-
-                    System.out.println(" rules array after remove : " + rules_array);
+                if(rule.get("id").equals(ruleToDeleteId)) {
+                    rulesArray.remove(i);
                 }
-                index++;
             }
 
-            if (rules_array == null) {
-                updatedRules = new JSONObject().put("rules",new JSONArray());
-            }
-
-            System.out.println(ruleToDeleteId + " " + updatedRules);
+            updatedRules = new JSONObject().put("rules", rulesArray);
 
             updateRule(username, updatedRules.toString());
 
