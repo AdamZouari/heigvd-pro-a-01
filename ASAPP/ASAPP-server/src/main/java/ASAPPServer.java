@@ -54,10 +54,6 @@ public class ASAPPServer {
         }
     }
 
-    private void startScheduler() {
-        ruleTaskManager.startScheduling();
-    }
-
     private void serveClients() {
         new Thread(new ReceptionistWorker()).start();
     }
@@ -249,7 +245,7 @@ public class ASAPPServer {
 
                 try {
                     db.deleteRuleById(username,ruleToDeleteId);
-//                    ruleTaskManager.deleteRule(username,ruleToDeleteId);
+                    ruleTaskManager.deleteRule(username,ruleToDeleteId);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
@@ -397,7 +393,6 @@ public class ASAPPServer {
     public static void main(String[] args) {
         ASAPPServer server = new ASAPPServer();
         server.fetchDataBaseRules();
-        server.startScheduler();
         server.serveClients();
     }
 }

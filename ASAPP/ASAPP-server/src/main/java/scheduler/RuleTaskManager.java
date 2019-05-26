@@ -2,22 +2,18 @@ package scheduler;
 
 
 import entities.Rule;
-import org.json.JSONObject;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static java.util.Base64.getEncoder;
-
 public class RuleTaskManager {
 
     private static RuleTaskManager rtm;
     private final static Logger LOG = Logger.getLogger(RuleTaskManager.class.getName());
-
-    private boolean running;
 
     private ScheduledThreadPoolExecutor executor;
     private Map<String, Map<RuleTask, ScheduledFuture<?>>> taskMap;
@@ -30,34 +26,21 @@ public class RuleTaskManager {
     }
 
     private RuleTaskManager() {
-        running = false;
         taskMap = new HashMap<>();
     }
 
     public void loadRules(Map<String, List<Rule>> ruleLists) {
-        if (!running) {
-            LOG.info("Loading rules from database...");
-            for (String user : ruleLists.keySet()) {
-                Map<RuleTask, ScheduledFuture<?>> userRulesMap = new HashMap<>();
-                for (Rule r : ruleLists.get(user)) {
-                    userRulesMap.put(new RuleTask(r), null);
-                }
-                taskMap.put(user, userRulesMap);
-            }
-        }
-    }
+        LOG.info("Loading rules from database and starting scheduler...");
+        executor = new ScheduledThreadPoolExecutor(1);
+        executor.setRemoveOnCancelPolicy(true);
 
-    public void startScheduling() {
-        if (!running) {
-            LOG.info("Starting scheduler...");
-            executor = new ScheduledThreadPoolExecutor(1);
-            executor.setRemoveOnCancelPolicy(true);
-            running = true;
-            for (Map<RuleTask, ScheduledFuture<?>> ruleMap : taskMap.values()) {
-                for (RuleTask task : ruleMap.keySet()) {
-                    ruleMap.replace(task, schedule(task));
-                }
+        for (String user : ruleLists.keySet()) {
+            Map<RuleTask, ScheduledFuture<?>> userRulesMap = new ConcurrentHashMap<>();
+            for (Rule r : ruleLists.get(user)) {
+                RuleTask ruleTask = new RuleTask(r);
+                userRulesMap.put(ruleTask, schedule(ruleTask));
             }
+            taskMap.put(user, userRulesMap);
         }
     }
 
@@ -66,7 +49,7 @@ public class RuleTaskManager {
         if (taskMap.containsKey(username)) {
             taskMap.get(username).put(task, schedule(task));
         } else {
-            Map<RuleTask, ScheduledFuture<?>> map = new HashMap<>();
+            Map<RuleTask, ScheduledFuture<?>> map = new ConcurrentHashMap<>();
             map.put(task, schedule(task));
             taskMap.put(username, map);
         }
@@ -111,10 +94,6 @@ public class RuleTaskManager {
                 userRulesMap.remove(ruleTask);
             }
         }
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 
     private ScheduledFuture<?> schedule(RuleTask task) {
