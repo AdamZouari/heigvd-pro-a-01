@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import protocol.ExceptionCodes;
+import protocol.Protocol;
 import utils.FormUtils;
 
 import locale.I18N;
@@ -132,7 +133,15 @@ public class LoginController implements Initializable {
 
    @Override
    public void initialize(URL location, ResourceBundle resources) {
+
+      ClientRequest cr = new ClientRequest();
+
       languageChoice.getSelectionModel().selectFirst();
+      try {
+         cr.connect(Protocol.LOCALHOST);
+      } catch (CustomException e) {
+         FormUtils.displayErrorMessage(error, e.getMessage());
+      }
    }
 
    private void changeDisplayedLanguage() {

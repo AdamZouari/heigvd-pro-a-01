@@ -129,8 +129,18 @@ public class SettingsController implements Initializable {
             return;
         }
 
+        ClientRequest cr = new ClientRequest();
+
+        try {
+            cr.updatePassword(confirmedPass);
+        } catch (IOException | CustomException | ProtocolException e) {
+            FormUtils.displayErrorMessage(error, e.getMessage());
+
+        }
+
         changePasswordsFormVisibility();
-        FormUtils.hideErrorMessage(error);
+        //FormUtils.hideErrorMessage(error);
+
     }
 
     private void cleanPasswordsInputs() {

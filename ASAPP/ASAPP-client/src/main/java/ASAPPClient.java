@@ -1,4 +1,6 @@
 import connection.ClientRequest;
+import exceptions.CustomException;
+import exceptions.ProtocolException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -6,20 +8,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import locale.I18N;
+import protocol.ExceptionCodes;
 import protocol.Protocol;
+import utils.FormUtils;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
 
 
 public class ASAPPClient extends Application {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         launch(ASAPPClient.class);
     }
 
     @Override
-    public void start(Stage stage){
+    public void start(Stage stage) {
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/LoginView.fxml"));
 
@@ -27,7 +32,9 @@ public class ASAPPClient extends Application {
 
             fxmlLoader.setResources(ResourceBundle.getBundle("Internationalization", I18N.getLocale()));
 
-            Parent root = fxmlLoader.load();
+            Parent root = null;
+
+            root = fxmlLoader.load();
 
             stage.setScene(new Scene(root));
             stage.setResizable(false);
@@ -36,15 +43,11 @@ public class ASAPPClient extends Application {
 
             stage.setOnCloseRequest(event -> Platform.exit());
 
-            try{
-                cr.connect(Protocol.HOST_DEV);
 
-            }catch (Exception e){
-                System.out.println("Server down");
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
     }
 }

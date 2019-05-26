@@ -33,16 +33,17 @@ public class ClientRequest {
     private static String URL_TELEGRAM = "https://api.telegram.org/bot807304812:AAGs_yyYLQ1f1l0rk6jFEepAGRMITfhv2ok/getUpdates";
 
 
-    public void connect(String server) throws IOException {
+    public void connect(String server) throws CustomException {
         if (!isConnected()) {
             try {
                 clientSocket = new Socket(server, Protocol.DEFAULT_PORT);
-            } catch (ConnectException c) {
+                reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                writer = new PrintWriter(clientSocket.getOutputStream());
+            } catch (Exception c) {
                 clientSocket = null;
-                throw c;
+                throw new CustomException(ExceptionCodes.SERVER_DOWN.ordinal());
+
             }
-            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            writer = new PrintWriter(clientSocket.getOutputStream());
 
             LOG.info("Client connected to " + clientSocket.getInetAddress());
         } else {
@@ -141,10 +142,6 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_ADD_RULE + " " + loggedUser +" " + ruleToSend);
         String response = reader.readLine();
         checkIfSuccess(response);
-    }
-
-    public void deleteRule(String ruleToDelete) throws  IOException, CustomException, ProtocolException {
-
     }
 
     public void sendToServer(String toSend) throws IOException {
@@ -251,7 +248,7 @@ public class ClientRequest {
     }
 
     public void deleteUserRules() throws IOException, CustomException, ProtocolException {
-        sendToServer(Protocol.CMD_DELETE_RULE + " " + loggedUser);
+        sendToServer(Protocol.CMD_DELETE_USER_RULES + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
     }
@@ -267,7 +264,13 @@ public class ClientRequest {
         sendToServer(Protocol.CMD_GET_LANGUAGE + " " + loggedUser);
         String response = reader.readLine();
         checkIfSuccess(response);
-        System.out.println("|"+response.split(" ")[1]+"|");
         return response.split(" ")[1];
+    }
+
+    public void updatePassword(String confirmedPass) throws IOException, CustomException, ProtocolException {
+
+        sendToServer(Protocol.CMD_SET_PASSWORD + " " + loggedUser + ":" + confirmedPass);
+        String response = reader.readLine();
+        checkIfSuccess(response);
     }
 }

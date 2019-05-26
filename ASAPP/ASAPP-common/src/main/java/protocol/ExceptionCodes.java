@@ -32,6 +32,7 @@ public enum ExceptionCodes {
     FAIL_TO_REMOVE_RULE_FROM_DB("Remove rule failed."),
     FAIL_ENCODING("Encoding failed."),
     CHECK_UNIQUENESS_FAILED("Check uniqueness of username or telegram failed."),
+    SERVER_DOWN("An error occured, please contact administrator."),
     INVALID_TWITTER("Pseudo Twitter is not valid !");
     String message;
 

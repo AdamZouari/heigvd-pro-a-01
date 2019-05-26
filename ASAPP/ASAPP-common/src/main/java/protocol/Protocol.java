@@ -26,6 +26,9 @@ public class Protocol {
     public static final String CMD_GET_LANGUAGE = "GET_LANGUAGE";
     public static final String CMD_SET_LANGUAGE = "SET_LANGUAGE";
 
+    public static final String CMD_SET_PASSWORD = "SET_PASSWORD";
+
+
     public final static String RESPONSE_SUCCESS = "SUCCESS";
     public final static String RESPONSE_FAILURE = "FAILURE";
 }

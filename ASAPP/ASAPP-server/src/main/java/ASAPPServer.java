@@ -8,6 +8,7 @@ import protocol.Protocol;
 import scheduler.RuleTask;
 import scheduler.RuleTaskManager;
 
+import javax.validation.constraints.Null;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -137,13 +138,16 @@ public class ASAPPServer {
                                 deleteRule(items[1]);
                                 break;
                             case Protocol.CMD_DELETE_USER_RULES:
-                                deleteUserRules(items[1]);
+                                deleteAllRules(items[1]);
                                 break;
                             case Protocol.CMD_GET_LANGUAGE:
                                 getLanguage(items[1]);
                                 break;
                             case Protocol.CMD_SET_LANGUAGE:
                                 updateLanguage(items[1]);
+                                break;
+                            case Protocol.CMD_SET_PASSWORD:
+                                updatePassword(items[1]);
                                 break;
                         }
 
@@ -202,6 +206,7 @@ public class ASAPPServer {
                 String username =  creds[0], hashPassword =  creds[1];
 
                 try {
+
                     User user = DatabaseController.getController().getUserByUsername(username);
 
                     if(user.getHashPassword().equals(hashPassword)) {
@@ -211,6 +216,8 @@ public class ASAPPServer {
 
                 } catch(CustomException e) {
                     sendError(e.getExceptionNumber());
+                } catch (NullPointerException e){
+                    sendError(ExceptionCodes.LOGIN_FAILED.ordinal());
                 }
             }
 
@@ -242,7 +249,7 @@ public class ASAPPServer {
 
                 try {
                     db.deleteRuleById(username,ruleToDeleteId);
-                    ruleTaskManager.deleteRule(username,ruleToDeleteId);
+//                    ruleTaskManager.deleteRule(username,ruleToDeleteId);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());
@@ -288,7 +295,7 @@ public class ASAPPServer {
                 }
             }
 
-            private void deleteUserRules(String username) {
+            private void deleteAllRules(String username) {
                 try {
                     // delete from Database
                     db.deleteAllRuleByUsername(username);
@@ -317,6 +324,18 @@ public class ASAPPServer {
                     String language = items.split(":")[1];
 
                     db.updateLanguage(username,language);
+                    sendToClient(Protocol.RESPONSE_SUCCESS);
+                } catch (CustomException e) {
+                    sendError(e.getExceptionNumber());
+                }
+            }
+
+            private void updatePassword(String items){
+                try {
+                    String username = items.split(":")[0];
+                    String password = items.split(":")[1];
+
+                    db.updatePassword(username,password);
                     sendToClient(Protocol.RESPONSE_SUCCESS);
                 } catch (CustomException e) {
                     sendError(e.getExceptionNumber());

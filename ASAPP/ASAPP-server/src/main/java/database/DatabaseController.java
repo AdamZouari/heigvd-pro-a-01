@@ -217,8 +217,7 @@ public class DatabaseController {
             preparedStatement.executeUpdate();
             LOG.log(Level.INFO,"Password of  "+username+ " updated.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            //throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
+            throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
         }
     }
 
@@ -332,23 +331,24 @@ public class DatabaseController {
     public void deleteRuleById(String username, int ruleToDeleteId) throws CustomException {
 
         PreparedStatement preparedStatement = null;
-        String sql = "UPDATE rules FROM User WHERE username = ?";
+        ResultSet result = null;
+        String sql = "SELECT rules FROM User WHERE username = ?";
+        JSONObject rules_obj = null;
+        JSONArray rules_array = null;
 
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
-
             preparedStatement.setString(1, username);
+            result = preparedStatement.executeQuery();
 
-            // Here we parse the rule to delete so we can get its id
+            if (result.next()) {
+                rules_obj = new JSONObject(result.getString(1));
+            }
 
+            rules_array = (JSONArray) rules_obj.getJSONArray("rules");
 
-            // Get all rules
-            JSONObject json = new JSONObject(sql);
-            JSONArray userRules = ((JSONArray)json.get("rules"));
-
-            // user rule
-            Iterator<Object> userRuleIt = userRules.iterator();
+            Iterator<Object> userRuleIt = rules_array.iterator();
             int i = 0;
             while (userRuleIt.hasNext()) {
 
@@ -356,13 +356,14 @@ public class DatabaseController {
                 // if rule is the rule to delete then we dont add it to the new array of rules for the user
                 if(nthRule.get("id").equals(ruleToDeleteId)){
                     // remove the correspondant rule
-                    userRules.remove(i);
+                    rules_obj.remove(i+"");
                 }
                 i++;
             }
 
-            preparedStatement.executeUpdate();
-            LOG.log(Level.INFO,"Rule of  "+username+ " deleted.");
+            System.out.println(rules_obj.toString());
+
+            updateRule(username,rules_obj.toString());
 
             /** replace all the old rules with the new ones minus the deleted rule
                 here we have no other choice than to do that because we are dealing with JSONObjects
@@ -370,8 +371,8 @@ public class DatabaseController {
              JSONObject updatedRules = new JSONObject();
              updatedRules.put("rules", updatedRules);
 
-             // update old rules with new rules
-             updateRule(username, updatedRules.toString());
+            LOG.log(Level.INFO,"Rule of  "+username+ " deleted.");
+
 
         } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.FAIL_TO_REMOVE_RULE_FROM_DB.ordinal());
