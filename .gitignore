@@ -67,7 +67,10 @@ fabric.properties
 
 .idea
 *.iml
-**/target/**/
+**/target/
+!ASAPP/ASAPP-client/target/ASAPP-client-1.0-SNAPSHOT-standalone.jar
+!ASAPP/ASAPP-server/target/ASAPP-server-1.0-SNAPSHOT-standalone.jar
+
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
