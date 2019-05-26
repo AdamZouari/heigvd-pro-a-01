@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import exceptions.CustomException;
 import protocol.ExceptionCodes;
+
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class DatabaseController {
 
         try {
 
-            int userId,idTelegram;
+            int userId, idTelegram;
             String username, password, telegramUsername, rules;
             User.LANGUE langue;
             preparedStatement = mConnection.prepareStatement(sql);
@@ -72,7 +73,7 @@ public class DatabaseController {
                 password = result.getString(5);
                 rules = result.getString(6);
                 langue = User.LANGUE.valueOf(result.getString(7));
-                user = new User(id, username, telegramUsername, idTelegram,password, rules, langue);
+                user = new User(id, username, telegramUsername, idTelegram, password, rules, langue);
             }
 
         } catch (SQLException e) {
@@ -125,14 +126,14 @@ public class DatabaseController {
         ResultSet result = null;
         String sql = " SELECT * FROM User WHERE username = ?";
 
-        try{
+        try {
             preparedStatement = mConnection.prepareStatement(sql);
 
             preparedStatement.setString(1, username);
             result = preparedStatement.executeQuery();
             return result.next();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.CHECK_UNIQUENESS_FAILED.ordinal());
         }
     }
@@ -143,21 +144,21 @@ public class DatabaseController {
         ResultSet result = null;
         String sql = " SELECT * FROM User WHERE telegramUsername = ?";
 
-        try{
+        try {
             preparedStatement = mConnection.prepareStatement(sql);
 
             preparedStatement.setString(1, usernameTelegram);
             result = preparedStatement.executeQuery();
             return result.next();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.CHECK_UNIQUENESS_FAILED.ordinal());
         }
 
     }
 
 
-    public void addUser(String username, String telegramUsername, int idTelegram ,String password, String rules, User.LANGUE langue) throws CustomException {
+    public void addUser(String username, String telegramUsername, int idTelegram, String password, String rules, User.LANGUE langue) throws CustomException {
         PreparedStatement preparedStatement = null;
         String sql = " INSERT INTO User( username, telegramUsername,idTelegram,password, rules, langue) VALUES (?,?,?,?,?,?) ;";
 
@@ -166,7 +167,7 @@ public class DatabaseController {
                 throw new CustomException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_PSEUDO.ordinal());
             }
 
-            if(usernameTelegramExist(telegramUsername)){
+            if (usernameTelegramExist(telegramUsername)) {
                 throw new CustomException(ExceptionCodes.A_USER_ALREADY_EXISTS_WITH_THIS_TELEGRAM.ordinal());
             }
 
@@ -179,7 +180,7 @@ public class DatabaseController {
             preparedStatement.setString(6, langue.name());
 
             preparedStatement.executeUpdate();
-            LOG.log(Level.INFO,"User "+username+ " added.");
+            LOG.log(Level.INFO, "User " + username + " added.");
         } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.REGISTRATION_FAILED.ordinal());
         }
@@ -199,7 +200,7 @@ public class DatabaseController {
             preparedStatement.setInt(5, id);
 
             preparedStatement.executeUpdate();
-            LOG.log(Level.INFO,"User "+username+ " updated.");
+            LOG.log(Level.INFO, "User " + username + " updated.");
         } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
         }
@@ -215,7 +216,7 @@ public class DatabaseController {
             preparedStatement.setString(2, password);
 
             preparedStatement.executeUpdate();
-            LOG.log(Level.INFO,"Password of  "+username+ " updated.");
+            LOG.log(Level.INFO, "Password of  " + username + " updated.");
         } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
         }
@@ -231,7 +232,7 @@ public class DatabaseController {
             preparedStatement.setString(2, username);
 
             preparedStatement.executeUpdate();
-            LOG.log(Level.INFO,"Language of  "+username+ " updated.");
+            LOG.log(Level.INFO, "Language of  " + username + " updated.");
         } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.UPDATE_OF_USER_FAILED.ordinal());
         }
@@ -246,13 +247,13 @@ public class DatabaseController {
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setString(1,username);
+            preparedStatement.setString(1, username);
 
             result = preparedStatement.executeQuery();
             while (result.next()) {
                 userRules = result.getString(1);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_USER_FROM_DB.ordinal());
         }
         return userRules;
@@ -280,14 +281,14 @@ public class DatabaseController {
                 JSONArray userRulesJson = (JSONArray) json.get("rules");
                 allRules.put(username, userRulesJson);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_RULES_FROM_DB.ordinal());
         }
 
         return allRules;
     }
 
-    public String getLangue (String username) throws CustomException {
+    public String getLangue(String username) throws CustomException {
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         String sql = "SELECT langue FROM User WHERE username=?";
@@ -296,13 +297,13 @@ public class DatabaseController {
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setString(1,username);
+            preparedStatement.setString(1, username);
 
             result = preparedStatement.executeQuery();
             if (result.next()) {
                 langue = User.LANGUE.valueOf(result.getString(1));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.FAIL_TO_FETCH_LANGUAGE_FROM_DB.ordinal());
         }
         return langue.name();
@@ -321,7 +322,7 @@ public class DatabaseController {
             preparedStatement.setString(2, username);
 
             preparedStatement.executeUpdate();
-            LOG.log(Level.INFO,"Rule of  "+username+ " updated.");
+            LOG.log(Level.INFO, "Rule of  " + username + " updated.");
 
         } catch (SQLException e) {
             throw new CustomException(ExceptionCodes.UPDATE_OF_RULE_FAILED.ordinal());
@@ -334,7 +335,8 @@ public class DatabaseController {
         ResultSet result = null;
         String sql = "SELECT rules FROM User WHERE username = ?";
         JSONObject rules_obj = null;
-        JSONArray rules_array = null;
+        JSONArray rules_array = new JSONArray();
+        JSONObject updatedRules = new JSONObject().put("rules", rules_array);
 
         try {
 
@@ -346,32 +348,39 @@ public class DatabaseController {
                 rules_obj = new JSONObject(result.getString(1));
             }
 
+
             rules_array = (JSONArray) rules_obj.getJSONArray("rules");
 
+            System.out.println(" rules array : " + rules_array);
+
+
             Iterator<Object> userRuleIt = rules_array.iterator();
-            int i = 0;
+            int index = 0;
             while (userRuleIt.hasNext()) {
 
                 JSONObject nthRule = (JSONObject) userRuleIt.next();
+                System.out.println("nthRule : " + nthRule);
+
                 // if rule is the rule to delete then we dont add it to the new array of rules for the user
-                if(nthRule.get("id").equals(ruleToDeleteId)){
+                if (nthRule.get("id").equals(ruleToDeleteId)) {
                     // remove the correspondant rule
-                    rules_obj.remove(i+"");
+                    rules_array = (JSONArray) rules_array.remove();
+
+
+                    System.out.println(" rules array after remove : " + rules_array);
                 }
-                i++;
+                index++;
             }
 
-            System.out.println(rules_obj.toString());
+            if (rules_array == null) {
+                updatedRules = new JSONObject().put("rules",new JSONArray());
+            }
 
-            updateRule(username,rules_obj.toString());
+            System.out.println(ruleToDeleteId + " " + updatedRules);
 
-            /** replace all the old rules with the new ones minus the deleted rule
-                here we have no other choice than to do that because we are dealing with JSONObjects
-            **/
-             JSONObject updatedRules = new JSONObject();
-             updatedRules.put("rules", updatedRules);
+            updateRule(username, updatedRules.toString());
 
-            LOG.log(Level.INFO,"Rule of  "+username+ " deleted.");
+            LOG.log(Level.INFO, "Rule of  " + username + " deleted.");
 
 
         } catch (SQLException e) {
@@ -399,13 +408,13 @@ public class DatabaseController {
         try {
 
             preparedStatement = mConnection.prepareStatement(sql);
-            preparedStatement.setString(1,username);
+            preparedStatement.setString(1, username);
             result = preparedStatement.executeQuery();
 
-            if(result.next())
+            if (result.next())
                 idTelegram = result.getInt(1);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             ExceptionCodes.FAIL_TO_FETCH_TELEGRAM_ID_FROM_DB.ordinal();
         }
 
