@@ -42,8 +42,8 @@ This software requires Java 8 or above and the following libraries:
 
 ## Documentation
 
-[User manual](blob/master/docs/User-manual.pdf).
+[User manual](docs/User-manual.pdf).
 
-[API documentation](blob/master/docs/API-Documentation.pdf).
+[API documentation](docs/API-Documentation.pdf).
 
 ...
