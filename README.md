@@ -1,6 +1,6 @@
 # Automatic actions on online services
 
-An application for ...
+An application for automate online services.
 This software was developed as semester project (PRO) at HEIG-VD,
 academic year 2019/20.
 
@@ -42,8 +42,8 @@ This software requires Java 8 or above and the following libraries:
 
 ## Documentation
 
-User manual: see file xxxxx.
+[User manual](blob/master/docs/User-manual.pdf).
 
-API documentation: see file yyyyy.
+[API documentation](blob/master/docs/API-Documentation.pdf).
 
 ...
